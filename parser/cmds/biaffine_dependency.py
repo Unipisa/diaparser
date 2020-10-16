@@ -43,6 +43,10 @@ def main():
     subparser.add_argument('--buckets', default=8, type=int, help='max num of buckets to use')
     subparser.add_argument('--data', default='data/ptb/test.conllx', help='path to dataset')
     subparser.add_argument('--pred', default='pred.conllx', help='path to predicted result')
+    subparser.add_argument('--text', metavar='LANGUAGE', default=None,
+                           help='parse plain text in the given language rather than CoNLL-U files.')
+    subparser.add_argument('--cache-dir', default='~/.cache/parser',
+                           help='path to saved parser/tokenizer models')
     parse(parser)
 
 

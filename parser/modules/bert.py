@@ -78,7 +78,7 @@ class BertEmbedding(nn.Module):
         self.n_layers = n_layers or self.bert.config.num_hidden_layers
         self.hidden_size = self.bert.config.hidden_size
         self.n_out = n_out or self.hidden_size
-        self.pad_index = self.bert.config.pad_token_id # compatible to nn.Embedding
+        self.pad_index = self.bert.config.pad_token_id
         self.max_len = max_len
         self.mix_dropout = mix_dropout
         self.token_dropout = token_dropout

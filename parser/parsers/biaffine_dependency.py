@@ -13,6 +13,7 @@ from parser.utils.fn import ispunct
 from parser.utils.logging import get_logger, progress_bar
 from parser.utils.metric import AttachmentMetric
 from parser.utils.transform import CoNLL
+from tokenizer.tokenizer import Tokenizer
 
 logger = get_logger(__name__)
 
@@ -43,6 +44,8 @@ class BiaffineDependencyParser(Parser):
         self.puncts = torch.tensor([i
                                     for s, i in self.WORD.vocab.stoi.items()
                                     if ispunct(s)]).to(self.args.device)
+        if self.args.text:
+            self.transform.reader = Tokenizer(self.args.text, self.args.cache_dir).reader()
 
     def train(self, train, dev, test, buckets=32, batch_size=5000,
               punct=False, tree=False, proj=False, verbose=True, **kwargs):

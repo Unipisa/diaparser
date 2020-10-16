@@ -32,5 +32,5 @@ def parse(argparser):
         parser = Parser.load(args.path)
         parser.evaluate(**args)
     elif args.mode == 'predict':
-        parser = Parser.load(args.path)
+        parser = Parser.load(**args)
         parser.predict(**args)

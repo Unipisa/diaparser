@@ -8,7 +8,7 @@ from parser.utils.logging import get_logger, progress_bar
 logger = get_logger(__name__)
 
 
-class Transform(object):
+class Transform():
     r"""
     A Transform object corresponds to a specific data format.
     It holds several instances of data fields that provide instructions for preprocessing and numericalizing, etc.
@@ -158,7 +158,8 @@ class CoNLL(Transform):
 
     def __init__(self,
                  ID=None, FORM=None, LEMMA=None, CPOS=None, POS=None,
-                 FEATS=None, HEAD=None, DEPREL=None, PHEAD=None, PDEPREL=None):
+                 FEATS=None, HEAD=None, DEPREL=None, PHEAD=None, PDEPREL=None,
+                 reader=lambda data: open(data, 'r')):
         super().__init__()
 
         self.ID = ID
@@ -171,6 +172,8 @@ class CoNLL(Transform):
         self.DEPREL = DEPREL
         self.PHEAD = PHEAD
         self.PDEPREL = PDEPREL
+        # default reader from file
+        self.reader = reader
 
     @property
     def src(self):
@@ -321,18 +324,20 @@ class CoNLL(Transform):
         """
 
         if isinstance(data, str):
-            with open(data, 'r') as f:
-                lines = [line.strip() for line in f]
+            # with self.reader(data) as f:
+            #     lines = (line.strip() for line in f) # generator. Attardi
+            with self.reader(data) as f:
+                lines = (line.strip() for line in f) # generator. Attardi
         else:
             data = [data] if isinstance(data[0], str) else data
             lines = '\n'.join([self.toconll(i) for i in data]).split('\n')
 
-        i, start, sentences = 0, 0, []
-        for line in progress_bar(lines, leave=False):
+        sentence, sentences = [], []
+        for line in lines:      # can't use progress on a generator like
             if not line:
-                sentences.append(CoNLLSentence(self, lines[start:i]))
-                start = i + 1
-            i += 1
+                sentences.append(CoNLLSentence(self, sentence))
+                sentence = []
+            sentence.append(line)
         if proj:
             sentences = [i for i in sentences if self.isprojective(list(map(int, i.arcs)))]
         if max_len is not None:
@@ -343,7 +348,7 @@ class CoNLL(Transform):
 
 class CoNLLSentence(Sentence):
     r"""
-    Sencence in CoNLL-X format.
+    Sentence in CoNLL-X or Conll-U format.
 
     Args:
         transform (CoNLL):
@@ -682,3 +687,4 @@ class TreeSentence(Sentence):
 
     def __repr__(self):
         return self.values[-2].pformat(1000000)
+

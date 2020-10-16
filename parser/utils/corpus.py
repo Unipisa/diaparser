@@ -124,9 +124,12 @@ class Corpus(object):
 
 
 class TextCorpus(Corpus):
+    """
+    Class for toeknizing and MW splitting of plain text 
+    """
     @classmethod
-    def load(cls, path, fields, tokenizer_lang, tokenizer_dir, use_gpu, verbose=True, max_sent_length=math.inf):
-        tokenizer = Tokenizer(lang=tokenizer_lang, dir=tokenizer_dir, use_gpu=use_gpu, verbose=True)
+    def load(cls, path, fields, tokenizer_lang, tokenizer_dir, verbose=True, max_sent_length=math.inf):
+        tokenizer = Tokenizer(lang=tokenizer_lang, dir=tokenizer_dir, verbose=True)
 
         sentences = []
         fields = [field if field is not None else Field(str(i))
