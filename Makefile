@@ -178,7 +178,7 @@ all:
 
 train:
 	for l in $(LANGS); do \
-	    nohup ${MAKE} -s GPU=$(GPU) LANG=$$l exp/$$l$(VER)/model &>> exp/$${l}$(VER).make; \
+	    nohup ${MAKE} -s GPU=$(GPU) LANG=$$l exp/$$l$(VER)/model &>> exp/$${l}$(VER).train.make; \
 	done
 
 # ----------------------------------------------------------------------

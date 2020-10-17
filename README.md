@@ -8,10 +8,10 @@
 
 `DiaParser` provides a state-of-the-art direct attentive dependency parser based onthe Biaffine Parser ([Dozat and Manning, 2017](#dozat-2017-biaffine)) architecture.
 
-The parser can works directly on plain text or on tokenized text.
+The parser can work directly on plain text or on tokenized text.
 The parser automatically dowloads pretrained models as well as tokenizers and produces dependency parsing trees, as detailed in [Usage](#Usage).
 
-You can also train your own models and contribute them to the repository.
+You can also train your own models and contribute them to the repository, to share with others.
 
 `Diaparser` uses pretrained contextual embeddings for representing input from models in [`transformers`](https://github.com/huggingface/transformers).
 
@@ -20,7 +20,7 @@ Pretrained tokenizers are provided by [Stanza](https://stanfordnlp.github.io/sta
 Alternatively to contextual embeddings, `Diaparser` also allows to utilize CharLSTM layers to produce character/subword-level features.
 Both BERT and CharLSTM avoid the need of generating POS tags.
 
-`DiaParser` is derived from [`SuPar`](https://github.com/yzhangcs/parser).
+`DiaParser` is derived from [`SuPar`](https://github.com/yzhangcs/parser), which provides additional variants of dependency and constituency parsers.
 
 ## Contents
 
@@ -35,7 +35,7 @@ Both BERT and CharLSTM avoid the need of generating POS tags.
 
 ## Installation
 
-`Diaparser` can be installed via pip:
+`DiaParser` can be installed via pip:
 ```sh
 $ pip install -U diaparser
 ```
@@ -45,7 +45,7 @@ $ git clone https://github.com/Unipisa/diaparser && cd diaparser
 $ python setup.py install
 ```
 
-As a prerequisite, the following requirements should be satisfied:
+The package has the following requirements:
 * `python`: >= 3.6
 * [`pytorch`](https://github.com/pytorch/pytorch): >= 1.4
 * [`transformers`](https://github.com/huggingface/transformers): >= 3.1
@@ -54,11 +54,11 @@ As a prerequisite, the following requirements should be satisfied:
 ## Performance
 
 `DiaParser` provides pretrained models for English, Chinese and other 17 languages of the IWPT 2020 Shared task.
-English models are trained on Penn Treebank (PTB) with 39,832 training sentences, while Chinese models are trained on Penn Chinese Treebank version 7 (CTB7) with 46,572 training sentences.
+English models are trained on the Penn Treebank (PTB) with Stanford Dependencies, with 39,832 training sentences, while Chinese models are trained on Penn Chinese Treebank version 7 (CTB7) with 46,572 training sentences.
 The other languages are trained on the Universal Dependencies treebanks [v2.5](https://universaldependencies.org).
 
 The performance and parsing speed of these models are listed in the following table.
-Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved for CTB7.
+Notably, punctuation is ignored in all evaluation metrics for PTB, but included in all the others.
 
 <table>
   <thead>
@@ -227,7 +227,7 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
   </tbody>
 </table>
 
-All results are tested on the machine with Intel(R) Xeon(R) Gold 6132 CPU @ 2.60GHz
+These results were obtained on a server with Intel(R) Xeon(R) Gold 6132 CPU @ 2.60GHz
 and Nvidia T4 GPU.
 
 ## Usage
@@ -240,7 +240,7 @@ and Nvidia T4 GPU.
 100%|####################################| 1/1 00:00<00:00, 85.15it/s
 ```
 The call to `parser.predict` will return an instance of `diaparser.utils.Dataset` containing the predicted syntactic trees.
-For dependency parsing, you can either access each sentence held in `dataset` or an individual field of all the trees.
+You can either access any sentence within the `dataset` or an individual field of all the tokens.
 ```py
 >>> print(dataset.sentences[0])
 1       She     _       _       _       _       2       nsubj   _       _
@@ -258,7 +258,7 @@ probs: tensor([1.0000, 0.9999, 0.9642, 0.9686, 0.9996])
 ```
 Probabilities can be returned along with the results if `prob=True`.
 
-If there are a plenty of sentences to parse, `Diaparser` also supports for loading them from file, and save to the `pred` file if specified.
+If there are plenty of sentences to parse, `DiaParser` also supports loading them from file, and saving the results to a file specified with option `pred`.
 ```py
 >>> dataset = parser.predict('data/ptb/test.conllx', pred='pred.conllx')
 2020-07-25 18:13:50 INFO Loading the data
@@ -271,7 +271,7 @@ Dataset(n_sentences=2416, n_batches=13, n_buckets=8)
 ```
 
 Please make sure the file is in CoNLL-X or CoNLL-U format. If some fields are missing, you can use underscores as placeholders.
-An interface is provided for the transformation from text to CoNLL-X format string.
+An interface is provided for converting a list of text to a string in CoNLL-X format.
 ```py
 >>> from diaparser.utils import CoNLL
 >>> print(CoNLL.toconll(['She', 'enjoys', 'playing', 'tennis', '.']))
@@ -283,7 +283,7 @@ An interface is provided for the transformation from text to CoNLL-X format stri
 
 ```
 
-For Universial Dependencies (UD), the CoNLL-U file is also allowed, while comment lines in the file can be reserved before prediction and recovered during post-processing.
+The CoNLL-U format for Universal Dependencies (UD) is also supported, with comments and extra annotations preserved and restored in the output.
 ```py
 >>> import os
 >>> import tempfile
@@ -346,20 +346,20 @@ $ python -m diaparser.cmds.biaffine_dependency train -b -d 0  \
 
 For further instructions on training, please type `python -m diaparser.cmds.<parser> train -h`.
 
-Alternatively, `Diaparser` provides some equivalent command entry points registered in `setup.py`:
+Alternatively, `DiaParser` provides an equivalent command entry points registered in `setup.py`:
 `diaparser`.
 ```sh
 $ diaparser train -b -d 0 -c config.ini -p exp/en_ptb.electra-base/model -f bert --bert google/electra-base-discriminator
 ```
 
-To accommodate large models, distributed training is also supported:
+For handling large models, distributed training is also supported:
 ```sh
 $ python -m torch.distributed.launch --nproc_per_node=4 --master_port=10000  \
     -m parser.cmds.biaffine_dependency train -b -d 0,1,2,3  \
     -p exp/en_ptb.electra-base/model  \
     -f bert --bert google/electra-base-discriminator
 ```
-You can consult the PyTorch [documentation](https://pytorch.org/docs/stable/notes/ddp.html) and [tutorials](https://pytorch.org/tutorials/intermediate/ddp_tutorial.html) for more details.
+You may consult the PyTorch [documentation](https://pytorch.org/docs/stable/notes/ddp.html) and [tutorials](https://pytorch.org/tutorials/intermediate/ddp_tutorial.html) for more details.
 
 ### Evaluation
 
@@ -377,9 +377,8 @@ Dataset(n_sentences=2416, n_batches=11, n_buckets=8)
 
 ## TODO
 
-- [ ] [GNN Parser](#ji-2019-graph)
-- [ ] [Second-Order Parser with Mean Field Variational Inference](#wang-2019-second)
-- [ ] [Stack Pointer](#ma-2018-stackptr)
+- [ ] Provide a repository where to upload models, like HuggingFace.
+
 
 ## References
 
