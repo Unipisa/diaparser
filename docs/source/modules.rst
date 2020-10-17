@@ -1,7 +1,7 @@
-supar.modules
+parser.modules
 ==================
 
-.. currentmodule:: supar.modules
+.. currentmodule:: parser.modules
 
 Affine
 ~~~~~~~~~~~~~~~~~~~~~~~~

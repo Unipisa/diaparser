@@ -1,7 +1,7 @@
-supar.parsers
+parser.parsers
 ==================
 
-.. currentmodule:: supar.parsers
+.. currentmodule:: parser.parsers
 
 Parser
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -15,26 +15,3 @@ BiaffineDependencyParser
 .. autoclass:: BiaffineDependencyParser
     :members:
 
-CRFNPDependencyParser
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. autoclass:: CRFNPDependencyParser
-    :members:
-
-CRFDependencyParser
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. autoclass:: CRFDependencyParser
-    :members:
-
-CRF2oDependencyParser
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. autoclass:: CRF2oDependencyParser
-    :members:
-
-CRFConstituencyParser
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. autoclass:: CRFConstituencyParser
-    :members:

@@ -14,18 +14,18 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-import supar
+import diaparser
 
 # -- Project information -----------------------------------------------------
 
-project = 'SuPar'
-copyright = '2020, Yu Zhang'
-author = 'Yu Zhang'
+project = 'DiaParser'
+copyright = '2020, Yu Zhang, Giuseppe Attardi'
+author = 'Yu Zhang, Giuseppe Attardi'
 
 # The short X.Y version
-version = supar.__version__
+version = parser.__version__
 # The full version, including alpha/beta/rc tags
-release = supar.__version__
+release = parser.__version__
 
 
 # -- General configuration ---------------------------------------------------
