@@ -271,7 +271,7 @@ Dataset(n_sentences=2416, n_batches=13, n_buckets=8)
 ```
 
 Please make sure the file is in CoNLL-X or CoNLL-U format. If some fields are missing, you can use underscores as placeholders.
-An interface is provided for converting a list of text to a string in CoNLL-X format.
+An interface is provided for converting a list of tokens to a string in CoNLL-X format.
 ```py
 >>> from diaparser.utils import CoNLL
 >>> print(CoNLL.toconll(['She', 'enjoys', 'playing', 'tennis', '.']))

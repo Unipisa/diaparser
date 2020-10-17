@@ -25,7 +25,7 @@ setup(
     install_requires=['torch>=1.4.0', 'transformers', 'nltk', 'stanza'],
     entry_points={
         'console_scripts': [
-            'diaparser=parser.cmds.biaffine_dependency:main',
+            'diaparser=diaparser.cmds.biaffine_dependency:main',
         ]
     },
     python_requires='>=3.6',

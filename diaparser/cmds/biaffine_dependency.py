@@ -50,5 +50,5 @@ def main():
     parse(parser)
 
 
-if __name__ == "__main__" or __name__ == 'parser.cmds.biaffine_dependency': # DEBUG
+if __name__ == "__main__":
     main()
