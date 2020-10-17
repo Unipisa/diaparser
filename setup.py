@@ -5,10 +5,8 @@ from setuptools import find_packages, setup
 setup(
     name='diaparser',
     version='1.0.0',
-    author='Yu Zhang',
-    author_email='yzhang.cs@outlook.com',
-    author='Giuseppe Attardi',
-    author_email='attardi@di.unbipi.it',
+    author='Yu Zhang, Giuseppe Attardi',
+    author_email='yzhang.cs@outlook.com, attardi@di.unbipi.it',
     description='Direct Attentive Dependency Parser',
     long_description=open('README.md', 'r').read(),
     long_description_content_type='text/markdown',
