@@ -97,7 +97,7 @@ else ifeq ($(LANG), nl) #dev Alpino
   MODEL = --bert=wietsedv/bert-base-dutch-cased
   BERT = wietsedv
 else ifeq ($(LANG), pl) #dev LFG
-  CORPUS=pl
+  CORPUS=pl_pdb_pud
   RES2=Polish
   MODEL = --bert=dkleczek/bert-base-polish-cased-v1 #DeepPavlov/bert-base-bg-cs-pl-ru-cased
   BERT = dkleczek
@@ -127,7 +127,7 @@ else ifeq ($(LANG), uk)
   BERT = TurkuNLP
   # nu=0.9
 else ifeq ($(LANG), zh)
-  CORPUS=zh
+  CORPUS=zh_ctb
   CORPUS_TRAIN = $(CORPUS_DIR)/CoNLL09/$(CORPUS)-train.conllu
   CORPUS_DEV = $(CORPUS_DIR)/CoNLL09/$(CORPUS)-dev.conllu
   BLIND_TEST = $(CORPUS_DIR)/CoNLL09/$(CORPUS)-test.conllu
@@ -145,20 +145,24 @@ endif
 
 .PRECIOUS: exp/$(LANG)-$(FEAT)$(VER)/model
 
-exp/$(LANG)-$(FEAT)$(VER)/model:
-	python -u -m parser.cmds.biaffine_dependency train -d=$(GPU) -p=$@ \
+# relate LANG to CORPUS
+exp/$(LANG)%: exp/$(CORPUS).$(BERT)%
+	@:
+
+exp/$(CORPUS).$(BERT)$(VER)/model:
+	python -u -m diaparser.cmds.biaffine_dependency train -d=$(GPU) -p=$@ \
 	   -c=$(CONFIG) $(MODEL) $(ATTN) \
 	   --train=$(CORPUS_TRAIN) $(MAX_SENT_LENGTH) $(BATCH_SIZE) $(BUCKETS) \
 	   --dev=$(CORPUS_DEV) --feat=$(FEAT)
 
-exp/$(LANG)-$(FEAT)$(VER)-test.conllu: exp/$(LANG)-$(FEAT)$(VER)/model
-	python -m parser.cmds.biaffine_dependency predict -d=$(GPU) -p=$< --tree \
+exp/$(CORPUS).$(BERT)$(VER).test.conllu: exp/$(CORPUS).$(BERT)$(VER)/model
+	python -m diaparser.cmds.biaffine_dependency predict -d=$(GPU) -p=$< --tree \
 	   --data=$(BLIND_TEST) \
 	   --pred=$@
 	python $(CORPUS_DIR)/fix-root.py $@
 
-exp/$(LANG)-$(FEAT)$(VER)-test.time: exp/$(LANG)-$(FEAT)$(VER)/model
-	( time python -m parser.cmds.biaffine_dependency predict -d=$(GPU) -p=$< --feat=$(FEAT) --tree  \
+exp/$(CORPUS).$(BERT)$(VER).test.time: exp/$(CORPUS).$(BERT)$(VER)/model
+	( time python -m diaparser.cmds.biaffine_dependency predict -d=$(GPU) -p=$< --feat=$(FEAT) --tree  \
 	   $(BLIND_TEST)  \
 	   --pred=/dev/null; ) &> $@
 
@@ -169,32 +173,32 @@ LANGS3=lv lt nl pl cs
 
 all:
 	for l in $(LANGS); do \
-	    $(MAKE) -s GPU=$(GPU) LANG=$$l FEAT=$(FEAT) VER=$(VER) exp/$${l}-$(FEAT)$(VER)-test.eval &>> exp/$${l}-$(FEAT)$(VER)-test.make; \
+	    $(MAKE) -s GPU=$(GPU) LANG=$$l FEAT=$(FEAT) VER=$(VER) exp/$${l}$(VER).test.eval &>> exp/$${l}$(VER).test.make; \
 	done
 
 train:
 	for l in $(LANGS); do \
-	    nohup ${MAKE} -s GPU=$(GPU) LANG=$$l exp/$$l-$(FEAT)$(VER)/model &>> exp/$${l}-$(FEAT)$(VER).make; \
+	    nohup ${MAKE} -s GPU=$(GPU) LANG=$$l exp/$$l$(VER)/model &>> exp/$${l}$(VER).make; \
 	done
 
 # ----------------------------------------------------------------------
 # Evaluation
 
-%-test.nen.conllu: %-test.conllu
+%.test.nen.conllu: %.test.conllu
 	   perl $(UD_TOOLS)/enhanced_collapse_empty_nodes.pl $< > $@
 
-%-test.eval: %-test.nen.conllu
+%.test.eval: %.test.nen.conllu
 	python $(UD_TOOLS)/iwpt20_xud_eval.py -v $(UD_TOOLS)/../test-gold/$(LANG).nen.conllu $< > $@
 
-%-test.evalb: %-test.eval
+%.test.evalb: %.test.eval
 	python $(CORPUS_DIR)/eval.py -g $(GOLD_TEST) -s $@ --evalb
 
-%-test.eval07: %-test.conllu
+%.test.eval07: %.test.conllu
 	perl $(CORPUS_DIR)/eval07.pl -p -q -g $(GOLD_TEST) -s $< > $@
 
 evaluate:
 	for l in $(LANGS); do \
-	   $(MAKE) -s GPU=$(GPU) LANG=$$l exp/$$l-$(FEAT)-test.evalb &>> exp/$$l-$(FEAT)-test.make; \
+	   $(MAKE) -s GPU=$(GPU) LANG=$$l exp/$$l.$(BERT).test.evalb &>> exp/$$l.$(BERT).test.make; \
 	done
 
 exp/test.eval: evaluate
@@ -202,10 +206,10 @@ exp/test.eval: evaluate
 
 baltic:
 	for l in et lt lv; do \
-	  python -m parser.cmds.biaffine_dependency predict -d=$(GPU) --feat=$(FEAT) \
-	   -p=exp/ba-$(FEAT) --tree \
+	  python -m diaparser.cmds.biaffine_dependency predict -d=$(GPU) --feat=$(FEAT) \
+	   -p=exp/ba.$(BERT) --tree \
 	   $(subst $(LANG),$$l,$(BLIND_TEST)) \
-	   --pred=exp/$$l-$(FEAT)-ba-test.conllu; \
+	   --pred=exp/$$l.$(BERT)-ba.test.conllu; \
 	done
 
 # ----------------------------------------------------------------------
@@ -221,7 +225,7 @@ TEXT_FILE=
 
 # example
 # make GPU=2 LAN=it CORPUS_DIR=/project/piqasso/Collection/IWPT20 TEXT_FILE=/project/piqasso/Collection/IWPT20/train-dev/UD_Italian-ISDT/it_isdt-ud-dev.txt exp/it-bert-raw-text.conllu
-exp/$(LAN)-$(FEAT)$(VER)-$(TEXT_FILE).conllu: exp/$(LAN)-$(FEAT)$(VER)/model
-	python -m parser.cmds.biaffine_dependency predict -d=$(GPU) -p=$< --tree --text $(LAN) \
+exp/$(LAN).$(BERT)$(VER)-$(TEXT_FILE).conllu: exp/$(LAN).$(BERT)$(VER)/model
+	python -m diaparser.cmds.biaffine_dependency predict -d=$(GPU) -p=$< --tree --text $(LAN) \
 	   $(TEXT_FILE) \
 	   --pred=$@
