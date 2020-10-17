@@ -159,7 +159,7 @@ class CoNLL(Transform):
     def __init__(self,
                  ID=None, FORM=None, LEMMA=None, CPOS=None, POS=None,
                  FEATS=None, HEAD=None, DEPREL=None, PHEAD=None, PDEPREL=None,
-                 reader=lambda data: open(data, 'r')):
+                 reader=open):
         super().__init__()
 
         self.ID = ID
@@ -324,20 +324,20 @@ class CoNLL(Transform):
         """
 
         if isinstance(data, str):
-            # with self.reader(data) as f:
-            #     lines = (line.strip() for line in f) # generator. Attardi
+            if not hasattr(self, 'reader'): self.reader = open # back compatibility
             with self.reader(data) as f:
-                lines = (line.strip() for line in f) # generator. Attardi
+                lines = [line.strip() for line in f]
         else:
             data = [data] if isinstance(data[0], str) else data
             lines = '\n'.join([self.toconll(i) for i in data]).split('\n')
 
         sentence, sentences = [], []
-        for line in lines:      # can't use progress on a generator like
+        for line in lines:      # can't use progress on a generator
             if not line:
                 sentences.append(CoNLLSentence(self, sentence))
                 sentence = []
-            sentence.append(line)
+            else:
+                sentence.append(line)
         if proj:
             sentences = [i for i in sentences if self.isprojective(list(map(int, i.arcs)))]
         if max_len is not None:

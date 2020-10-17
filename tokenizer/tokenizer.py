@@ -50,6 +50,7 @@ class Tokenizer:
         """
         @contextmanager
         def generator(data):
-            yield self.format(self.predict(open(data).read()))
+            with open(data) as f:
+                yield self.format(self.predict(f.read()))
         return generator
 

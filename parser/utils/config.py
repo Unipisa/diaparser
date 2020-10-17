@@ -9,7 +9,6 @@ class Config():
     def __init__(self, conf=None, **kwargs):
         super().__init__()
 
-        #self.update(defaults)
         config = ConfigParser()
         config.read(conf or [])
         self.update({**dict((name, literal_eval(value))
