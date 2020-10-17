@@ -1,7 +1,7 @@
 # DiaParser
 
 [![build](https://github.com/Unipisa/diaparser/workflows/build/badge.svg)](https://github.com/Unipisa/diaparser/actions)
-[![docs](https://readthedocs.org/projects/parser/badge/?version=latest)](https://parser.readthedocs.io/en/latest)
+[![docs](https://readthedocs.org/projects/diaparser/badge/?version=latest)](https://diaparser.readthedocs.io/en/latest)
 [![release](https://img.shields.io/github/v/release/Unipisa/diaparser)](https://Unipisa/diaparser/releases)
 [![downloads](https://pepy.tech/badge/diaparser)](https://pepy.tech/project/diaparser)
 [![LICENSE](https://img.shields.io/github/license/Unipisa/diaparser)](https://github.com/Unipisa/diaparser/blob/master/LICENSE)
@@ -46,10 +46,10 @@ $ python setup.py install
 ```
 
 As a prerequisite, the following requirements should be satisfied:
-* `python`: 3.7
+* `python`: >= 3.6
 * [`pytorch`](https://github.com/pytorch/pytorch): >= 1.4
 * [`transformers`](https://github.com/huggingface/transformers): >= 3.1
-* optional tokenizers [`stanza`]():
+* optional tokenizers [`stanza`](https://stanfordnlp.github.io/stanza/): >= 1.1.1
 
 ## Performance
 
@@ -75,7 +75,7 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
     <tr>
       <td>English</td>
       <td>PTB</td>
-      <td><code>en_ptb-electra</code></td>
+      <td><code>en_ptb.electra</code></td>
       <td align="center">96.03</td>
       <td align="center">94.37</td>
       <td align="right">1826.77</td>
@@ -83,7 +83,7 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
     <tr>
       <td>Arabic</td>
       <td>PADT</td>
-      <td><code>ar_padt_bert</code></td>
+      <td><code>ar_padt.bert</code></td>
       <td align="center">87.75</td>
       <td align="center">83.25</td>
       <td align="right"></td>
@@ -91,7 +91,7 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
     <tr>
       <td>Bulgarian</td>
       <td>BTB</td>
-      <td><code>bg_btb-deeppavlov</code></td>
+      <td><code>bg_btb.DeepPavlov</code></td>
       <td align="center">95.02</td>
       <td align="center">92.20</td>
       <td align="right"></td>
@@ -99,7 +99,7 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
     <tr>
       <td>Czech</td>
       <td>PDT</td>
-      <td><code>cs_pdt-DeepPavlov</code></td>
+      <td><code>cs_pdt.DeepPavlov</code></td>
       <td align="center">94.02</td>
       <td align="center">92.06</td>
       <td align="right"></td>
@@ -107,15 +107,15 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
     <tr>
       <td>English</td>
       <td>EWT</td>
-      <td><code>en_ewt-electra</code></td>
+      <td><code>en_ewt.electra</code></td>
       <td align="center">91.66</td>
       <td align="center">89.51</td>
       <td align="right"></td>
     </tr>
     <tr>
       <td>Estonian</td>
-      <td>Estonian</td>
-      <td><code>et-mbert</code></td>
+      <td>EDT, EWT</td>
+      <td><code>et_edt_ewt.mbert</code></td>
       <td align="center">86.39</td>
       <td align="center">82.44</td>
       <td align="right"></td>
@@ -123,7 +123,7 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
     <tr>
       <td>Finnish</td>
       <td>TDT</td>
-      <td><code>fi_tdt-turkunlp</code></td>
+      <td><code>fi_tdt.turkunlp</code></td>
       <td align="center">94.28</td>
       <td align="center">92.56</td>
       <td align="right"></td>
@@ -131,7 +131,7 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
     <tr>
       <td>French</td>
       <td>sequoia</td>
-      <td><code>fr_sequoia_camembert</code></td>
+      <td><code>fr_sequoia.camembert</code></td>
       <td align="center">92.81</td>
       <td align="center">89.55</td>
       <td align="right"></td>
@@ -139,7 +139,7 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
     <tr>
       <td>Italian</td>
       <td>ISDT</td>
-      <td><code>it_isdt-dbmdz</code></td>
+      <td><code>it_isdt.dbmdz</code></td>
       <td align="center">95.40</td>
       <td align="center">93.78</td>
       <td align="right"></td>
@@ -147,7 +147,7 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
     <tr>
       <td>Latvian</td>
       <td>LVBT</td>
-      <td><code>lv_lvtb-mbert</code></td>
+      <td><code>lv_lvtb.mbert</code></td>
       <td align="center">87.46</td>
       <td align="center">83.51</td>
       <td align="right"></td>
@@ -155,7 +155,7 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
     <tr>
       <td>Lithuanian</td>
       <td>ALKSNIS</td>
-      <td><code>lt_alksnis-mbert</code></td>
+      <td><code>lt_alksnis.mbert</code></td>
       <td align="center">80.09</td>
       <td align="center">75.14</td>
       <td align="right"></td>
@@ -163,7 +163,7 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
     <tr>
       <td>Dutch</td>
       <td>Alpino</td>
-      <td><code>nl_alpino-wietsedv</code></td>
+      <td><code>nl_alpino.wietsedv</code></td>
       <td align="center">90.80</td>
       <td align="center">88.34</td>
       <td align="right"></td>
@@ -171,7 +171,7 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
     <tr>
       <td>Polish</td>
       <td>PDB, LFG</td>
-      <td><code>pl_pdb_lfg-dkleczek</code></td>
+      <td><code>pl_pdb_lfg.dkleczek</code></td>
       <td align="center">94.38</td>
       <td align="center">91.70</td>
       <td align="right"></td>
@@ -179,7 +179,7 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
     <tr>
       <td>Russian</td>
       <td>SynTagRus</td>
-      <td><code>ru_syntagrus-DeepPavlov</code></td>
+      <td><code>ru_syntagrus.DeepPavlov</code></td>
       <td align="center">94.97</td>
       <td align="center">93.72</td>
       <td align="right"></td>
@@ -187,15 +187,15 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
     <tr>
       <td>Slovak</td>
       <td>SNK</td>
-      <td><code>sk_snk-mbert</code></td>
+      <td><code>sk_snk.mbert</code></td>
       <td align="center">93.11</td>
       <td align="center">90.44</td>
       <td align="right"></td>
     </tr>
     <tr>
-      <td>TurkuNLP</td>
+      <td>Swediskh</td>
       <td>Talbanken</td>
-      <td><code>sv_talbanken-KB</code></td>
+      <td><code>sv_talbanken.KB</code></td>
       <td align="center">90.79</td>
       <td align="center">88.08</td>
       <td align="right"></td>
@@ -203,7 +203,7 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
     <tr>
       <td>Tamil</td>
       <td>TTB</td>
-      <td><code>ta_ttb-mbert</code></td>
+      <td><code>ta_ttb.mbert</code></td>
       <td align="center">74.20</td>
       <td align="center">66.49</td>
       <td align="right"></td>
@@ -211,7 +211,7 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
     <tr>
       <td>Ukrainian</td>
       <td>IU</td>
-      <td><code>uk_iu-TurkuNLP</code></td>
+      <td><code>uk_iu.TurkuNLP</code></td>
       <td align="center">90.39</td>
       <td align="center">87.61</td>
       <td align="right"></td>
@@ -219,7 +219,7 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but reserved 
     <tr>
       <td>Chinese</td>
       <td>CTB</td>
-      <td><code>zh_ptb-hfl</code></td>
+      <td><code>zh_ptb.hfl</code></td>
       <td align="center">92.14</td>
       <td align="center">85.74</td>
       <td align="right"></td>
@@ -335,45 +335,29 @@ Here are some training examples:
 # some common and default arguments are stored in config.ini
 $ python -m diaparser.cmds.biaffine_dependency train -b -d 0  \
     -c config.ini  \
-    -p exp/ptb.biaffine.dependency.char/model  \
+    -p exp/en_ptb.char/model  \
     -f char
 # to use BERT, `-f` and `--bert` (default to bert-base-cased) should be specified
-# if you'd like to use XLNet, you can type `--bert xlnet-base-cased`
 $ python -m diaparser.cmds.biaffine_dependency train -b -d 0  \
-    -p exp/ptb.biaffine.dependency.bert/model  \
+    -p exp/en_ptb.bert-base/model  \
     -f bert  \
     --bert bert-base-cased
-
-# CRF Dependency Parser
-# for CRF dependency parsers, you should use `--proj` to discard all non-projective training instances
-# optionally, you can use `--mbr` to perform MBR decoding
-$ python -m diaparser.cmds.crf_dependency train -b -d 0  \
-    -p exp/ptb.crf.dependency.char/model  \
-    -f char  \
-    --mbr  \
-    --proj
-
-# CRF Constituency Parser
-# the training of CRF constituency parser behaves like dependency parsers
-$ python -m diaparser.cmds.crf_constituency train -b -d 0  \
-    -p exp/ptb.crf.constituency.char/model -f char  \
-    --mbr
 ```
 
-For more instructions on training, please type `python -m diaparser.cmds.<parser> train -h`.
+For further instructions on training, please type `python -m diaparser.cmds.<parser> train -h`.
 
 Alternatively, `Diaparser` provides some equivalent command entry points registered in `setup.py`:
-`biaffine-dependency`, `crfnp-dependency`, `crf-dependency`, `crf2o-dependency` and `crf-constituency`.
+`diaparser`.
 ```sh
-$ biaffine-dependency train -b -d 0 -c config.ini -p exp/ptb.biaffine.dependency.char/model -f char
+$ diaparser train -b -d 0 -c config.ini -p exp/en_ptb.electra-base/model -f bert --bert google/electra-base-discriminator
 ```
 
 To accommodate large models, distributed training is also supported:
 ```sh
 $ python -m torch.distributed.launch --nproc_per_node=4 --master_port=10000  \
     -m parser.cmds.biaffine_dependency train -b -d 0,1,2,3  \
-    -p exp/ptb.biaffine.dependency.char/model  \
-    -f char
+    -p exp/en_ptb.electra-base/model  \
+    -f bert --bert google/electra-base-discriminator
 ```
 You can consult the PyTorch [documentation](https://pytorch.org/docs/stable/notes/ddp.html) and [tutorials](https://pytorch.org/tutorials/intermediate/ddp_tutorial.html) for more details.
 
