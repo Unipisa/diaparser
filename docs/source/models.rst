@@ -1,7 +1,7 @@
-parser.models
+diaparser.models
 ==================
 
-.. currentmodule:: parser.models
+.. currentmodule:: diaparser.models
 
 BiaffineDependencyModel
 ~~~~~~~~~~~~~~~~~~~~~~~~

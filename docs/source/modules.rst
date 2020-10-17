@@ -1,7 +1,7 @@
-parser.modules
+diaparser.modules
 ==================
 
-.. currentmodule:: parser.modules
+.. currentmodule:: diaparser.modules
 
 Affine
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -9,16 +9,10 @@ Affine
 .. autoclass:: Biaffine
     :members:
 
-.. autoclass:: Triaffine
-    :members:
-
 BertEmbedding
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: BertEmbedding
-    :members:
-
-.. autoclass:: ScalarMix
     :members:
 
 BiLSTM
@@ -48,17 +42,9 @@ MLP
 .. autoclass:: MLP
     :members:
 
-TreeCRF
+ScalarMix
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. autoclass:: MatrixTree
+.. autoclass:: ScalarMix
     :members:
 
-.. autoclass:: CRFDependency
-    :members:
-
-.. autoclass:: CRF2oDependency
-    :members:
-
-.. autoclass:: CRFConstituency
-    :members:

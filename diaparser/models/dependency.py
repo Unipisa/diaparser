@@ -290,33 +290,31 @@ class BiaffineDependencyModel(nn.Module):
 
     def loss(self, s_arc: torch.Tensor, s_rel: torch.Tensor,
              arcs: torch.Tensor, rels: torch.Tensor,
-             mask: torch.Tensor) -> torch.Tensor:
+             mask: torch.Tensor, partial: bool=False) -> torch.Tensor:
         r"""
         Computes the arc and tag loss for a sequence given gold heads and tags.
+
         Args:
-        s_arc : ``torch.Tensor``, required.
-            A tensor of shape (batch_size, sequence_length, tags_count),
-            which will be used to generate predictions for the dependency tags
-            for the given arcs.
-        s_rel : ``torch.Tensor``, required
-            A tensor of shape (batch_size, sequence_length, tags_count),
-            which will be used to generate predictions for the dependency tags
-            for the given arcs.
-        arcs : ``torch.Tensor``, required.
-            A tensor of shape (batch_size, sequence_length).
-            The indices of the heads for each word.
-        rels : ``torch.Tensor``, required.
-            A tensor of shape (batch_size, sequence_length).
-            The dependency labels of the heads for each word.
-        mask : ``torch.Tensor``, required.
-            A mask of shape (batch_size, sequence_length), denoting unpadded
-            elements in the sequence.
-        Returns
-        -------
-        loss : ``torch.Tensor``.
-            The sum of the cross-entropy losses from the arcs and rels predictions.
+            s_arc (~torch.Tensor): ``[batch_size, seq_len, seq_len]``.
+                Scores of all possible arcs.
+            s_rel (~torch.Tensor): ``[batch_size, seq_len, seq_len, n_labels]``.
+                Scores of all possible labels on each arc.
+            arcs (~torch.LongTensor): ``[batch_size, seq_len]``.
+                The tensor of gold-standard arcs.
+            rels (~torch.LongTensor): ``[batch_size, seq_len]``.
+                The tensor of gold-standard labels.
+            mask (~torch.BoolTensor): ``[batch_size, seq_len]``.
+                The mask for covering the unpadded tokens.
+            partial (bool):
+                ``True`` denotes the trees are partially annotated. Default: ``False``.
+
+        Returns:
+            ~torch.Tensor:
+                The training loss.
         """
 
+        if partial:
+            mask = mask & arcs.ge(0)
         s_arc, arcs = s_arc[mask], arcs[mask]
         s_rel, rels = s_rel[mask], rels[mask]
         # select the predicted relations towards the correct heads

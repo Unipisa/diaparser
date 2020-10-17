@@ -1,7 +1,7 @@
-parser.parsers
+diaparser.parsers
 ==================
 
-.. currentmodule:: parser.parsers
+.. currentmodule:: diaparser.parsers
 
 Parser
 ~~~~~~~~~~~~~~~~~~~~~~~~
