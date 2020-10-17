@@ -2,11 +2,11 @@
 
 import torch
 import torch.nn as nn
-from diaparser.modules import MLP, BertEmbedding, Biaffine, BiLSTM, CharLSTM
-from diaparser.modules.dropout import IndependentDropout, SharedDropout
-from diaparser.utils.config import Config
-from diaparser.utils.alg import eisner, mst
-from diaparser.utils.transform import CoNLL
+from ..modules import MLP, BertEmbedding, Biaffine, BiLSTM, CharLSTM
+from ..modules.dropout import IndependentDropout, SharedDropout
+from ..utils.config import Config
+from ..utils.alg import eisner, mst
+from ..utils.transform import CoNLL
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 from typing import Dict, Optional, Tuple, Any, List
 

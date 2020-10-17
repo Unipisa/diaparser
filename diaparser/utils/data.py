@@ -2,7 +2,7 @@
 
 import torch
 import torch.distributed as dist
-from diaparser.utils.alg import kmeans
+from ..utils.alg import kmeans
 
 
 class Dataset(torch.utils.data.Dataset):

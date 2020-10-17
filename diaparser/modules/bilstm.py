@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from diaparser.modules.dropout import SharedDropout
+from ..modules.dropout import SharedDropout
 
 import torch
 import torch.nn as nn

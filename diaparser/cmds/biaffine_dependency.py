@@ -4,8 +4,8 @@ import argparse
 
 # import pdb;pdb.set_trace()      # DEBUG
 
-from parser import BiaffineDependencyParser
-from parser.cmds.cmd import parse
+from ..parsers import BiaffineDependencyParser
+from .cmd import parse
 
 
 def main():

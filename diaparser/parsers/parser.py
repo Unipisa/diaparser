@@ -6,12 +6,12 @@ from datetime import datetime, timedelta
 import parser
 import torch
 import torch.distributed as dist
-from diaparser.utils import Config, Dataset
-from diaparser.utils.field import Field, BertField
-from diaparser.utils.logging import init_logger, logger
-from diaparser.utils.metric import Metric
-from diaparser.utils.parallel import DistributedDataParallel as DDP
-from diaparser.utils.parallel import is_master
+from ..utils import Config, Dataset
+from ..utils.field import Field, BertField
+from ..utils.logging import init_logger, logger
+from ..utils.metric import Metric
+from ..utils.parallel import DistributedDataParallel as DDP
+from ..utils.parallel import is_master
 from torch.optim import Adam
 from torch.optim.lr_scheduler import ExponentialLR
 

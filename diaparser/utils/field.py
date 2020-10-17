@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from collections import Counter
-from diaparser.utils.fn import pad
-from diaparser.utils.vocab import Vocab, FieldVocab
+from ..utils.fn import pad
+from ..utils.vocab import Vocab, FieldVocab
 
 import torch
 from typing import Tuple, List

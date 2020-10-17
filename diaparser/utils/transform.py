@@ -3,7 +3,7 @@
 from collections.abc import Iterable
 
 import nltk
-from diaparser.utils.logging import get_logger, progress_bar
+from ..utils.logging import get_logger, progress_bar
 
 logger = get_logger(__name__)
 
@@ -294,7 +294,7 @@ class CoNLL(Transform):
             False
         """
 
-        from diaparser.utils.alg import tarjan
+        from ..utils.alg import tarjan
         if proj and not cls.isprojective(sequence):
             return False
         n_roots = sum(head == 0 for head in sequence)

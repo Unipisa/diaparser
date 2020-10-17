@@ -10,7 +10,7 @@ from torch.cuda import memory_allocated
 from .scalar_mix import ScalarMix
 from .dropout import TokenDropout
 
-from diaparser.utils.logging import get_logger
+from ..utils.logging import get_logger
 
 logger = get_logger(__name__)
 

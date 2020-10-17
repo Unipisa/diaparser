@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import torch
-from diaparser.utils import Config
-from diaparser.utils.logging import init_logger, logger
-from diaparser.utils.parallel import init_device
-from diaparser.parsers.biaffine_dependency import BiaffineDependencyParser as Parser
+from ..utils import Config
+from ..utils.logging import init_logger, logger
+from ..utils.parallel import init_device
+from ..parsers.biaffine_dependency import BiaffineDependencyParser as Parser
 
 def parse(argparser):
     argparser.add_argument('--conf', '-c', help='path to config file')

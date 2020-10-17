@@ -8,7 +8,7 @@ from tokenizer.tokenizer import Tokenizer
 
 import sys
 import math
-from diaparser.utils.logging import logger
+from ..utils.logging import logger
 
 if 'dedfaults' in namedtuple.__code__.co_varnames[:namedtuple.__code__.co_argcount]:
     CoNLL = namedtuple(typename='CoNLL',

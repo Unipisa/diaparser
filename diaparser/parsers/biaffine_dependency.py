@@ -4,15 +4,15 @@ import os
 
 import torch
 import torch.nn as nn
-from diaparser.models import BiaffineDependencyModel
-from diaparser.parsers.parser import Parser
-from diaparser.utils import Config, Dataset, Embedding
-from diaparser.utils.common import bos, pad, unk
-from diaparser.utils.field import Field, SubwordField, BertField
-from diaparser.utils.fn import ispunct
-from diaparser.utils.logging import get_logger, progress_bar
-from diaparser.utils.metric import AttachmentMetric
-from diaparser.utils.transform import CoNLL
+from ..models import BiaffineDependencyModel
+from ..parsers.parser import Parser
+from ..utils import Config, Dataset, Embedding
+from ..utils.common import bos, pad, unk
+from ..utils.field import Field, SubwordField, BertField
+from ..utils.fn import ispunct
+from ..utils.logging import get_logger, progress_bar
+from ..utils.metric import AttachmentMetric
+from ..utils.transform import CoNLL
 from tokenizer.tokenizer import Tokenizer
 
 logger = get_logger(__name__)

@@ -41,7 +41,7 @@ def isprojective(sequence):
 
 
 def istree(sequence, proj=False, multiroot=False):
-    from diaparser.utils.alg import tarjan
+    from ..utils.alg import tarjan
     if proj and not isprojective(sequence):
         return False
     n_roots = sum(head == 0 for head in sequence[1:])
