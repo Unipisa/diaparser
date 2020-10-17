@@ -6,11 +6,11 @@ setup(
     name='diaparser',
     version='1.0.0',
     author='Yu Zhang, Giuseppe Attardi',
-    author_email='yzhang.cs@outlook.com, attardi@di.unbipi.it',
+    author_email='yzhang.cs@outlook.com, attardi@di.unipi.it',
     description='Direct Attentive Dependency Parser',
     long_description=open('README.md', 'r').read(),
     long_description_content_type='text/markdown',
-    url='https://github.com/yzhangcs/parser',
+    url='https://github.com/Unipisa/diaparser',
     packages=find_packages(),
     classifiers=[
         'Programming Language :: Python :: 3',
@@ -22,10 +22,10 @@ setup(
     setup_requires=[
         'setuptools>=18.0',
     ],
-    install_requires=['torch>=1.4.0', 'transformers', 'nltk'],
+    install_requires=['torch>=1.4.0', 'transformers', 'nltk', 'stanza'],
     entry_points={
         'console_scripts': [
-            'diaparser=supar.cmds.biaffine_dependency:main',
+            'diaparser=parser.cmds.biaffine_dependency:main',
         ]
     },
     python_requires='>=3.6',
