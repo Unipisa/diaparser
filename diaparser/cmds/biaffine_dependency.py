@@ -6,7 +6,7 @@ import argparse
 
 from ..parsers import BiaffineDependencyParser
 from .cmd import parse
-
+import os
 
 def main():
     parser = argparse.ArgumentParser(description='Create Biaffine Dependency Parser.')
@@ -45,7 +45,7 @@ def main():
     subparser.add_argument('--pred', default='pred.conllx', help='path to predicted result')
     subparser.add_argument('--text', metavar='LANGUAGE', default=None,
                            help='parse plain text in the given language rather than CoNLL-U files.')
-    subparser.add_argument('--cache-dir', default='~/.cache/parser',
+    subparser.add_argument('--cache-dir', default=os.path.expanduser('~/.cache/diaparser'),
                            help='path to saved parser/tokenizer models')
     parse(parser)
 

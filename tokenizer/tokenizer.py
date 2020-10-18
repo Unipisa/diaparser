@@ -29,6 +29,7 @@ class Tokenizer:
         """
         Convert sentences to TSV format.
         """
+        empty_fields = '\t_' * 8
         for i, sentence in enumerate(sentences):
             yield f'# sent_id = {i+1}'
             sent_text = sentence.text.replace("\n", " ")
@@ -36,12 +37,12 @@ class Tokenizer:
             for token in sentence.tokens:
                 # multiword
                 if len(token.words) > 1:
-                    token_ids = '-'.join([str(id) for id in token.id])
-                    yield f'{token_ids}\t{token.text}'
+                    token_range = f'{token.id[0]}-{token.id[-1]}'
+                    yield f'{token_range}\t{token.text + empty_fields}'
                     for word in token.words:
-                        yield f'{word.id}\t{word.text}'
+                        yield f'{word.id}\t{word.text + empty_fields}'
                 else:
-                    yield f'{token.id[0]}\t{token.text}'
+                    yield f'{token.id[0]}\t{token.text + empty_fields}'
             yield ''
 
     def reader(self):

@@ -22,7 +22,7 @@ def parse(argparser):
     torch.set_num_threads(args.threads)
     torch.manual_seed(args.seed)
     init_device(args.device)
-    init_logger(logger, f"{args.path}.{args.mode}.log")
+    init_logger(logger, f"{args.path}.{args.mode}.log", verbose=args.verbose)
     logger.info('Configuration:\n' + str(args))
 
     if args.mode == 'train':
