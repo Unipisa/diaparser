@@ -61,7 +61,7 @@ else ifeq ($(LANG), ptb)
   MODEL = --bert=google/electra-base-discriminator
   BERT = electra-base
 else ifeq ($(LANG), et) #dev EDT
-  CORPUS=et
+  CORPUS=et_edt_ewt
   RES2=Estonian
   #MODEL = --bert=TurkuNLP/wikibert-base-et-cased
 else ifeq ($(LANG), fi)
@@ -91,7 +91,7 @@ else ifeq ($(LANG), lv)
   RES2=Latvian-LVTB
   #MODEL = --bert=TurkuNLP/wikibert-base-lv-cased
 else ifeq ($(LANG), nl) #dev Alpino
-  CORPUS=nl
+  CORPUS=nl_alpino
   RES2=Dutch
   #MODEL = --bert=TurkuNLP/wikibert-base-nl-cased
   MODEL = --bert=wietsedv/bert-base-dutch-cased
@@ -127,7 +127,7 @@ else ifeq ($(LANG), uk)
   BERT = TurkuNLP
   # nu=0.9
 else ifeq ($(LANG), zh)
-  CORPUS=zh_ctb
+  CORPUS=zh_ctb7
   CORPUS_TRAIN = $(CORPUS_DIR)/CoNLL09/$(CORPUS)-train.conllu
   CORPUS_DEV = $(CORPUS_DIR)/CoNLL09/$(CORPUS)-dev.conllu
   BLIND_TEST = $(CORPUS_DIR)/CoNLL09/$(CORPUS)-test.conllu

@@ -191,8 +191,8 @@ class Parser():
 
         Args:
             path (str):
-                - a string with the shortcut name of a pretrained parser defined in ``diaparser.PRETRAINED``
-                  to load from cache or download, e.g., ``'crf-dep-en'``.
+                - a string with the shortcut name of a pretrained parser listed in ``resource.json``
+                  to load from cache or download, e.g., ``'en_ptb.electra'``.
                 - a path to a directory containing a pre-trained parser, e.g., `./<path>/model`.
             kwargs (dict):
                 A dict holding the unconsumed arguments that can be used to update the configurations and initiate the model.
