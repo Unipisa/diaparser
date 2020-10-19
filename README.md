@@ -384,17 +384,5 @@ Dataset(n_sentences=2416, n_batches=11, n_buckets=8)
 
 * <a id="dozat-2017-biaffine"></a>
 Timothy Dozat and Christopher D. Manning. 2017. [Deep Biaffine Attention for Neural Dependency Parsing](https://openreview.net/forum?id=Hk95PK9le).
-* <a id="ji-2019-graph"></a>
-Tao Ji, Yuanbin Wu and Man Lan. 2019. [Graph-based Dependency Parsing with Graph Neural Networks](https://www.aclweb.org/anthology/P19-1237/).
-* <a id="koo-2007-structured"></a>
-Terry Koo, Amir Globerson, Xavier Carreras and Michael Collins. 2007. [Structured Prediction Models via the Matrix-Tree Theorem](https://www.aclweb.org/anthology/D07-1015/).
-* <a id="ma-2017-neural"></a>
-Xuezhe Ma and Eduard Hovy. 2017. [Neural Probabilistic Model for Non-projective MST Parsing](https://www.aclweb.org/anthology/I17-1007/).
-* <a id="ma-2018-stackptr"></a>
-Xuezhe Ma, Zecong Hu, Jingzhou Liu, Nanyun Peng, Graham Neubig and Eduard Hovy. 2018. [Stack-Pointer Networks for Dependency Parsing](https://www.aclweb.org/anthology/P18-1130/).
 * <a id="wang-2019-second"></a>
 Xinyu Wang, Jingxian Huang, and Kewei Tu. 2019. [Second-Order Semantic Dependency Parsing with End-to-End Neural Networks](https://www.aclweb.org/anthology/P19-1454/).
-* <a id="zhang-2020-fast"></a>
-Yu Zhang, Houquan Zhou and Zhenghua Li. 2020. [Fast and Accurate Neural CRF Constituency Parsing](https://www.ijcai.org/Proceedings/2020/560/).
-* <a id="zhang-2020-efficient"></a>
-Yu Zhang, Zhenghua Li and Min Zhang. 2020. [Efficient Second-Order TreeCRF for Neural Dependency Parsing](https://www.aclweb.org/anthology/2020.acl-main.302/).
