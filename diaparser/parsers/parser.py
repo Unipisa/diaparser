@@ -21,7 +21,6 @@ from torch.optim.lr_scheduler import ExponentialLR
 class Parser():
 
     MODEL = None
-    CACHE_DIR = os.path.expanduser('~/.cache/diaparser')
 
     def __init__(self, args, model, transform):
         self.args = args
@@ -187,12 +186,12 @@ class Parser():
         raise NotImplementedError
 
     @classmethod
-    def load(cls, path, model_dir=None, **kwargs):
+    def load(cls, name_or_path, model_dir=None, **kwargs):
         r"""
         Loads a parser from a pretrained model.
 
         Args:
-            path (str):
+            name_or_path (str):
                 - a string with the shortcut name of a pretrained parser listed in ``resource.json``
                   to load from cache or download, e.g., ``'en_ptb.electra-base'``.
                 - a path to a directory containing a pre-trained parser, e.g., `./<path>/model`.
@@ -209,16 +208,17 @@ class Parser():
         args = Config(**locals())
         args.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         if model_dir is None:
-            model_dir = cls.CACHE_DIR
+            model_dir = kwargs['cache_dir']
 
-        if os.path.exists(path):
-            state = torch.load(path)
+        if os.path.exists(name_or_path):
+            state = torch.load(name_or_path)
         else:
-            path = select(path, **kwargs)
-            if path is None:
-                raise Exception(f'Could not find a model matching name {path}')
+            url = select(name=name_or_path, **kwargs)
+            if url is None:
+                raise Exception(f'Could not find a model matching name {name_or_path}')
             verbose = kwargs.get('verbose', True)
-            state = torch.hub.load_state_dict_from_url(path, model_dir=model_dir,
+            cache_dir = kwargs.get('cache_dir', os.path.expanduser('~/.cache/diaparser'))
+            state = torch.hub.load_state_dict_from_url(url, model_dir=cache_dir,
                                                        progress=verbose)
         cls = getattr(parsers, state['name'])
         args = state['args'].update(args)

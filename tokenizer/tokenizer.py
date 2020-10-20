@@ -2,6 +2,7 @@
 import stanza
 import torch
 import json
+import os
 from contextlib import contextmanager
 
 # reference https://github.com/stanfordnlp/stanza/blob/master/stanza/utils/prepare_tokenizer_data.py
@@ -17,7 +18,8 @@ class Tokenizer:
 
     PROCESSORS = 'tokenize,mwt'
 
-    def __init__(self, lang, dir, verbose=False):
+    def __init__(self, lang, dir=os.path.expanduser('~/.cache/diaparser'), verbose=False):
+        dir += '/tokenizer'
         stanza.download(lang, dir=dir, processors=self.PROCESSORS, verbose=verbose)
         use_gpu = torch.cuda.is_available()
         self.pipeline = stanza.Pipeline(lang, dir=dir, processors=self.PROCESSORS, verbose=verbose, use_gpu=use_gpu)

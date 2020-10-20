@@ -1,0 +1,22 @@
+{
+  "english": {
+    "alias": "en"
+  },
+  "en": {
+    "ewt": {
+	"md5": "d9299667bc1c3e665d31eb00435af189",
+	"model": "en_ewt.electra-base"
+    },
+    "default": "isdt"
+  },
+  "italian": {
+    "alias": "it"
+  },
+  "it": {
+    "isdt": {
+	"md5": "d9299667bc1c3e665d31eb00435af189",
+	"model": "it_isdt.dbmdz-xxl"
+    },
+    "default": "isdt"
+  },
+}

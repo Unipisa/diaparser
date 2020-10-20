@@ -8,7 +8,7 @@ from ..parsers.biaffine_dependency import BiaffineDependencyParser as Parser
 
 def parse(argparser):
     argparser.add_argument('--conf', '-c', help='path to config file')
-    argparser.add_argument('--path', '-p', help='path to model file')
+    argparser.add_argument('--path', '-p', help='model name or path to model file')
     argparser.add_argument('--device', '-d', default='-1', help='ID of GPU to use')
     argparser.add_argument('--seed', '-s', default=1, type=int, help='seed for generating random numbers')
     argparser.add_argument('--threads', '-t', default=16, type=int, help='max num of threads')
@@ -32,5 +32,5 @@ def parse(argparser):
         parser = Parser.load(args.path)
         parser.evaluate(**args)
     elif args.mode == 'predict':
-        parser = Parser.load(**args)
+        parser = Parser.load(args.path, **args)
         parser.predict(**args)

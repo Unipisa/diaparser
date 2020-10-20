@@ -11,18 +11,17 @@ import hashlib
 import logging
 import subprocess
 
-from ..__init__ import __models_version__
+from .. import __version__, __models_version__
 
 logger = logging.getLogger('diaparser')
 
 RELEASE = 'v1.0'
-DOWNLOAD_URL = 'https://github.com/Unipisa/diaparser/archive/'
+DOWNLOAD_URL = f'https://github.com/Unipisa/diaparser/releases/download/{RELEASE}'
 UPLOAD_URL = f'https://uploads.github.com/repos/Unipisa/diaparser/releases/{RELEASE}/assets'
 UPLOAD_COMMAND = f'curl -X POST -H "Content-Type: application/zip" {UPLOAD_URL}'
 
 DEFAULT_CATALOG_URL = DOWNLOAD_URL
 DEFAULT_CATALOG_VERSION = __models_version__
-DEFAULT_MODEL_URL = DOWNLOAD_URL
 
 # set home dir for default
 HOME_DIR = str(Path.home())
@@ -51,8 +50,8 @@ def download_file(url, path):
         file_size = int(r.headers.get('content-length'))
         default_chunk_size = 131072
         desc = 'Downloading ' + url
-        with tqdm(total=file_size, unit='B', unit_scale=True, \
-            disable=not verbose, desc=desc) as pbar:
+        with tqdm(total=file_size, unit='B', unit_scale=True,
+                  disable=not verbose, desc=desc) as pbar:
             for chunk in r.iter_content(chunk_size=default_chunk_size):
                 if chunk:
                     f.write(chunk)
@@ -76,7 +75,15 @@ def request_file(url, path, md5=None):
     download_file(url, path)
     assert(not md5 or file_exists(path, md5))
 
-def select(lang='en', corpus=None, bert=None,
+def url_ok(url):
+    """
+    Checks that a given URL is reachable.
+    :param url: A URL
+    :rtype: bool
+    """
+    return requests.head(url).ok
+
+def select(name=None, lang='en', corpus=None, bert=None,
            dir=CACHE_DIR,
            verbose=None,
            catalog_url=DEFAULT_CATALOG_URL,
@@ -84,16 +91,25 @@ def select(lang='en', corpus=None, bert=None,
            **kwargs):
     """
     Determines which model to download.
+    If `name` is provided, the model with that name is returned.
     If just `lang` is specifiled, it selects the default model for the languagae.
     If `lang` and `corpus` are specified, it returns the model for the given language/corpus pair.
     Args:
+        name (str): model name.
         lang (str): the language of the model.
         corpus (str): the corpus of the model.
+    Returns:
+        the URL from where to download the model.
     """
 
     # set global logging level
     logging_level = 'INFO' if verbose else 'ERROR'
     logger.setLevel(logging_level)
+
+    # Check for a model with the given name.
+    url = f'{catalog_url}/{name}'
+    if url_ok(url):
+        return url
 
     # Download catalog.json to obtain latest packages.
     logger.debug('Downloading catalog file...')
@@ -118,15 +134,19 @@ def select(lang='en', corpus=None, bert=None,
         logger.info(f'"{alias}" is an alias for "{lang}"')
         corpora = models[alias]
     if corpus in corpora:
-        return corpora[corpus].get('model', None)
+        model = corpora[corpus].get('model', None)
+        if model:
+            return  f'{catalog_url}/model'
     if 'default' in corpora:
         logger.info(f'Using {corpora["default"]} as corpus for {lang}')
         corpus = lang["default"]
-        return corpora[corpus].get('model', None)
+        model = corpora[corpus].get('model', None)
+        if model:
+            return  f'{catalog_url}/model'
     return None
 
 
-def upload(path, owner='Unipisa', repo='diaparser', version='v1.0', token=TOKEN):
+def upload(path, owner='Unipisa', repo='diaparser', version='v1.0', token=''):
     name = os.path.basename(path)
     GH_ASSET=f"https://uploads.github.com/repos/{owner}/{repo}/releases/{version}/assets?name={name}"
     curl = f'curl --data-binary @"{path}" -H "Authorization: token {token}" -H "Content-Type: application/zip" {GH_ASSET}'
