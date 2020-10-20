@@ -5,7 +5,7 @@ import os
 import torch
 import torch.nn as nn
 from ..models import BiaffineDependencyModel
-from ..parsers.parser import Parser
+from .parser import Parser
 from ..utils import Config, Dataset, Embedding
 from ..utils.common import bos, pad, unk
 from ..utils.field import Field, SubwordField, BertField
@@ -30,7 +30,6 @@ class BiaffineDependencyParser(Parser):
         https://openreview.net/forum?id=Hk95PK9le
     """
 
-    NAME = 'biaffine-dependency'
     MODEL = BiaffineDependencyModel
 
     def __init__(self, *args, **kwargs):

@@ -6,6 +6,8 @@ from datetime import datetime, timedelta
 import parser
 import torch
 import torch.distributed as dist
+from .. import parsers
+from ..catalog import select
 from ..utils import Config, Dataset
 from ..utils.field import Field, BertField
 from ..utils.logging import init_logger, logger
@@ -18,8 +20,8 @@ from torch.optim.lr_scheduler import ExponentialLR
 
 class Parser():
 
-    NAME = None
     MODEL = None
+    CACHE_DIR = os.path.expanduser('~/.cache/diaparser')
 
     def __init__(self, args, model, transform):
         self.args = args
@@ -185,32 +187,40 @@ class Parser():
         raise NotImplementedError
 
     @classmethod
-    def load(cls, path, **kwargs):
+    def load(cls, path, model_dir=None, **kwargs):
         r"""
-        Loads a parser with data fields and pretrained model parameters.
+        Loads a parser from a pretrained model.
 
         Args:
             path (str):
                 - a string with the shortcut name of a pretrained parser listed in ``resource.json``
-                  to load from cache or download, e.g., ``'en_ptb.electra'``.
+                  to load from cache or download, e.g., ``'en_ptb.electra-base'``.
                 - a path to a directory containing a pre-trained parser, e.g., `./<path>/model`.
+            model_dir (str):
+                Directory where to cache models. The default value is `~/.cache/diaparser`.
             kwargs (dict):
                 A dict holding the unconsumed arguments that can be used to update the configurations and initiate the model.
 
         Examples:
-            >>> parser = Parser.load('biaffine-dep-en')
+            >>> parser = Parser.load('en_ewt.electra-base')
             >>> parser = Parser.load('./ptb.biaffine.dependency.char')
         """
 
         args = Config(**locals())
         args.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        if model_dir is None:
+            model_dir = cls.CACHE_DIR
 
         if os.path.exists(path):
             state = torch.load(path)
         else:
-            path = diaparser.PRETRAINED[path] if path in diaparser.PRETRAINED else path
-            state = torch.hub.load_state_dict_from_url(path)
-        cls = diaparser.PARSER[state['name']] if cls.NAME is None else cls
+            path = select(path, **kwargs)
+            if path is None:
+                raise Error(f'Could not find a model matching name {path}')
+            verbose = kvargs.get('verbose', True)
+            state = torch.hub.load_state_dict_from_url(path, model_dir=model_dir,
+                                                       progress=verbose)
+        cls = getattr(parsers, state['name'])
         args = state['args'].update(args)
         model = cls.MODEL(**args)
         model.load_pretrained(state['pretrained'])
@@ -233,7 +243,7 @@ class Parser():
         if args.feat == 'bert':
             tokenize = self.transform.FORM[1].tokenize # save it
             self.transform.FORM[1].tokenize = None
-        state = {'name': self.NAME,
+        state = {'name': type(self).__name__,
                  'args': args,
                  'state_dict': state_dict,
                  'pretrained': pretrained,

@@ -13,11 +13,11 @@ The parser automatically dowloads pretrained models as well as tokenizers and pr
 
 You can also train your own models and contribute them to the repository, to share with others.
 
-`Diaparser` uses pretrained contextual embeddings for representing input from models in [`transformers`](https://github.com/huggingface/transformers).
+`DiaParser` uses pretrained contextual embeddings for representing input from models in [`transformers`](https://github.com/huggingface/transformers).
 
 Pretrained tokenizers are provided by [Stanza](https://stanfordnlp.github.io/stanza/).
 
-Alternatively to contextual embeddings, `Diaparser` also allows to utilize CharLSTM layers to produce character/subword-level features.
+Alternatively to contextual embeddings, `DiaParser` also allows to utilize CharLSTM layers to produce character/subword-level features.
 Both BERT and CharLSTM avoid the need of generating POS tags.
 
 `DiaParser` is derived from [`SuPar`](https://github.com/yzhangcs/parser), which provides additional variants of dependency and constituency parsers.
