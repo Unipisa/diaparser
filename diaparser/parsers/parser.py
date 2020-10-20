@@ -207,8 +207,6 @@ class Parser():
 
         args = Config(**locals())
         args.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        if model_dir is None:
-            model_dir = kwargs['cache_dir']
 
         if os.path.exists(name_or_path):
             state = torch.load(name_or_path)

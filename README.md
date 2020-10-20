@@ -234,7 +234,7 @@ and Nvidia T4 GPU.
 
 `DiaParser` is very easy to use. You can download a pretrained model and run syntactic parsing over sentences with a few lines of code:
 ```py
->>> from diaparser import Parser
+>>> from diaparser.parsers import Parser
 >>> parser = Parser.load('en_ewt-electra')
 >>> dataset = parser.predict([['She', 'enjoys', 'playing', 'tennis', '.']], prob=True, verbose=False)
 100%|####################################| 1/1 00:00<00:00, 85.15it/s

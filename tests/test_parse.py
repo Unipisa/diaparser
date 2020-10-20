@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from supar import Parser
-import supar
-
+from diaparser.parsers import Parser
 
 def test_parse():
     sentence = ['The', 'dog', 'chases', 'the', 'cat', '.']
-    for name in supar.PRETRAINED:
-        parser = Parser.load(name)
-        parser.predict([sentence], prob=True)
+    model = 'en_ewt.electra-base'
+    parser = Parser.load(model)
+    parser.predict([sentence], prob=True)

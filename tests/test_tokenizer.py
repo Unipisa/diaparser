@@ -2,6 +2,7 @@ import shutil
 import os
 import argparse
 import unittest
+import io
 
 from tokenizer.tokenizer import Tokenizer
 
@@ -13,8 +14,7 @@ class TestTokenizer(unittest.TestCase):
         self.args = {
             'lang': 'it',
             'dir': self.MODEL_DIR,
-            'verbose': True,
-            'use_gpu': True
+            'verbose': True
         }
 
     def tearDown(self):
@@ -29,14 +29,13 @@ class TestTokenizer(unittest.TestCase):
     
     def test_tokenize(self):
         tokenizer = Tokenizer(**self.args)
-        sentences = tokenizer.predict('Domani vorrei andare al mare.Speriamo faccia bel tempo.')
+        sentences = tokenizer.predict('Ha chiamato il dr. Rossi.Vuole salutarti.')
         self.assertEqual(len(sentences), 2)
 
     def test_corpus_load(self):
         tokenizer = Tokenizer(**self.args)
-        raw_text_file = '/project/piqasso/Collection/IWPT20/train-dev/UD_Italian-ISDT/it_isdt-ud-dev.txt'
+        sin = io.StringIO("Un corazziere contro Scalfaro. L'attore le disse baciami o torno a riprendermelo.")
         
-        with open(raw_text_file) as fin:
-            for line in tokenizer.format(tokenizer.predict(fin.read())):
-                if line and not line.startswith('#'):
-                    assert len(line.split('\t')) == 2, line
+        for line in tokenizer.format(tokenizer.predict(sin.read())):
+            if line and not line.startswith('#'):
+                assert len(line.split('\t')) == 2, line

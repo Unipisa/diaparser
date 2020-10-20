@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from supar.utils import tarjan
+from diaparser.utils import tarjan
 
 
 def test_tarjan():

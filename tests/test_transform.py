@@ -3,7 +3,7 @@
 import itertools
 
 import nltk
-from supar.utils import CoNLL, Tree
+from diaparser.utils import CoNLL, Tree
 
 
 class TestCoNLL:
