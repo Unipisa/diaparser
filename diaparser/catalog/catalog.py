@@ -9,6 +9,7 @@ from pathlib import Path
 import json
 import hashlib
 import logging
+import subprocess
 
 from ..__init__ import __models_version__
 
@@ -112,7 +113,7 @@ def select(lang='en', corpus=None, bert=None,
     if lang not in models:
         raise Exception(f'Unsupported language: {lang}.')
     corpora = models[lang]
-    if 'alias' in corpors:
+    if 'alias' in corpora:
         alias = corpora['alias']
         logger.info(f'"{alias}" is an alias for "{lang}"')
         corpora = models[alias]
@@ -125,18 +126,8 @@ def select(lang='en', corpus=None, bert=None,
     return None
 
 
-TOKEN='390e8e11b748bd1f6eeb6847507e7102d4046dc7'
-
 def upload(path, owner='Unipisa', repo='diaparser', version='v1.0', token=TOKEN):
     name = os.path.basename(path)
     GH_ASSET=f"https://uploads.github.com/repos/{owner}/{repo}/releases/{version}/assets?name={name}"
     curl = f'curl --data-binary @"{path}" -H "Authorization: token {token}" -H "Content-Type: application/zip" {GH_ASSET}'
-    subprocess.exec(curl)
-
-# examples
-# Upload:
-# curl --data-binary @/tmp/it_isdt.dbmdz-xxl.zip -H 'Authorization: token 390e8e11b748bd1f6eeb6847507e7102d4046dc7' -H 'Content-Type: application/octet-stream' https://uploads.github.com/repos/Unipisa/diaparser/releases/32726187/assets?name=it_isdt.dbmdz-xxl.zip
-# List:
-# curl -X GET -H 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/Unipisa/diaparser/releases/32726187/assets
-# Delete:
-# curl -X DELETE -H 'Authorization: token 390e8e11b748bd1f6eeb6847507e7102d4046dc7' -H 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/Unipisa/diaparser/releases/assets/27145683
+    subprocess.run(curl.split())

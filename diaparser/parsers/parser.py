@@ -216,8 +216,8 @@ class Parser():
         else:
             path = select(path, **kwargs)
             if path is None:
-                raise Error(f'Could not find a model matching name {path}')
-            verbose = kvargs.get('verbose', True)
+                raise Exception(f'Could not find a model matching name {path}')
+            verbose = kwargs.get('verbose', True)
             state = torch.hub.load_state_dict_from_url(path, model_dir=model_dir,
                                                        progress=verbose)
         cls = getattr(parsers, state['name'])
