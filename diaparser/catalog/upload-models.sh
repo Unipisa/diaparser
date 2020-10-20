@@ -6,7 +6,7 @@
 OWNER=Unipisa
 REPO=diaparser
 TAG=LATEST
-TOKEN=3b26cf8754b46fd5f66d94618bce901e3e3309d6
+TOKEN=....
 VERSION=1
 
 MODEL_DIR=../../exp
