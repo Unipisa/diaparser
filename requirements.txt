@@ -1,3 +1,5 @@
+torch >= 1.6
 transformers >= 2.10.0
 stanza >= 1.1.1
 pytest >= 5.4.1
+nltk >= 3.5
