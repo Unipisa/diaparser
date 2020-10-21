@@ -77,16 +77,16 @@ The numbers in bold represent state-of-the-art values.
       <td>English</td>
       <td>PTB</td>
       <td><code>en_ptb.electra</code></td>
-      <td align="center" style="font-weight:bold">96.03</td>
-      <td align="center" style="font-weight:bold">94.37</td>
+      <td align="center"><b>96.03</b></td>
+      <td align="center"><b>94.37</b></td>
       <td align="right">1826.77</td>
     </tr>
     <tr>
       <td>Arabic</td>
       <td>PADT</td>
       <td><code>ar_padt.bert</code></td>
-      <td align="center" style="font-weight:bold">87.75</td>
-      <td align="center" style="font-weight:bold">83.25</td>
+      <td align="center"><b>87.75</b></td>
+      <td align="center"><b>83.25</b></td>
       <td align="right"></td>
     </tr>
     <tr>
@@ -101,16 +101,16 @@ The numbers in bold represent state-of-the-art values.
       <td>Czech</td>
       <td>PDT</td>
       <td><code>cs_pdt.DeepPavlov</code></td>
-      <td align="center" style="font-weight:bold">94.02</td>
-      <td align="center" style="font-weight:bold">92.06</td>
+      <td align="center"><b>94.02</b></td>
+      <td align="center"><b>92.06</b></td>
       <td align="right"></td>
     </tr>
     <tr>
       <td>English</td>
       <td>EWT</td>
       <td><code>en_ewt.electra</code></td>
-      <td align="center" style="font-weight:bold">91.66</td>
-      <td align="center" style="font-weight:bold">89.51</td>
+      <td align="center"><b>91.66</b></td>
+      <td align="center"><b>89.51</b></td>
       <td align="right"></td>
     </tr>
     <tr>
@@ -125,24 +125,24 @@ The numbers in bold represent state-of-the-art values.
       <td>Finnish</td>
       <td>TDT</td>
       <td><code>fi_tdt.turkunlp</code></td>
-      <td align="center" style="font-weight:bold">94.28</td>
-      <td align="center" style="font-weight:bold">92.56</td>
+      <td align="center"><b>94.28</b></td>
+      <td align="center"><b>92.56</b></td>
       <td align="right"></td>
     </tr>
     <tr>
       <td>French</td>
       <td>sequoia</td>
       <td><code>fr_sequoia.camembert</code></td>
-      <td align="center" style="font-weight:bold">92.81</td>
-      <td align="center" style="font-weight:bold">89.55</td>
+      <td align="center"><b>92.81</b></td>
+      <td align="center"><b>89.55</b></td>
       <td align="right"></td>
     </tr>
     <tr>
       <td>Italian</td>
       <td>ISDT</td>
       <td><code>it_isdt.dbmdz</code></td>
-      <td align="center" style="font-weight:bold">95.40</td>
-      <td align="center" style="font-weight:bold">93.78</td>
+      <td align="center"><b>95.40</b></td>
+      <td align="center"><b>93.78</b></td>
       <td align="right"></td>
     </tr>
     <tr>
@@ -173,16 +173,16 @@ The numbers in bold represent state-of-the-art values.
       <td>Polish</td>
       <td>PDB, LFG</td>
       <td><code>pl_pdb_lfg.dkleczek</code></td>
-      <td align="center" style="font-weight:bold">94.38</td>
-      <td align="center" style="font-weight:bold">91.70</td>
+      <td align="center"><b>94.38</b></td>
+      <td align="center"><b>91.70</b></td>
       <td align="right"></td>
     </tr>
     <tr>
       <td>Russian</td>
       <td>SynTagRus</td>
       <td><code>ru_syntagrus.DeepPavlov</code></td>
-      <td align="center" style="font-weight:bold">94.97</td>
-      <td align="center" style="font-weight:bold">93.72</td>
+      <td align="center"><b>94.97</b></td>
+      <td align="center"><b>93.72</b></td>
       <td align="right"></td>
     </tr>
     <tr>
@@ -197,8 +197,8 @@ The numbers in bold represent state-of-the-art values.
       <td>Swediskh</td>
       <td>Talbanken</td>
       <td><code>sv_talbanken.KB</code></td>
-      <td align="center" style="font-weight:bold">90.79</td>
-      <td align="center" style="font-weight:bold">88.08</td>
+      <td align="center"><b>90.79</b></td>
+      <td align="center"><b>88.08</b></td>
       <td align="right"></td>
     </tr>
     <tr>
