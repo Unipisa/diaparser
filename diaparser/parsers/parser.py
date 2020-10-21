@@ -7,6 +7,7 @@ import parser
 import torch
 import torch.distributed as dist
 from .. import parsers
+from tokenizer.tokenizer import Tokenizer
 from ..catalog import select
 from ..utils import Config, Dataset
 from ..utils.field import Field, BertField
@@ -150,6 +151,8 @@ class Parser():
         self.transform.eval()
         if args.prob:
             self.transform.append(Field('probs'))
+        if args.text:
+            self.transform.reader = Tokenizer(args.text, dir=args.cache_dir).reader()
 
         logger.info("Loading the data")
         dataset = Dataset(self.transform, data)

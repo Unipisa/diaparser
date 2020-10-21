@@ -6,7 +6,7 @@
 OWNER=Unipisa
 REPO=diaparser
 TAG=LATEST
-TOKEN=....
+TOKEN=$1
 VERSION=1
 
 MODEL_DIR=../../exp
@@ -15,8 +15,21 @@ MODEL_DIR=../../exp
 ./upload-github-release-asset.sh github_api_token=$TOKEN owner=$OWNER repo=$REPO tag=$TAG filename=${MODEL_DIR}/catalog-$VERSION.json
 
 MODELS=(
-    it_isdt.dbmdz-xxl
+    ar_padt.asafaya
+    bg_btb.DeepPavlov
+    cs_PDT.DeepPavlov
+    nl_alpino.wietsedv
     en_ewt.electra-base
+    et_edt_ewt.TurkuNLP
+    fi_tdt.TurkuNLP
+    fr_sequoia.camembert-large
+    it_isdt.dbmdz-xxl
+    lt_alksnis.wietsedve
+    pl_pdb_pud.dkleczek
+    ru_syntagrus.DeepPavlov
+    sk_snk.KB
+    ta_ttb.mbert
+    uk_iu.TurkuNLP
 )
 
 # upload models

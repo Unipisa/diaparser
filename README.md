@@ -55,10 +55,11 @@ The package has the following requirements:
 
 `DiaParser` provides pretrained models for English, Chinese and other 17 languages of the IWPT 2020 Shared task.
 English models are trained on the Penn Treebank (PTB) with Stanford Dependencies, with 39,832 training sentences, while Chinese models are trained on Penn Chinese Treebank version 7 (CTB7) with 46,572 training sentences.
-The other languages are trained on the Universal Dependencies treebanks [v2.5](https://universaldependencies.org).
+The other languages are trained on the Universal Dependencies treebanks [v2.5](https://universaxsldependencies.org).
 
 The performance and parsing speed of these models are listed in the following table.
 Notably, punctuation is ignored in all evaluation metrics for PTB, but included in all the others.
+The numbers in bold represent state-of-the-art values.
 
 <table>
   <thead>
@@ -76,16 +77,16 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but included 
       <td>English</td>
       <td>PTB</td>
       <td><code>en_ptb.electra</code></td>
-      <td align="center">96.03</td>
-      <td align="center">94.37</td>
+      <td align="center" style="font-weight:bold">96.03</td>
+      <td align="center" style="font-weight:>94.37</td>
       <td align="right">1826.77</td>
     </tr>
     <tr>
       <td>Arabic</td>
       <td>PADT</td>
       <td><code>ar_padt.bert</code></td>
-      <td align="center">87.75</td>
-      <td align="center">83.25</td>
+      <td align="center" style="font-weight:>87.75</td>
+      <td align="center" style="font-weight:>83.25</td>
       <td align="right"></td>
     </tr>
     <tr>
@@ -100,16 +101,16 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but included 
       <td>Czech</td>
       <td>PDT</td>
       <td><code>cs_pdt.DeepPavlov</code></td>
-      <td align="center">94.02</td>
-      <td align="center">92.06</td>
+      <td align="center" style="font-weight:>94.02</td>
+      <td align="center" style="font-weight:>92.06</td>
       <td align="right"></td>
     </tr>
     <tr>
       <td>English</td>
       <td>EWT</td>
       <td><code>en_ewt.electra</code></td>
-      <td align="center">91.66</td>
-      <td align="center">89.51</td>
+      <td align="center" style="font-weight:>91.66</td>
+      <td align="center" style="font-weight:>89.51</td>
       <td align="right"></td>
     </tr>
     <tr>
@@ -124,24 +125,24 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but included 
       <td>Finnish</td>
       <td>TDT</td>
       <td><code>fi_tdt.turkunlp</code></td>
-      <td align="center">94.28</td>
-      <td align="center">92.56</td>
+      <td align="center" style="font-weight:>94.28</td>
+      <td align="center" style="font-weight:>92.56</td>
       <td align="right"></td>
     </tr>
     <tr>
       <td>French</td>
       <td>sequoia</td>
       <td><code>fr_sequoia.camembert</code></td>
-      <td align="center">92.81</td>
-      <td align="center">89.55</td>
+      <td align="center" style="font-weight:>92.81</td>
+      <td align="center" style="font-weight:>89.55</td>
       <td align="right"></td>
     </tr>
     <tr>
       <td>Italian</td>
       <td>ISDT</td>
       <td><code>it_isdt.dbmdz</code></td>
-      <td align="center">95.40</td>
-      <td align="center">93.78</td>
+      <td align="center" style="font-weight:>95.40</td>
+      <td align="center" style="font-weight:>93.78</td>
       <td align="right"></td>
     </tr>
     <tr>
@@ -172,16 +173,16 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but included 
       <td>Polish</td>
       <td>PDB, LFG</td>
       <td><code>pl_pdb_lfg.dkleczek</code></td>
-      <td align="center">94.38</td>
-      <td align="center">91.70</td>
+      <td align="center" style="font-weight:>94.38</td>
+      <td align="center" style="font-weight:>91.70</td>
       <td align="right"></td>
     </tr>
     <tr>
       <td>Russian</td>
       <td>SynTagRus</td>
       <td><code>ru_syntagrus.DeepPavlov</code></td>
-      <td align="center">94.97</td>
-      <td align="center">93.72</td>
+      <td align="center" style="font-weight:>94.97</td>
+      <td align="center" style="font-weight:>93.72</td>
       <td align="right"></td>
     </tr>
     <tr>
@@ -196,8 +197,8 @@ Notably, punctuation is ignored in all evaluation metrics for PTB, but included 
       <td>Swediskh</td>
       <td>Talbanken</td>
       <td><code>sv_talbanken.KB</code></td>
-      <td align="center">90.79</td>
-      <td align="center">88.08</td>
+      <td align="center" style="font-weight:>90.79</td>
+      <td align="center" style="font-weight:>88.08</td>
       <td align="right"></td>
     </tr>
     <tr>

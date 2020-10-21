@@ -61,9 +61,10 @@ else ifeq ($(LANG), ptb)
   MODEL = --bert=google/electra-base-discriminator
   BERT = electra-base
 else ifeq ($(LANG), et) #dev EDT
-  CORPUS=et_edt_ewt
+  CORPUS=et_edt
   RES2=Estonian
   #MODEL = --bert=TurkuNLP/wikibert-base-et-cased
+  bert = mbert
 else ifeq ($(LANG), fi)
   CORPUS=fi_tdt
   RES2=Finnish-TDT
@@ -97,7 +98,7 @@ else ifeq ($(LANG), nl) #dev Alpino
   MODEL = --bert=wietsedv/bert-base-dutch-cased
   BERT = wietsedv
 else ifeq ($(LANG), pl) #dev LFG
-  CORPUS=pl_pdb_pud
+  CORPUS=pl_pdt
   RES2=Polish
   MODEL = --bert=dkleczek/bert-base-polish-cased-v1 #DeepPavlov/bert-base-bg-cs-pl-ru-cased
   BERT = dkleczek
@@ -143,7 +144,7 @@ endif
 #----------------------------------------------------------------------
 # Targets
 
-.PRECIOUS: exp/$(LANG)-$(FEAT)$(VER)/model
+.PRECIOUS: exp/$(CORPUS).$(BERT)$(VER)/model
 
 # relate LANG to CORPUS
 exp/$(LANG)%: exp/$(CORPUS).$(BERT)$(VER)%

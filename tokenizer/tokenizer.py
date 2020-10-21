@@ -53,7 +53,17 @@ class Tokenizer:
         """
         @contextmanager
         def generator(data):
-            with open(data) as f:
-                yield self.format(self.predict(f.read()))
+            """
+            Args:
+                data (str): could be a filename or the text to tokenize.
+            Returns:
+                a context manager that can be used in a `with` contruct,
+                yielding each line of the tokenized `data`.
+            """
+            if not os.path.exists(data):
+                yield self.format(self.predict(data))
+            else:
+                with open(data) as f:
+                    yield self.format(self.predict(f.read()))
         return generator
 
