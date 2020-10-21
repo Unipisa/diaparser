@@ -37,7 +37,7 @@ else ifeq ($(LANG), ba)
   CORPUS=ba
   RES2=Baltic
   #MODEL = --bert=TurkuNLP/wikibert-base-lv-cased
-lse ifeq ($(LANG), bg)
+else ifeq ($(LANG), bg)
   CORPUS=bg_btb
   RES2=Bulgarian-BTB
   MODEL = --bert=DeepPavlov/bert-base-bg-cs-pl-ru-cased #TurkuNLP/wikibert-base-bg-cased #iarfmoose/roberta-base-bulgarian
