@@ -79,7 +79,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>en_ptb.electra</code></td>
       <td align="center"><b>96.03</b></td>
       <td align="center"><b>94.37</b></td>
-      <td align="right">1826.77</td>
+      <td align="right">352</td>
     </tr>
     <tr>
       <td>Arabic</td>
@@ -87,7 +87,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>ar_padt.bert</code></td>
       <td align="center"><b>87.75</b></td>
       <td align="center"><b>83.25</b></td>
-      <td align="right"></td>
+      <td align="right">99</td>
     </tr>
     <tr>
       <td>Bulgarian</td>
@@ -95,7 +95,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>bg_btb.DeepPavlov</code></td>
       <td align="center">95.02</td>
       <td align="center">92.20</td>
-      <td align="right"></td>
+      <td align="right">479</td>
     </tr>
     <tr>
       <td>Czech</td>
@@ -103,7 +103,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>cs_pdt.DeepPavlov</code></td>
       <td align="center"><b>94.02</b></td>
       <td align="center"><b>92.06</b></td>
-      <td align="right"></td>
+      <td align="right">403</td>
     </tr>
     <tr>
       <td>English</td>
@@ -111,7 +111,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>en_ewt.electra</code></td>
       <td align="center"><b>91.66</b></td>
       <td align="center"><b>89.51</b></td>
-      <td align="right"></td>
+      <td align="right">397</td>
     </tr>
     <tr>
       <td>Estonian</td>
@@ -119,7 +119,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>et_edt.mbert</code></td>
       <td align="center">86.39</td>
       <td align="center">82.44</td>
-      <td align="right"></td>
+      <td align="right">247</td>
     </tr>
     <tr>
       <td>Finnish</td>
@@ -127,7 +127,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>fi_tdt.turkunlp</code></td>
       <td align="center"><b>94.28</b></td>
       <td align="center"><b>92.56</b></td>
-      <td align="right"></td>
+      <td align="right">364</td>
     </tr>
     <tr>
       <td>French</td>
@@ -135,7 +135,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>fr_sequoia.camembert</code></td>
       <td align="center"><b>92.81</b></td>
       <td align="center"><b>89.55</b></td>
-      <td align="right"></td>
+      <td align="right">200</td>
     </tr>
     <tr>
       <td>Italian</td>
@@ -151,7 +151,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>lv_lvtb.mbert</code></td>
       <td align="center">87.46</td>
       <td align="center">83.51</td>
-      <td align="right"></td>
+      <td align="right">290</td>
     </tr>
     <tr>
       <td>Lithuanian</td>
@@ -159,7 +159,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>lt_alksnis.mbert</code></td>
       <td align="center">80.09</td>
       <td align="center">75.14</td>
-      <td align="right"></td>
+      <td align="right">290</td>
     </tr>
     <tr>
       <td>Dutch</td>
@@ -167,7 +167,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>nl_alpino.wietsedv</code></td>
       <td align="center">90.80</td>
       <td align="center">88.34</td>
-      <td align="right"></td>
+      <td align="right">367</td>
     </tr>
     <tr>
       <td>Polish</td>
@@ -175,7 +175,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>pl_pdb.dkleczek</code></td>
       <td align="center"><b>94.38</b></td>
       <td align="center"><b>91.70</b></td>
-      <td align="right"></td>
+      <td align="right">563</td>
     </tr>
     <tr>
       <td>Russian</td>
@@ -183,7 +183,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>ru_syntagrus.DeepPavlov</code></td>
       <td align="center"><b>94.97</b></td>
       <td align="center"><b>93.72</b></td>
-      <td align="right"></td>
+      <td align="right">445</td>
     </tr>
     <tr>
       <td>Slovak</td>
@@ -191,7 +191,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>sk_snk.mbert</code></td>
       <td align="center">93.11</td>
       <td align="center">90.44</td>
-      <td align="right"></td>
+      <td align="right">381</td>
     </tr>
     <tr>
       <td>Swediskh</td>
@@ -199,7 +199,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>sv_talbanken.KB</code></td>
       <td align="center"><b>90.79</b></td>
       <td align="center"><b>88.08</b></td>
-      <td align="right"></td>
+      <td align="right">491</td>
     </tr>
     <tr>
       <td>Tamil</td>
@@ -207,7 +207,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>ta_ttb.mbert</code></td>
       <td align="center">74.20</td>
       <td align="center">66.49</td>
-      <td align="right"></td>
+      <td align="right">175</td>
     </tr>
     <tr>
       <td>Ukrainian</td>
@@ -215,7 +215,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>uk_iu.TurkuNLP</code></td>
       <td align="center">90.39</td>
       <td align="center">87.61</td>
-      <td align="right"></td>
+      <td align="right">301</td>
     </tr>
     <tr>
       <td>Chinese</td>
@@ -223,7 +223,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>zh_ptb.hfl</code></td>
       <td align="center">92.14</td>
       <td align="center">85.74</td>
-      <td align="right"></td>
+      <td align="right">319</td>
     </tr>
   </tbody>
 </table>
