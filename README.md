@@ -10,12 +10,12 @@
 `DiaParser` is a **state-of-the-art dependency parser**, that extends the architecture of the Biaffine Parser ([Dozat and Manning, 2017](#dozat-2017-biaffine)) by exploiting both embeddings and attentions provided by **transformers**.
 
 By exploiting the rich hidden linguistic information in contextual embeddings from transformers, `DiaParser` can avoid using intermediate annotations like POS, lemma and morphology, used in traditional parsers.
-Therefore the only stages in te parsing pipeline are tokenization and parsing.
+Therefore the only stages in the parsing pipeline are tokenization and parsing.
 
-The parser may also work *directly on plain text*.
+The parser may also work **directly on plain text**.
 The parser automatically dowloads pretrained models as well as tokenizers and produces dependency parsing trees, as detailed in [Usage](#Usage).
 
-By exploiting attentions from transformer heads provides improvement in accuracy, without resorting to fine tuning or training its own attention.
+Exploiting attentions from transformer heads provides improvements in accuracy, without resorting to fine tuning or training its own attention.
 Overall, this simplifies the architecture and lowers the cost of resources needed during training, especially memory, and allows the parser to improve as new versions of transformers become available.
 The parser uses the [HuggingFace Transformers API](https://huggingface.co/transformers/) and in particular the generic [AutoClasses interface](https://huggingface.co/transformers/model_doc/auto.html) to access the transformer models avaiable.
 
@@ -251,8 +251,7 @@ and Nvidia T4 GPU.
 ```py
 >>> from diaparser.parsers import Parser
 >>> parser = Parser.load('en_ewt-electra')
->>> dataset = parser.predict([['She', 'enjoys', 'playing', 'tennis', '.']], prob=True, verbose=False)
-100%|####################################| 1/1 00:00<00:00, 85.15it/s
+>>> dataset = parser.predict([['She', 'enjoys', 'playing', 'tennis', '.']], prob=True)
 ```
 The call to `parser.predict` will return an instance of `diaparser.utils.Dataset` containing the predicted syntactic trees.
 You can access any sentence within the `dataset`:
@@ -263,6 +262,11 @@ You can access any sentence within the `dataset`:
 3       playing _       _       _       _       2       xcomp   _       _
 4       tennis  _       _       _       _       3       dobj    _       _
 5       .       _       _       _       _       2       punct   _       _
+```
+
+To parse plain text requires just specifying the language code:
+```py
+>>> dataset = parser.predict('She enjoys playing tennis.', text='en')
 ```
 
 You may also provide the input in a file in CoNLL-U format.

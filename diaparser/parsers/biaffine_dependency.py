@@ -98,7 +98,7 @@ class BiaffineDependencyParser(Parser):
         return super().evaluate(**Config().update(locals()))
 
     def predict(self, data, pred=None, buckets=8, batch_size=5000,
-                prob=False, tree=True, proj=False, verbose=True, **kwargs):
+                prob=False, tree=True, proj=False, verbose=False, **kwargs):
         r"""
         Args:
             data (list[list] or str):

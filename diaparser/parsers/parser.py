@@ -189,7 +189,7 @@ class Parser():
         raise NotImplementedError
 
     @classmethod
-    def load(cls, name_or_path, model_dir=None, **kwargs):
+    def load(cls, name_or_path, cache_dir=os.path.expanduser('~/.cache/diaparser'), **kwargs):
         r"""
         Loads a parser from a pretrained model.
 
@@ -198,7 +198,7 @@ class Parser():
                 - a string with the shortcut name of a pretrained parser listed in ``resource.json``
                   to load from cache or download, e.g., ``'en_ptb.electra-base'``.
                 - a path to a directory containing a pre-trained parser, e.g., `./<path>/model`.
-            model_dir (str):
+            cache_dir (str):
                 Directory where to cache models. The default value is `~/.cache/diaparser`.
             kwargs (dict):
                 A dict holding the unconsumed arguments that can be used to update the configurations and initiate the model.
@@ -218,7 +218,6 @@ class Parser():
             if url is None:
                 raise Exception(f'Could not find a model matching name {name_or_path}')
             verbose = kwargs.get('verbose', True)
-            cache_dir = kwargs.get('cache_dir', os.path.expanduser('~/.cache/diaparser'))
             state = torch.hub.load_state_dict_from_url(url, model_dir=cache_dir,
                                                        progress=verbose)
         cls = getattr(parsers, state['name'])
