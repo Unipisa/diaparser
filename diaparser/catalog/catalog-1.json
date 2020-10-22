@@ -34,6 +34,9 @@
       "ewt": {
 	  "model": "en_ewt.electra-base"
       },
+      "ptb": {
+	  "model": "en_ptb.electra-base"
+      },
       "default": "ewt"
   }
   "Estonian": {"alias": "et"},
@@ -114,5 +117,12 @@
 	  "model": "uk_iu.TurkuNLP"
       },
       "default": "iu"
+  },
+  "Chinese": {"alias": "zh"},
+  "zh": {
+      "ctb7": {
+	  "model": "zh_ctb7.electra-base"
+      },
+      "default": "zh"
   }
 }

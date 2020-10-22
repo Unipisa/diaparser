@@ -35,11 +35,11 @@ Both BERT and CharLSTM avoid the need of generating POS tags.
 
 ## Installation
 
-`DiaParser` can be installed via pip:
+`DiaParser` can be installed via `pip`:
 ```sh
 $ pip install -U diaparser
 ```
-Or installing from source is also permitted:
+Installing from sources is also possible:
 ```sh
 $ git clone https://github.com/Unipisa/diaparser && cd diaparser
 $ python setup.py install
@@ -116,7 +116,7 @@ The numbers in bold represent state-of-the-art values.
     <tr>
       <td>Estonian</td>
       <td>EDT, EWT</td>
-      <td><code>et_edt_ewt.mbert</code></td>
+      <td><code>et_edt.mbert</code></td>
       <td align="center">86.39</td>
       <td align="center">82.44</td>
       <td align="right"></td>
@@ -172,7 +172,7 @@ The numbers in bold represent state-of-the-art values.
     <tr>
       <td>Polish</td>
       <td>PDB, LFG</td>
-      <td><code>pl_pdb_lfg.dkleczek</code></td>
+      <td><code>pl_pdb.dkleczek</code></td>
       <td align="center"><b>94.38</b></td>
       <td align="center"><b>91.70</b></td>
       <td align="right"></td>

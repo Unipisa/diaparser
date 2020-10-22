@@ -134,7 +134,7 @@ else ifeq ($(LANG), zh)
   BLIND_TEST = $(CORPUS_DIR)/CoNLL09/$(CORPUS)-test.conllu
   GOLD_TEST = $(CORPUS_DIR)/CoNLL09/$(CORPUS)-test.conllu
   MODEL = --bert=hfl/chinese-electra-base-discriminator # bert-base-chinese # hfl/chinese-electra-large-discriminator
-  BERT = hfl
+  BERT = hfl-eletcra-base
 else
   CORPUS_TRAIN= data/CoNLL2009-ST-English-train.conll
   CORPUS_DEV  = data/CoNLL2009-ST-English-development.conll

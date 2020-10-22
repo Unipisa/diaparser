@@ -17,19 +17,23 @@ MODEL_DIR=../../exp
 MODELS=(
     ar_padt.asafaya
     bg_btb.DeepPavlov
-    cs_PDT.DeepPavlov
-    nl_alpino.wietsedv
+    cs_pdt.DeepPavlov
     en_ewt.electra-base
-    et_edt_ewt.TurkuNLP
+    en_ptb.electra-base
+    et_edt.mbert
     fi_tdt.TurkuNLP
     fr_sequoia.camembert-large
     it_isdt.dbmdz-xxl
-    lt_alksnis.wietsedve
+    lt_alksnis.mbert
+    lv_lvtb.mbert
+    nl_alpino.wietsedve
     pl_pdb_pud.dkleczek
     ru_syntagrus.DeepPavlov
-    sk_snk.KB
+    sk_snk.mbert
+    sv_talbanken.KB
     ta_ttb.mbert
     uk_iu.TurkuNLP
+    zh_ctb7.hfl-electra-base
 )
 
 # upload models
