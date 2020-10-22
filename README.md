@@ -1,3 +1,4 @@
+![DiaParser](docs/source/logo.png)
 # DiaParser
 
 [![build](https://github.com/Unipisa/diaparser/workflows/build/badge.svg)](https://github.com/Unipisa/diaparser/actions)
