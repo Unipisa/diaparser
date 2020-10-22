@@ -265,7 +265,7 @@ You can access any sentence within the `dataset`:
 
 You may also provide the input in a file in CoNLL-U format.
 
-Further examples of how to use the parser and experiment with it are in the notebook [Diaparser](demo/Diaparser.ipynb).
+Further examples of how to use the parser and experiment with it can be found in the notebook [DiaParser](demo/DiaParser.ipynb).
 
 
 ### Training
