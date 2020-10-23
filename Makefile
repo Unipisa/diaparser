@@ -47,6 +47,11 @@ else ifeq ($(LANG), cs) #dev PDT
   RES2=Czech-PDT
   MODEL = --bert=DeepPavlov/bert-base-bg-cs-pl-ru-cased
   BERT = DeepPavlov
+else ifeq ($(LANG), de)
+  CORPUS_DIR=../ud-treebanks-v2.6
+  CORPUS=de_hdt
+  RES2=German-HDT
+  bert = dbmdz/bert-base-german-uncased
 else ifeq ($(LANG), en)
   CORPUS=en_ewt
   RES2=English-EWT
