@@ -18,6 +18,7 @@ GPU = 0
 CORPUS_DIR = ../train-dev
 CORPUS_TRAIN = $(CORPUS_DIR)/UD_$(RES2)/$(CORPUS)-ud-train.conllu
 CORPUS_DEV = $(CORPUS_DIR)/UD_$(RES2)/$(CORPUS)-ud-dev.conllu
+CORPUS_TEST = $(CORPUS_DIR)/UD_$(RES2)/$(CORPUS)-ud-test.conllu
 
 #BLIND_TEST=$(CORPUS_DIR)/../test-udpipe/$(LANG).conllu
 #BLIND_TEST=$(CORPUS_DIR)/../test-stanza-sent/$(LANG).conllu
@@ -49,6 +50,7 @@ else ifeq ($(LANG), cs) #dev PDT
   BERT = DeepPavlov
 else ifeq ($(LANG), de)
   CORPUS_DIR=../ud-treebanks-v2.6
+  GOLD_TEST= $(CORPUS_TEST)
   CORPUS=de_hdt
   RES2=German-HDT
   MODEL = --bert=dbmdz/bert-base-german-uncased
@@ -68,6 +70,7 @@ else ifeq ($(LANG), ptb)
   BERT = electra-base
 else ifeq ($(LANG), es)
   CORPUS_DIR=../ud-treebanks-v2.6
+  GOLD_TEST= $(CORPUS_TEST)
   CORPUS=es_ancora
   RES2=Spanish-AnCora
   bert = mbert
@@ -95,6 +98,7 @@ else ifeq ($(LANG), it)
   BERT = dbmdz-xxl
 else ifeq ($(LANG), ja)
   CORPUS_DIR=../ud-treebanks-v2.6
+  GOLD_TEST= $(CORPUS_TEST)
   CORPUS=ja_gsd
   RES2=Japanese-GSD
   MODEL = --bert=cl-tohoku/bert-base-japanese

@@ -3,7 +3,7 @@
 
 [![build](https://github.com/Unipisa/diaparser/workflows/build/badge.svg)](https://github.com/Unipisa/diaparser/actions)
 [![docs](https://readthedocs.org/projects/diaparser/badge/?version=latest)](https://diaparser.readthedocs.io/en/latest)
-[![release](https://img.shields.io/github/v/release/Unipisa/diaparser)](https://Unipisa/diaparser/releases)
+[![release](https://img.shields.io/github/v/release/Unipisa/diaparser)](https://github.com/Unipisa/diaparser/releases)
 [![downloads](https://pepy.tech/badge/diaparser)](https://pepy.tech/project/diaparser)
 [![LICENSE](https://img.shields.io/github/license/Unipisa/diaparser)](https://github.com/Unipisa/diaparser/blob/master/LICENSE)
 
