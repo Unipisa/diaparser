@@ -24,8 +24,8 @@ class TestTokenizer(unittest.TestCase):
         self.assertTrue(not os.path.exists(self.MODEL_DIR))
         tokenizer = Tokenizer(**self.args)
         self.assertTrue(os.path.exists(self.args['dir']) and not os.path.isfile(self.args['dir']))
-        self.assertTrue(os.path.exists(os.path.join(self.args['dir'], self.args['lang'])))
-        self.assertTrue(os.path.exists(os.path.join(self.args['dir'], self.args['lang'], 'tokenize')))
+        self.assertTrue(os.path.exists(os.path.join(self.args['dir'], 'tokenizer', self.args['lang'])))
+        self.assertTrue(os.path.exists(os.path.join(self.args['dir'], 'tokenizer', self.args['lang'], 'tokenize')))
     
     def test_tokenize(self):
         tokenizer = Tokenizer(**self.args)
@@ -38,4 +38,4 @@ class TestTokenizer(unittest.TestCase):
         
         for line in tokenizer.format(tokenizer.predict(sin.read())):
             if line and not line.startswith('#'):
-                assert len(line.split('\t')) == 2, line
+                assert len(line.split('\t')) == 10, line
