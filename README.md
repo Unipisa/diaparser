@@ -264,7 +264,7 @@ You can access any sentence within the `dataset`:
 5       .       _       _       _       _       2       punct   _       _
 ```
 
-To parse plain text requires just specifying the language code:
+To parse plain text just requires specifying the language code:
 ```py
 >>> dataset = parser.predict('She enjoys playing tennis.', text='en')
 ```
