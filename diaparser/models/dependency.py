@@ -147,7 +147,7 @@ class BiaffineDependencyModel(nn.Module):
                                             use_hidden_states=args.use_hidden_states,
                                             use_attentions=args.use_attentions,
                                             attention_layer=args.attention_layer)
-            #args.n_mlp_arc = self.feat_embed.bert.config.max_position_embeddings
+            args.n_mlp_arc = self.feat_embed.bert.config.max_position_embeddings
             args.n_feat_embed = self.feat_embed.n_out # taken from the model
             args.n_bert_layers = self.feat_embed.n_layers # taken from the model
         elif args.feat == 'tag':
@@ -203,7 +203,8 @@ class BiaffineDependencyModel(nn.Module):
         total_params = sum(p.numel() for p in self.parameters())
         trainable_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
         return f"Total parameters: {total_params}\n" \
-            f"Trainable parameters: {trainable_params}"
+            f"Trainable parameters: {trainable_params}\n" \
+            f"Features: {self.args.n_feats}"
 
 
     def load_pretrained(self, embed=None):

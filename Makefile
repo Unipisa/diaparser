@@ -15,18 +15,18 @@ GPU = 0
 #----------------------------------------------------------------------
 # Corpora
 
-CORPUS_DIR = ..
-CORPUS_TRAIN = $(CORPUS_DIR)/train-dev/UD_$(RES2)/$(CORPUS)-ud-train.conllu
-CORPUS_DEV = $(CORPUS_DIR)/train-dev/UD_$(RES2)/$(CORPUS)-ud-dev.conllu
+CORPUS_DIR = ../train-dev
+CORPUS_TRAIN = $(CORPUS_DIR)/UD_$(RES2)/$(CORPUS)-ud-train.conllu
+CORPUS_DEV = $(CORPUS_DIR)/UD_$(RES2)/$(CORPUS)-ud-dev.conllu
 
-#BLIND_TEST=$(CORPUS_DIR)/test-udpipe/$(LANG).conllu
-#BLIND_TEST=$(CORPUS_DIR)/test-stanza-sent/$(LANG).conllu
-#BLIND_TEST=$(CORPUS_DIR)/EDparser/data/iwpt2020/test-udpipe/$(LANG).conllu
-BLIND_TEST=$(CORPUS_DIR)/iwpt2020stdata/sysoutputs/turkunlp/primary/$(LANG).conllu
+#BLIND_TEST=$(CORPUS_DIR)/../test-udpipe/$(LANG).conllu
+#BLIND_TEST=$(CORPUS_DIR)/../test-stanza-sent/$(LANG).conllu
+#BLIND_TEST=$(CORPUS_DIR)/../EDparser/data/iwpt2020/test-udpipe/$(LANG).conllu
+BLIND_TEST=$(CORPUS_DIR)/../iwpt2020stdata/sysoutputs/turkunlp/primary/$(LANG).conllu
 
-GOLD_TEST= $(CORPUS_DIR)/iwpt2020stdata/$(UD_TOOLS)/../test-gold/$(LANG).conllu
+GOLD_TEST= $(CORPUS_DIR)/../iwpt2020stdata/$(UD_TOOLS)/../test-gold/$(LANG).conllu
 
-UD_TOOLS = $(CORPUS_DIR)/iwpt2020stdata/tools
+UD_TOOLS = $(CORPUS_DIR)/../iwpt2020stdata/tools
 
 ifeq ($(LANG), ar)
   CORPUS=ar_padt
@@ -60,6 +60,11 @@ else ifeq ($(LANG), ptb)
   GOLD_TEST = $(CORPUS_DIR)/SD_English_PTB/en_ptb-sd-test.conllu
   MODEL = --bert=google/electra-base-discriminator
   BERT = electra-base
+else ifeq ($(LANG), es)
+  CORPUS_DIR=../ud-treebanks-v2.6
+  CORPUS=es_ancora
+  RES2=Spanish-AnCora
+  bert = mbert
 else ifeq ($(LANG), et) #dev EDT
   CORPUS=et_edt
   RES2=Estonian
