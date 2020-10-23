@@ -3,7 +3,6 @@
 import os
 from datetime import datetime, timedelta
 
-import parser
 import torch
 import torch.distributed as dist
 from .. import parsers
@@ -64,19 +63,19 @@ class Parser():
         train = Dataset(self.transform, args.train, **args)
         train.build(args.batch_size, args.buckets, True, dist.is_initialized())
         logger.info(f"{'train:':6} {len(train):5} sentences, "
-              f"{len(train.loader):3} batches, "
-              f"{len(train.buckets)} buckets")
+                    f"{len(train.loader):3} batches, "
+                    f"{len(train.buckets)} buckets")
         dev = Dataset(self.transform, args.dev)
         dev.build(args.batch_size, args.buckets)
         logger.info(f"{'dev:':6} {len(dev):5} sentences, "
-              f"{len(dev.loader):3} batches, "
-              f"{len(train.buckets)} buckets")
+                    f"{len(dev.loader):3} batches, "
+                    f"{len(train.buckets)} buckets")
         if args.test:
             test = Dataset(self.transform, args.test)
             test.build(args.batch_size, args.buckets)
             logger.info(f"{'test:':6} {len(test):5} sentences, "
-                  f"{len(test.loader):3} batches, "
-                  f"{len(train.buckets)} buckets")
+                        f"{len(test.loader):3} batches, "
+                        f"{len(train.buckets)} buckets")
         else:
             test = None
 
@@ -241,7 +240,7 @@ class Parser():
         state_dict = {k: v.cpu() for k, v in model.state_dict().items()}
         pretrained = state_dict.pop('pretrained.weight', None)
         if args.feat == 'bert':
-            tokenize = self.transform.FORM[1].tokenize # save it
+            tokenize = self.transform.FORM[1].tokenize  # save it
             self.transform.FORM[1].tokenize = None
         state = {'name': type(self).__name__,
                  'args': args,
@@ -250,4 +249,4 @@ class Parser():
                  'transform': self.transform}
         torch.save(state, path)
         if args.feat == 'bert':
-            self.transform.FORM[1].tokenize = tokenize # restore
+            self.transform.FORM[1].tokenize = tokenize  # restore

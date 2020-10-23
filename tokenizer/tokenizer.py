@@ -29,7 +29,7 @@ class Tokenizer:
 
     def format(self, sentences):
         """
-        Convert sentences to TSV format.
+        Convert sentences to CoNLL format.
         """
         empty_fields = '\t_' * 8
         for i, sentence in enumerate(sentences):

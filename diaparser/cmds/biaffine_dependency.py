@@ -8,6 +8,7 @@ from ..parsers import BiaffineDependencyParser
 from .cmd import parse
 import os
 
+
 def main():
     parser = argparse.ArgumentParser(description='Create Biaffine Dependency Parser.')
     parser.add_argument('--tree', action='store_true', help='whether to ensure well-formedness')

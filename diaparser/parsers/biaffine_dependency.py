@@ -239,7 +239,7 @@ class BiaffineDependencyParser(Parser):
 
             args.max_len = min(args.max_len or tokenizer.max_len, tokenizer.max_len)
             FEAT = BertField('bert', tokenizer, fix_len=args.fix_len)
-            WORD.bos = FEAT.bos # ensure representations have the same length
+            WORD.bos = FEAT.bos  # ensure representations have the same length
         else:
             FEAT = Field('tags', bos=bos)
         ARC = Field('arcs', bos=bos, use_vocab=False, fn=CoNLL.get_arcs)

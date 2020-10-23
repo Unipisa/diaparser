@@ -5,7 +5,8 @@ from ..utils.fn import pad
 from ..utils.vocab import Vocab, FieldVocab
 
 import torch
-from typing import Tuple, List
+from typing import List
+
 
 class RawField():
     r"""
@@ -81,7 +82,7 @@ class Field(RawField):
         self.use_vocab = use_vocab
         self.tokenize = tokenize
         self.fn = fn
-        self.mask_token_id = mask_token_id # Attardi
+        self.mask_token_id = mask_token_id  # Attardi
 
         self.specials = [token for token in [pad, unk, bos, eos]
                          if token is not None]

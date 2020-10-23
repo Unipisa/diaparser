@@ -64,16 +64,16 @@ class TokenDropout(nn.Module):
 
     def __init__(self, p=0.5, value=0):
         super(TokenDropout, self).__init__()
- 
+
         self.p = p
         self.value = value
- 
+
     def extra_repr(self):
         return f"p={self.p}, value={self.value}"
- 
+
     def forward(self, x):
         if self.training:
             mask = torch.rand_like(x, dtype=torch.float) < self.p
             x.masked_fill_(mask, self.value)
- 
+
         return x

@@ -6,6 +6,7 @@ from ..utils.logging import init_logger, logger
 from ..utils.parallel import init_device
 from ..parsers.biaffine_dependency import BiaffineDependencyParser as Parser
 
+
 def parse(argparser):
     argparser.add_argument('--conf', '-c', help='path to config file')
     argparser.add_argument('--path', '-p', help='model name or path to model file')

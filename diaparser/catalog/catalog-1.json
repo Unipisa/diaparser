@@ -5,28 +5,28 @@
 	  "model": "ar_padt.asafaya"
       },
       "default": "padt"
-  }
+  },
   "Bulgarian": {"alias": "bg"},
   "bg": {
       "btb": {
 	  "model": "bg_btb.DeepPavlov"
       },
       "default": "btb"
-  }
+  },
   "Czech": {"alias": "cs"},
   "cs": {
       "pdt": {
 	  "model": "cs_pdt.DeepPavlov"
       },
       "default": "pdt"
-  }
+  },
   "Dutch": {"alias": "nl"},
   "nl": {
       "alpino": {
 	  "model": "nl_alpino.wietsedv"
       },
       "default": "alpino"
-  }
+  },
   "english": {
     "alias": "en"
   },
@@ -38,29 +38,36 @@
 	  "model": "en_ptb.electra-base"
       },
       "default": "ewt"
-  }
+  },
   "Estonian": {"alias": "et"},
   "et": {
       "edt_ewt": {
 	  "model": "et_edt_ewt.TurkuNLP"
       },
       "default": "edt_ewt"
-  }
+  },
   "Finnish": {"alias": "fi"},
   "fi": {
       "tdt": {
 	  "model": "fi_tdt.TurkuNLP"
       },
       "default": "tdt"
-  }
+  },
   "French": {"alias": "fr"},
   "fr": {
       "sequoia": {
 	  "model": "fr_sequoia.camembert-large"
       },
       "default": "sequoia"
-  }
-  "italian": {
+  },
+  "German": {"alias": "de"},
+  "fr": {
+      "hdt": {
+	  "model": ""
+      },
+      "default": "hdt"
+  },
+  "Italian": {
     "alias": "it"
   },
   "it": {
@@ -68,49 +75,59 @@
 	  "model": "it_isdt.dbmdz-xxl"
       },
       "default": "isdt"
-  }
+  },
+  "Japanese": {
+    "alias": "jp"
+  },
+  "ja:" {
+      "gsd": {
+	  "model": "cl-tohoku-bert",
+	  "requirements": "fugashi, ipadic"
+	  },
+      "default": "gsd"
+  },
   "Lithuanian": {"alias": "lt"},
   "lt": {
       "alksnis": {
 	  "model": "lt_alksnis.wietsedve"
       },
       "default": "alksnis"
-  }
+  },
   "Latvian": {"alias": "lv"},
   "lv": {
       "lvtb": {
 	  "model": "lv-lvtb.mbert"
       },
       "default": "lvtb"
-  }
+  },
   "Polish": {"alias": "pl"},
   "pl": {
       "pdb": {
 	  "model": "pl_pdb.dkleczek"
       },
       "default": "pdb"
-  }
+  },
   "Russian": {"alias": "ru"},
   "ru": {
       "syntagrus": {
 	  "model": "ru_syntagrus.DeepPavlov"
       },
       "default": "syntagrus"
-  }
+  },
   "Slovak": {"alias": "sk"},
   "sk": {
       "snk": {
 	  "model": "sk_snk.KB"
       },
       "default": "snk"
-  }
+  },
   "Tamil": {"alias": "ta"},
   "ta": {
       "ttb": {
 	  "model": "ta_ttb.mbert"
       },
       "default": "ttb"
-  }
+  },
   "Ukrainian": {"alias": "uk"},
   "uk": {
       "iu": {

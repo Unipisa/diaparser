@@ -8,7 +8,7 @@ from ..utils.config import Config
 from ..utils.alg import eisner, mst
 from ..utils.transform import CoNLL
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
-from typing import Dict, Optional, Tuple, Any, List
+from typing import Tuple
 
 
 class BiaffineDependencyModel(nn.Module):
@@ -147,9 +147,10 @@ class BiaffineDependencyModel(nn.Module):
                                             use_hidden_states=args.use_hidden_states,
                                             use_attentions=args.use_attentions,
                                             attention_layer=args.attention_layer)
-            #args.n_mlp_arc = self.feat_embed.bert.config.max_position_embeddings
-            args.n_feat_embed = self.feat_embed.n_out # taken from the model
-            args.n_bert_layers = self.feat_embed.n_layers # taken from the model
+            # Setting this requires rebuilding models:
+            # args.n_mlp_arc = self.feat_embed.bert.config.max_position_embeddings
+            args.n_feat_embed = self.feat_embed.n_out  # taken from the model
+            args.n_bert_layers = self.feat_embed.n_layers  # taken from the model
         elif args.feat == 'tag':
             self.feat_embed = nn.Embedding(num_embeddings=args.n_feats,
                                            embedding_dim=args.n_feat_embed)
@@ -198,7 +199,6 @@ class BiaffineDependencyModel(nn.Module):
 
         self.criterion = nn.CrossEntropyLoss()
 
-
     def extra_repr(self):
         total_params = sum(p.numel() for p in self.parameters())
         trainable_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
@@ -206,13 +206,11 @@ class BiaffineDependencyModel(nn.Module):
             f"Trainable parameters: {trainable_params}\n" \
             f"Features: {self.args.n_feats}"
 
-
     def load_pretrained(self, embed=None):
         if embed is not None:
             self.pretrained = nn.Embedding.from_pretrained(embed)
             nn.init.zeros_(self.word_embed.weight)
         return self
-
 
     def forward(self, words: torch.Tensor,
                 feats: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
@@ -233,7 +231,7 @@ class BiaffineDependencyModel(nn.Module):
         """
 
         # words, feats are the first two items in the batch from DataLoader.__iter__()
-        whole_words = feats[:,:,0] # drop subpiece dimension
+        whole_words = feats[:, :, 0]  # drop subpiece dimension
         batch_size, seq_len = whole_words.shape
         # get the mask and lengths of given batch
         mask = whole_words.ne(self.feat_embed.pad_index)
@@ -291,7 +289,7 @@ class BiaffineDependencyModel(nn.Module):
 
     def loss(self, s_arc: torch.Tensor, s_rel: torch.Tensor,
              arcs: torch.Tensor, rels: torch.Tensor,
-             mask: torch.Tensor, partial: bool=False) -> torch.Tensor:
+             mask: torch.Tensor, partial: bool = False) -> torch.Tensor:
         r"""
         Computes the arc and tag loss for a sequence given gold heads and tags.
 
@@ -327,7 +325,7 @@ class BiaffineDependencyModel(nn.Module):
 
     def decode(self, s_arc: torch.Tensor, s_rel: torch.Tensor,
                mask: torch.Tensor,
-               tree: bool=False, proj: bool=False) -> Tuple[torch.Tensor, torch.Tensor]:
+               tree: bool = False, proj: bool = False) -> Tuple[torch.Tensor, torch.Tensor]:
         r"""
         Args:
             s_arc (~torch.Tensor): ``[batch_size, seq_len, seq_len]``.
@@ -366,4 +364,3 @@ class BiaffineDependencyModel(nn.Module):
         rel_preds = rel_preds.gather(-1, arc_preds.unsqueeze(-1)).squeeze(-1)
 
         return arc_preds, rel_preds
-

@@ -3,9 +3,8 @@
 import torch.nn as nn
 from torch.nn.utils.rnn import pad_sequence
 from transformers import AutoModel, AutoConfig
-import torch.nn.functional as F
 import torch
-from torch.cuda import memory_allocated
+# from torch.cuda import memory_allocated
 
 from .scalar_mix import ScalarMix
 from .dropout import TokenDropout
@@ -140,7 +139,7 @@ class BertEmbedding(nn.Module):
                         f"({subwords.shape[1]} > {self.bert.config.max_position_embeddings})")
         # return the hidden states of all layers
         # print('<BERT, GPU MiB:', memory_allocated() // (1024*1024)) # DEBUG
-        outputs = self.bert(subwords, attention_mask=bert_mask.float()) # float for XLNET
+        outputs = self.bert(subwords, attention_mask=bert_mask.float())  # float for XLNET
         # print('BERT>, GPU MiB:', memory_allocated() // (1024*1024)) # DEBUG
         if self.use_hidden_states:
             bert = outputs[-2] if self.use_attentions else outputs[-1]
@@ -157,18 +156,18 @@ class BertEmbedding(nn.Module):
         embed = bert.new_zeros(*mask.shape, self.hidden_size)
         embed = embed.masked_scatter_(mask.unsqueeze(-1), bert[bert_mask])
         # [batch_size, seq_len, hidden_size]
-        embed = embed.sum(2) / bert_lens.unsqueeze(-1) # sum wordpieces
+        embed = embed.sum(2) / bert_lens.unsqueeze(-1)  # sum wordpieces
         seq_attn = None
         if self.use_attentions:
             # (a list of layers) = [ [batch, num_heads, sent_len, sent_len] ]
             attns = outputs[-1]
             # [batch, n_subwords, n_subwords]
-            attn = attns[self.attention_layer][:,self.head,:,:] # layer 9 represents syntax
+            attn = attns[self.attention_layer][:,self.head,:,:]  # layer 9 represents syntax
             # squeeze out multiword tokens
             mask2 = ~mask
-            mask2[:,:,0] = True # keep first column
+            mask2[:,:,0] = True  # keep first column
             sub_masks = pad_sequence(mask2[mask].split(lens.tolist()), True)
-            seq_mask = torch.einsum('bi,bj->bij', sub_masks, sub_masks) # outer product
+            seq_mask = torch.einsum('bi,bj->bij', sub_masks, sub_masks)  # outer product
             seq_lens = seq_mask.sum((1,2))
             # [batch_size, seq_len, seq_len]
             sub_attn = attn[seq_mask].split(seq_lens.tolist())
@@ -182,4 +181,3 @@ class BertEmbedding(nn.Module):
             embed = self.projection(embed)
 
         return embed, seq_attn
-

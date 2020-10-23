@@ -34,7 +34,7 @@ class Sentence():
                 value = line.split('\t')
                 if value[0].isdigit():
                     values.append(value)
-                    self.annotations[int(value[0])] = '' # placeholder
+                    self.annotations[int(value[0])] = ''  # placeholder
                 else:
                     self.annotations[-i] = line
         for field, value in zip(fields, list(zip(*values))):
@@ -59,7 +59,7 @@ class Sentence():
     def __repr__(self):
         merged = {**self.annotations,
                   **{i+1: '\t'.join(map(str, line))
-                     for i, line in enumerate(zip(*self.values))} }
+                     for i, line in enumerate(zip(*self.values))}}
         return '\n'.join(merged.values()) + '\n'
 
 
@@ -105,7 +105,7 @@ class Corpus(object):
                 if not line:
                     if len(lines) > max_sent_length:
                         logger.info('Discarded sentence longer than max_sent_length:',
-                              len(lines), file=sys.stderr)
+                                    len(lines), file=sys.stderr)
                         lines = []
                         continue
                     sentences.append(Sentence(fields, lines))
@@ -125,7 +125,7 @@ class Corpus(object):
 
 class TextCorpus(Corpus):
     """
-    Class for toeknizing and MW splitting of plain text 
+    Class for tokenizing and MW splitting plain text.
     """
     @classmethod
     def load(cls, path, fields, tokenizer_lang, tokenizer_dir, verbose=True, max_sent_length=math.inf):
@@ -142,16 +142,15 @@ class TextCorpus(Corpus):
                 if not line:
                     if len(lines) > max_sent_length:
                         logger.info('Discarded sentence longer than max_sent_length:',
-                              len(lines), file=sys.stderr)
+                                    len(lines), file=sys.stderr)
                         lines = []
                         continue
                     sentences.append(Sentence(fields, lines))
                     lines = []
                 else:
                     if not line.startswith('#'):
-                        # append fake columns
-                        line = '{}\t{}'.format(line, '\t'.join(['_' for i in range(len(CoNLL._fields) - len(line.split('\t')))]))
-                        assert len(CoNLL._fields) == len(line.split('\t')), '{} - {} vs {}'.format(line, len(CoNLL._fields), len(line.split()))
+                        # append empty columns
+                        line += '\t_' * (len(CoNLL._fields) - len(line.split('\t')))
                     lines.append(line)
 
         return cls(fields, sentences)

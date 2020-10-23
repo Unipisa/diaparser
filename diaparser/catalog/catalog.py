@@ -27,6 +27,7 @@ DEFAULT_CATALOG_VERSION = __models_version__
 HOME_DIR = str(Path.home())
 CACHE_DIR = os.path.join(HOME_DIR, '.cache/diaparser')
 
+
 def get_md5(path):
     """
     Get the MD5 value of a path.
@@ -34,11 +35,13 @@ def get_md5(path):
     data = open(path, 'rb').read()
     return hashlib.md5(data).hexdigest()
 
+
 def file_exists(path, md5):
     """
     Check if the file at `path` exists and match the provided md5 value.
     """
     return os.path.exists(path) and get_md5(path) == md5
+
 
 def download_file(url, path):
     """
@@ -58,6 +61,7 @@ def download_file(url, path):
                     f.flush()
                     pbar.update(len(chunk))
 
+
 def request_file(url, path, md5=None):
     """
     A complete wrapper over download_file() that also make sure the directory of
@@ -75,6 +79,7 @@ def request_file(url, path, md5=None):
     download_file(url, path)
     assert(not md5 or file_exists(path, md5))
 
+
 def url_ok(url):
     """
     Checks that a given URL is reachable.
@@ -82,6 +87,7 @@ def url_ok(url):
     :rtype: bool
     """
     return requests.head(url).ok
+
 
 def select(name=None, lang='en', corpus=None, bert=None,
            dir=CACHE_DIR,
@@ -123,8 +129,8 @@ def select(name=None, lang='en', corpus=None, bert=None,
         models = json.load(open(catalog_path))
     except:
         raise Exception(
-            f'Cannot load model list. Please check your network connection, '
-            f'or provided resource url and resource version.'
+            'Cannot load model list. Please check your network connection, '
+            'or provided resource url and resource version.'
         )
     if lang not in models:
         raise Exception(f'Unsupported language: {lang}.')
@@ -136,18 +142,18 @@ def select(name=None, lang='en', corpus=None, bert=None,
     if corpus in corpora:
         model = corpora[corpus].get('model', None)
         if model:
-            return  f'{catalog_url}/model'
+            return f'{catalog_url}/model'
     if 'default' in corpora:
         logger.info(f'Using {corpora["default"]} as corpus for {lang}')
         corpus = lang["default"]
         model = corpora[corpus].get('model', None)
         if model:
-            return  f'{catalog_url}/model'
+            return f'{catalog_url}/model'
     return None
 
 
 def upload(path, owner='Unipisa', repo='diaparser', version='v1.0', token=''):
     name = os.path.basename(path)
-    GH_ASSET=f"https://uploads.github.com/repos/{owner}/{repo}/releases/{version}/assets?name={name}"
+    GH_ASSET = f"https://uploads.github.com/repos/{owner}/{repo}/releases/{version}/assets?name={name}"
     curl = f'curl --data-binary @"{path}" -H "Authorization: token {token}" -H "Content-Type: application/zip" {GH_ASSET}'
     subprocess.run(curl.split())

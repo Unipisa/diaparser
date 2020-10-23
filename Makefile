@@ -51,7 +51,8 @@ else ifeq ($(LANG), de)
   CORPUS_DIR=../ud-treebanks-v2.6
   CORPUS=de_hdt
   RES2=German-HDT
-  bert = dbmdz/bert-base-german-uncased
+  MODEL = --bert=dbmdz/bert-base-german-uncased
+  BERT = dbmdz-bert-base
 else ifeq ($(LANG), en)
   CORPUS=en_ewt
   RES2=English-EWT
@@ -92,6 +93,12 @@ else ifeq ($(LANG), it)
   RES2=Italian-ISDT
   MODEL = --bert=dbmdz/bert-base-italian-xxl-cased
   BERT = dbmdz-xxl
+else ifeq ($(LANG), ja)
+  CORPUS_DIR=../ud-treebanks-v2.6
+  CORPUS=ja_gsd
+  RES2=Japanese-GSD
+  MODEL = --bert=cl-tohoku/bert-base-japanese
+  bert = cl-tohoku-bert
 else ifeq ($(LANG), lt)
   CORPUS=lt_alksnis
   RES2=Lithuanian-ALKSNIS
@@ -222,6 +229,9 @@ baltic:
 
 # ----------------------------------------------------------------------
 # Run tests
+
+lint:
+	flake8 diaparser --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
 test:
 	pytest -s tests
