@@ -67,12 +67,12 @@ The package has the following requirements:
 
 ## Performance
 
-`DiaParser` provides pretrained models for English, Chinese and other 17 languages of the IWPT 2020 Shared task.
+`DiaParser` provides pretrained models for English, Chinese and other 21 languages from the Universal Dependencies treebanks [v2.6](https://universaxsldependencies.org).
 English models are trained on the Penn Treebank (PTB) with Stanford Dependencies, with 39,832 training sentences, while Chinese models are trained on Penn Chinese Treebank version 7 (CTB7) with 46,572 training sentences.
-The other languages are trained on the Universal Dependencies treebanks [v2.5](https://universaxsldependencies.org).
 
-The performance and parsing speed of these models are listed in the following table.
-Notably, punctuation is ignored in all evaluation metrics for PTB, but included in all the others.
+The accuracy and parsing speed of these models are listed in the following tables.
+The first table shows the result of parsing starting from gold tokenized text.
+Notably, punctuation is ignored in the evaluation metrics for PTB, but included in all the others.
 The numbers in bold represent state-of-the-art values.
 
 <table>
@@ -96,6 +96,86 @@ The numbers in bold represent state-of-the-art values.
       <td align="right">352</td>
     </tr>
     <tr>
+      <td>Chinese</td>
+      <td>CTB</td>
+      <td><code>zh_ptb.hfl</code></td>
+      <td align="center">92.14</td>
+      <td align="center">85.74</td>
+      <td align="right">319</td>
+    </tr>
+    <tr>
+      <td>Catalan</td>
+      <td>AnCora</td>
+      <td><code>ca_ancora.mbert</code></td>
+      <td align="center"><b>95.55</b></td>
+      <td align="center"><b>93.78</b></td>
+      <td align="right">249</td>
+    </tr>
+    <tr>
+      <td>German</td>
+      <td>HDT</td>
+      <td><code>de_htd.dbmdz-bert-base</code></td>
+      <td align="center"><b>97.97</b></td>
+      <td align="center"><b>96.97</b></td>
+      <td align="right">184</td>
+    </tr>
+    <tr>
+      <td>Japanese</td>
+      <td>GSD</td>
+      <td><code>ja_gsd.mbert</code></td>
+      <td align="center"><b>95.41</b></td>
+      <td align="center"><b>93.98</b></td>
+      <td align="right">397</td>
+    </tr>
+    <tr>
+      <td>Latin</td>
+      <td>ITTB, LLCT</td>
+      <td><code>la_ittb_llct.mbert</code></td>
+      <td align="center"><b>94.03</b></td>
+      <td align="center"><b>91.70</b></td>
+      <td align="right">139</td>
+    </tr>
+    <tr>
+      <td>Norwegian</td>
+      <td>Nynorsk</td>
+      <td><code>no_nynorsk.mbert</code></td>
+      <td align="center"><b>92.50</b></td>
+      <td align="center"><b>90.13</b></td>
+      <td align="right"></td>
+    </tr>
+    <tr>
+      <td>Romanian</td>
+      <td>RRT</td>
+      <td><code>ro_rrt.mbert</code></td>
+      <td align="center"><b>93.03</b></td>
+      <td align="center"><b>87.18</b></td>
+      <td align="right">286</td>
+    </tr>
+    <tr>
+      <td>Spanish</td>
+      <td>AnCora</td>
+      <td><code>es_ancora.mbert</code></td>
+      <td align="center"><b>96.03</b></td>
+      <td align="center"><b>94.37</b></td>
+      <td align="right">352</td>
+    </tr>
+  </tbody>
+</table>
+
+Below are the results on the dataset of the [IWPT 2020 Shared Task on Enhanced Dependencies](), where the tokenization was done by the parser itself:
+<table>
+  <thead>
+    <tr>
+      <th>Language</th>
+      <th align="center">Corpus</th>
+      <th align="center">Name</th>
+      <th align="center">UAS</th>
+      <th align="center">LAS</th>
+      <th align="right">Speed (Sents/s)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
       <td>Arabic</td>
       <td>PADT</td>
       <td><code>ar_padt.bert</code></td>
@@ -113,8 +193,8 @@ The numbers in bold represent state-of-the-art values.
     </tr>
     <tr>
       <td>Czech</td>
-      <td>PDT</td>
-      <td><code>cs_pdt.DeepPavlov</code></td>
+      <td>PDT, CAC, FicTree</td>
+      <td><code>cs_pdt_cac_fictree.DeepPavlov</code></td>
       <td align="center"><b>94.02</b></td>
       <td align="center"><b>92.06</b></td>
       <td align="right">403</td>
@@ -130,7 +210,7 @@ The numbers in bold represent state-of-the-art values.
     <tr>
       <td>Estonian</td>
       <td>EDT, EWT</td>
-      <td><code>et_edt.mbert</code></td>
+      <td><code>et_edt_ewt.mbert</code></td>
       <td align="center">86.39</td>
       <td align="center">82.44</td>
       <td align="right">247</td>
@@ -150,6 +230,14 @@ The numbers in bold represent state-of-the-art values.
       <td align="center"><b>92.81</b></td>
       <td align="center"><b>89.55</b></td>
       <td align="right">200</td>
+    </tr>
+    <tr>
+      <td>German</td>
+      <td>HDT</td>
+      <td><code>de_hdt.dbmdz-bert-base</code></td>
+      <td align="center"><b>97.97</b></td>
+      <td align="center"><b>96.97</b></td>
+      <td align="right">381</td>
     </tr>
     <tr>
       <td>Italian</td>
@@ -177,8 +265,8 @@ The numbers in bold represent state-of-the-art values.
     </tr>
     <tr>
       <td>Dutch</td>
-      <td>Alpino</td>
-      <td><code>nl_alpino.wietsedv</code></td>
+      <td>Alpino, LassySmall</td>
+      <td><code>nl_alpino_lassysmall.wietsedv</code></td>
       <td align="center">90.80</td>
       <td align="center">88.34</td>
       <td align="right">367</td>
@@ -186,7 +274,7 @@ The numbers in bold represent state-of-the-art values.
     <tr>
       <td>Polish</td>
       <td>PDB, LFG</td>
-      <td><code>pl_pdb.dkleczek</code></td>
+      <td><code>pl_pdb_lfg.dkleczek</code></td>
       <td align="center"><b>94.38</b></td>
       <td align="center"><b>91.70</b></td>
       <td align="right">563</td>
@@ -231,14 +319,6 @@ The numbers in bold represent state-of-the-art values.
       <td align="center">87.61</td>
       <td align="right">301</td>
     </tr>
-    <tr>
-      <td>Chinese</td>
-      <td>CTB</td>
-      <td><code>zh_ptb.hfl</code></td>
-      <td align="center">92.14</td>
-      <td align="center">85.74</td>
-      <td align="right">319</td>
-    </tr>
   </tbody>
 </table>
 
@@ -247,14 +327,14 @@ and Nvidia T4 GPU.
 
 ## Usage
 
-`DiaParser` is very easy to use. You can download a pretrained model and run syntactic parsing over sentences with a few lines of code:
+`DiaParser` is simple to use: you can just download a pretrained model and run syntactic parsing over sentences with a few lines of code:
 ```py
 >>> from diaparser.parsers import Parser
 >>> parser = Parser.load('en_ewt-electra')
 >>> dataset = parser.predict([['She', 'enjoys', 'playing', 'tennis', '.']], prob=True)
 ```
 The call to `parser.predict` will return an instance of `diaparser.utils.Dataset` containing the predicted syntactic trees.
-You can access any sentence within the `dataset`:
+You can access each sentence within the `dataset`:
 ```py
 >>> print(dataset.sentences[0])
 1       She     _       _       _       _       2       nsubj   _       _
@@ -271,7 +351,7 @@ To parse plain text just requires specifying the language code:
 
 You may also provide the input in a file in CoNLL-U format.
 
-Further examples of how to use the parser and experiment with it can be found in the notebook [DiaParser](demo/DiaParser.ipynb).
+Further examples of how to use the parser and experiment with it can be found in this [notebook](demo/DiaParser.ipynb).
 
 
 ### Training
@@ -291,6 +371,8 @@ $ python -m diaparser.cmds.biaffine_dependency train -b -d 0  \
     -f bert  \
     --bert bert-base-cased
 ```
+
+**Warning**. There is currently a limit of 500 to the length of tokenized sentences, due to the maximum size of embeddings in most pretrained trnsformer models.
 
 For further instructions on training, please type `python -m diaparser.cmds.<parser> train -h`.
 

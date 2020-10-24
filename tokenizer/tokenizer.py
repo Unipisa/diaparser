@@ -16,13 +16,16 @@ class Tokenizer:
     verbose (Bool): print download progress.
     """
 
-    PROCESSORS = 'tokenize,mwt'
-
-    def __init__(self, lang, dir=os.path.expanduser('~/.cache/diaparser'), verbose=False):
+    def __init__(self, lang, dir=os.path.expanduser('~/.cache/diaparser'), verbose=True):
         dir += '/tokenizer'
-        stanza.download(lang, dir=dir, processors=self.PROCESSORS, verbose=verbose)
+        processors = 'tokenize,mwt'
+        try:
+            stanza.download(lang, dir=dir, processors=processors, verbose=verbose)
+        except:
+            processors = 'tokenize'
+            stanza.download(lang, dir=dir, processors=processors, verbose=verbose)
         use_gpu = torch.cuda.is_available()
-        self.pipeline = stanza.Pipeline(lang, dir=dir, processors=self.PROCESSORS, verbose=verbose, use_gpu=use_gpu)
+        self.pipeline = stanza.Pipeline(lang, dir=dir, processors=processors, verbose=verbose, use_gpu=use_gpu)
 
     def predict(self, text):
         return self.pipeline(text).sentences

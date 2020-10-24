@@ -2,7 +2,7 @@
 
 import torch
 import torch.nn as nn
-from ..modules import MLP, BertEmbedding, Biaffine, BiLSTM, CharLSTM
+from ..modules import MLP, BertEmbedding, Biaffine, LSTM, CharLSTM
 from ..modules.dropout import IndependentDropout, SharedDropout
 from ..utils.config import Config
 from ..utils.alg import eisner, mst
@@ -160,10 +160,11 @@ class BiaffineDependencyModel(nn.Module):
 
         if args.n_lstm_layers:
             # the lstm layer
-            self.lstm = BiLSTM(input_size=args.n_word_embed+args.n_feat_embed,
-                               hidden_size=args.n_lstm_hidden,
-                               num_layers=args.n_lstm_layers,
-                               dropout=args.lstm_dropout)
+            self.lstm = LSTM(input_size=args.n_word_embed+args.n_feat_embed,
+                             hidden_size=args.n_lstm_hidden,
+                             num_layers=args.n_lstm_layers,
+                             bidirectional=True,
+                             dropout=args.lstm_dropout)
             self.lstm_dropout = SharedDropout(p=args.lstm_dropout)
             mlp_input_size = args.n_lstm_hidden*2
         else:
@@ -336,8 +337,6 @@ class BiaffineDependencyModel(nn.Module):
                 The mask for covering the unpadded tokens.
             tree (bool):
                 If ``True``, ensures to output well-formed trees. Default: ``False``.
-            mbr (bool):
-                If ``True``, performs MBR decoding. Default: ``True``.
             proj (bool):
                 If ``True``, ensures to output projective trees. Default: ``False``.
 

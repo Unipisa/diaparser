@@ -13,6 +13,13 @@
       },
       "default": "btb"
   },
+  "Catalan": {"alias": "ca"},
+  "ca": {
+      "ancora": {
+	  "model": "ca_ancora.mbert"
+      },
+      "default": "ancora"
+  },
   "Czech": {"alias": "cs"},
   "cs": {
       "pdt": {
@@ -27,7 +34,7 @@
       },
       "default": "alpino"
   },
-  "english": {
+  "English": {
     "alias": "en"
   },
   "en": {
@@ -39,12 +46,19 @@
       },
       "default": "ewt"
   },
+  "Spanish": {"alias": "es"},
+  "es": {
+      "ancora": {
+	  "model": "es_ancora.mbert"
+      },
+      "default": "ancora"
+  },
   "Estonian": {"alias": "et"},
   "et": {
-      "edt_ewt": {
-	  "model": "et_edt_ewt.TurkuNLP"
+      "edt": {
+	  "model": "et_edt.TurkuNLP"
       },
-      "default": "edt_ewt"
+      "default": "edt"
   },
   "Finnish": {"alias": "fi"},
   "fi": {
@@ -86,6 +100,13 @@
 	  },
       "default": "gsd"
   },
+  "Latin": {"alias": "la"},
+  "la": {
+      "ittb_llct": {
+	  "model": "la_ittb_llct.mbert"
+      },
+      "default": "ittb_llct"
+  },
   "Lithuanian": {"alias": "lt"},
   "lt": {
       "alksnis": {
@@ -96,9 +117,16 @@
   "Latvian": {"alias": "lv"},
   "lv": {
       "lvtb": {
-	  "model": "lv-lvtb.mbert"
+	  "model": "lv_lvtb.mbert"
       },
       "default": "lvtb"
+  },
+  "Norwegian": {"alias": "no"},
+  "no": {
+      "nynorsk": {
+	  "model": "no_nynorsk.mbert"
+      },
+      "default": "nynorsk"
   },
   "Polish": {"alias": "pl"},
   "pl": {
@@ -107,12 +135,19 @@
       },
       "default": "pdb"
   },
-  "Russian": {"alias": "ru"},
-  "ru": {
-      "syntagrus": {
-	  "model": "ru_syntagrus.DeepPavlov"
+  "Spanish": {"alias": "es"},
+  "es": {
+      "ancora": {
+	  "model": "es_ancora.mbert"
       },
-      "default": "syntagrus"
+      "default": "ancora"
+  },
+  "Romanian": {"alias": "ro"},
+  "ro": {
+      "rrt": {
+	  "model": "ro_rrt.mbert"
+      },
+      "default": "rrt"
   },
   "Slovak": {"alias": "sk"},
   "sk": {
