@@ -129,7 +129,7 @@ class TextCorpus(Corpus):
     """
     @classmethod
     def load(cls, path, fields, tokenizer_lang, tokenizer_dir, verbose=True, max_sent_length=math.inf):
-        tokenizer = Tokenizer(lang=tokenizer_lang, dir=tokenizer_dir, verbose=True)
+        tokenizer = Tokenizer(lang=tokenizer_lang, dir=tokenizer_dir, verbose=verbose)
 
         sentences = []
         fields = [field if field is not None else Field(str(i))

@@ -134,12 +134,58 @@ class BertEmbedding(nn.Module):
         # [batch_size, n_subwords]
         subwords = pad_sequence(subwords[mask].split(lens.tolist()), True)
         bert_mask = pad_sequence(mask[mask].split(lens.tolist()), True)
+        # Outputs from the transformer:
+        # - last_hidden_state: [batch, seq_len, hidden_size]
+        # - pooler_output: [batch, hidden_size],
+        # - hidden_states (optional): [[batch_size, seq_length, hidden_size]] * (1 + layers)
+        # - attentions (optional): [[batch_size, num_heads, seq_length, seq_length]] * layers
+        # print('<BERT, GPU MiB:', memory_allocated() // (1024*1024)) # DEBUG
         if subwords.shape[1] > self.bert.config.max_position_embeddings:
             logger.warn(f"Tokenized sequence is longer than the transformer can handle: "
                         f"({subwords.shape[1]} > {self.bert.config.max_position_embeddings})")
-        # return the hidden states of all layers
-        # print('<BERT, GPU MiB:', memory_allocated() // (1024*1024)) # DEBUG
-        outputs = self.bert(subwords, attention_mask=bert_mask.float())  # float for XLNET
+            if subwords.shape[1] > 2 * self.bert.config.max_position_embeddings:
+                raise RuntimeError(f"Tokenized sequence is longer than twice the transformer can handle: "
+                                   f"({subwords.shape[1]} > {self.bert.config.max_position_embeddings})")
+            # split into two (FIXME: many):
+            max = self.bert.config.max_position_embeddings
+            subwords_1, subwords_2 = subwords[:,:max], subwords[:,-max:]
+            mask_1, mask_2 = bert_mask.float()[:,:max], bert_mask.float()[:,-max:]  # float for XLNET
+            outputs_1 = self.bert(subwords_1, attention_mask=mask_1)
+            outputs_2 = self.bert(subwords_2, attention_mask=mask_2)
+            full_len = subwords.shape[1]    # counting subwords
+            extra = full_len - max # initial part
+            lhs1, lhs2 = outputs_1[0], outputs_2[0]
+            lhs = torch.cat((lhs1[:,:extra], (lhs1[:,extra:] + lhs2[:,:-extra])/2, lhs2[:,-extra:]), dim=1)
+            po = None           # unused
+            if self.use_hidden_states:
+                hs1, hs2 = outputs_1[2], outputs_2[2]
+                # hs1: [b, max, hid] * (1 + layers)
+                # hs2: [b, max, hid] * (1 + layers)
+                # need to fill hs: [b, full_len, full_len] with hs1, hs2
+                dims = (batch_size, full_len, self.hidden_size)
+                hs = [torch.zeros(dims, device=hs1[0].device) for _ in range(len(hs1))]
+                for i in range(len(hs1)):
+                    hs[i][:,:max] = hs1[i][:]
+                    hs[i][:,extra:] = hs2[i][:]
+                    hs[i][:,extra:max] /= 2
+            else:
+                hs = None
+            if self.use_attentions:
+                ats1, ats2 = outputs_1[3], outputs_2[3]
+                # ats1: [b, h, max, max] * layers
+                # ats2: [b, h, max, max] * layers
+                # need to fill ats: [b, h, full_len, full_len] with ats1, sts2
+                dims = (batch_size, ats1[0].shape[1], full_len, full_len)
+                ats = [torch.zeros(dims, device=ats1[0].device) for _ in range(len(ats1))]
+                for i in range(len(ats1)):
+                    ats[i][:,:,:max,:max] = ats1[i][:,:]
+                    ats[i][:,:,extra:,extra:] = ats2[i][:,:]
+                    ats[i][:,:,extra:max,extra:max] /= 2
+            else:
+                ats = None
+            outputs = (lhs, po, hs, ats)
+        else:
+            outputs = self.bert(subwords, attention_mask=bert_mask.float()) # float for XLNET
         # print('BERT>, GPU MiB:', memory_allocated() // (1024*1024)) # DEBUG
         if self.use_hidden_states:
             bert = outputs[-2] if self.use_attentions else outputs[-1]
