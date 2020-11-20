@@ -75,9 +75,9 @@
       "default": "sequoia"
   },
   "German": {"alias": "de"},
-  "fr": {
+  "de": {
       "hdt": {
-	  "model": ""
+	  "model": "de_hdt.dbmdz-bert-base"
       },
       "default": "hdt"
   },
@@ -87,6 +87,8 @@
   "it": {
       "isdt": {
 	  "model": "it_isdt.dbmdz-xxl"
+	  "tokenizer": "is_isdt-tokenizer.pt",
+	  "mwt": "it_isdt-mwt-expander"
       },
       "default": "isdt"
   },

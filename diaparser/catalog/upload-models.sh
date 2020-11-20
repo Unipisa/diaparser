@@ -5,6 +5,11 @@
 # upload-models.sh TOKEN [RELEASE] [MODEL_DIR]
 #
 
+if [ $# -eq 0 ]; then
+    echo Usage: upload-models.sh TOKEN [RELEASE] [MODEL_DIR]
+    exit
+fi
+
 owner=Unipisa
 repo=diaparser
 token=$1
@@ -23,7 +28,8 @@ ACCEPT="Accept: application/vnd.github.v3+json"
 upload_asset () {
     local filename=$1
     local name=$2
-    curl --data-binary @"$filename" -sH "$AUTH" -H "Content-Type: application/octet-stream" $name
+    local asset="https://uploads.github.com/repos/$owner/$repo/releases/$relid/assets?name=$name"
+    curl --data-binary @"$filename" -sH "$AUTH" -H "Content-Type: application/octet-stream" $asset
 }
 
 # Get ID of the release
@@ -35,15 +41,15 @@ relid=$id
 # Delete catalog
 # Get ID of the catalog asset
 name=catalog-${version}.json
-id=
-eval $(curl -sH "$AUTH" $GH_REPO/releases/$relid/assets | grep -B2 '"name": "'$name'"' |head -1|tr : = | tr -d '" ,')
+id=eval $(curl -sH "$AUTH" $GH_REPO/releases/$relid/assets | grep -B2 '"name": "'$name'"' |head -1|tr : = | tr -d '" ,')
 [ "$id" ] || { echo "Error: Failed to get id for asset: $name"; }
 
 # Delete the old asset
-curl -X DELETE -H "$AUTH" -H "$ACCEPT" $GH_REPO/releases/assets/$id
+#curl -X DELETE -H "$AUTH" -H "$ACCEPT" $GH_REPO/releases/assets/$id
 
 # upload new catalog
 upload_asset ${MODEL_DIR}/$name $name
+echo Uploaded $name
 
 MODELS=(
     ar_padt.asafaya
@@ -77,15 +83,12 @@ MODELS=(
 # upload models
 for model in ${MODELS[@]}; do
     echo "Uploading $model..."
-    GH_ASSET="https://uploads.github.com/repos/$owner/$repo/releases/$relid/assets?name=$model"
     filename=$MODEL_DIR/$model/model
-    upload_asset $filename $GH_ASSET
+    upload_asset $filename $model
 done
 
 # ----------------------------------------------------------------------
 # Manage assets
-# Upload:
-# curl --data-binary @exp/it_isdt.dbmdz-xxl/model -H 'Authorization: token $TOKEN' -H 'Content-Type: application/octet-stream' https://uploads.github.com/repos/Unipisa/diaparser/releases/$relid/assets?name=it_isdt.dbmdz-xxl
 # List:
 # curl -X GET -H 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/Unipisa/diaparser/releases/$relid/assets
 # Delete:
