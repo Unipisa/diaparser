@@ -41,11 +41,11 @@ relid=$id
 # Delete catalog
 # Get ID of the catalog asset
 name=catalog-${version}.json
-id=eval $(curl -sH "$AUTH" $GH_REPO/releases/$relid/assets | grep -B2 '"name": "'$name'"' |head -1|tr : = | tr -d '" ,')
+eval $(curl -sH "$AUTH" $GH_REPO/releases/$relid/assets | grep -B2 '"name": "'$name'"' |head -1|tr : = | tr -d '" ,')
 [ "$id" ] || { echo "Error: Failed to get id for asset: $name"; }
 
 # Delete the old asset
-#curl -X DELETE -H "$AUTH" -H "$ACCEPT" $GH_REPO/releases/assets/$id
+curl -X DELETE -H "$AUTH" -H "$ACCEPT" $GH_REPO/releases/assets/$id
 
 # upload new catalog
 upload_asset ${MODEL_DIR}/$name $name

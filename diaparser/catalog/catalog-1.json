@@ -2,35 +2,35 @@
   "Arabic": {"alias": "ar"},
   "ar": {
       "padt": {
-	  "model": "ar_padt.asafaya"
+	  "parse": "ar_padt.asafaya"
       },
       "default": "padt"
   },
   "Bulgarian": {"alias": "bg"},
   "bg": {
       "btb": {
-	  "model": "bg_btb.DeepPavlov"
+	  "parse": "bg_btb.DeepPavlov"
       },
       "default": "btb"
   },
   "Catalan": {"alias": "ca"},
   "ca": {
       "ancora": {
-	  "model": "ca_ancora.mbert"
+	  "parse": "ca_ancora.mbert"
       },
       "default": "ancora"
   },
   "Czech": {"alias": "cs"},
   "cs": {
       "pdt": {
-	  "model": "cs_pdt.DeepPavlov"
+	  "parse": "cs_pdt.DeepPavlov"
       },
       "default": "pdt"
   },
   "Dutch": {"alias": "nl"},
   "nl": {
       "alpino": {
-	  "model": "nl_alpino.wietsedv"
+	  "parse": "nl_alpino.wietsedv"
       },
       "default": "alpino"
   },
@@ -39,45 +39,45 @@
   },
   "en": {
       "ewt": {
-	  "model": "en_ewt.electra-base"
+	  "parse": "en_ewt.electra-base"
       },
       "ptb": {
-	  "model": "en_ptb.electra-base"
+	  "parse": "en_ptb.electra-base"
       },
       "default": "ewt"
   },
   "Spanish": {"alias": "es"},
   "es": {
       "ancora": {
-	  "model": "es_ancora.mbert"
+	  "parse": "es_ancora.mbert"
       },
       "default": "ancora"
   },
   "Estonian": {"alias": "et"},
   "et": {
       "edt": {
-	  "model": "et_edt.TurkuNLP"
+	  "parse": "et_edt.TurkuNLP"
       },
       "default": "edt"
   },
   "Finnish": {"alias": "fi"},
   "fi": {
       "tdt": {
-	  "model": "fi_tdt.TurkuNLP"
+	  "parse": "fi_tdt.TurkuNLP"
       },
       "default": "tdt"
   },
   "French": {"alias": "fr"},
   "fr": {
       "sequoia": {
-	  "model": "fr_sequoia.camembert-large"
+	  "parse": "fr_sequoia.camembert-large"
       },
       "default": "sequoia"
   },
   "German": {"alias": "de"},
   "de": {
       "hdt": {
-	  "model": "de_hdt.dbmdz-bert-base"
+	  "parse": "de_hdt.dbmdz-bert-base"
       },
       "default": "hdt"
   },
@@ -86,18 +86,18 @@
   },
   "it": {
       "isdt": {
-	  "model": "it_isdt.dbmdz-xxl"
-	  "tokenizer": "is_isdt-tokenizer.pt",
-	  "mwt": "it_isdt-mwt-expander"
+	  "parse": "it_isdt.dbmdz-xxl",
+	  "tokenize": "it_isdt-tokenizer",
+	  "mwt": "it_isdt-mwt"
       },
       "default": "isdt"
   },
   "Japanese": {
     "alias": "jp"
   },
-  "ja:" {
+  "ja": {
       "gsd": {
-	  "model": "cl-tohoku-bert",
+	  "parse": "cl-tohoku-bert",
 	  "requirements": "fugashi, ipadic"
 	  },
       "default": "gsd"
@@ -105,77 +105,77 @@
   "Latin": {"alias": "la"},
   "la": {
       "ittb_llct": {
-	  "model": "la_ittb_llct.mbert"
+	  "parse": "la_ittb_llct.mbert"
       },
       "default": "ittb_llct"
   },
   "Lithuanian": {"alias": "lt"},
   "lt": {
       "alksnis": {
-	  "model": "lt_alksnis.wietsedve"
+	  "parse": "lt_alksnis.wietsedve"
       },
       "default": "alksnis"
   },
   "Latvian": {"alias": "lv"},
   "lv": {
       "lvtb": {
-	  "model": "lv_lvtb.mbert"
+	  "parse": "lv_lvtb.mbert"
       },
       "default": "lvtb"
   },
   "Norwegian": {"alias": "no"},
   "no": {
       "nynorsk": {
-	  "model": "no_nynorsk.mbert"
+	  "parse": "no_nynorsk.mbert"
       },
       "default": "nynorsk"
   },
   "Polish": {"alias": "pl"},
   "pl": {
       "pdb": {
-	  "model": "pl_pdb.dkleczek"
+	  "parse": "pl_pdb.dkleczek"
       },
       "default": "pdb"
   },
   "Spanish": {"alias": "es"},
   "es": {
       "ancora": {
-	  "model": "es_ancora.mbert"
+	  "parse": "es_ancora.mbert"
       },
       "default": "ancora"
   },
   "Romanian": {"alias": "ro"},
   "ro": {
       "rrt": {
-	  "model": "ro_rrt.mbert"
+	  "parse": "ro_rrt.mbert"
       },
       "default": "rrt"
   },
   "Slovak": {"alias": "sk"},
   "sk": {
       "snk": {
-	  "model": "sk_snk.KB"
+	  "parse": "sk_snk.KB"
       },
       "default": "snk"
   },
   "Tamil": {"alias": "ta"},
   "ta": {
       "ttb": {
-	  "model": "ta_ttb.mbert"
+	  "parse": "ta_ttb.mbert"
       },
       "default": "ttb"
   },
   "Ukrainian": {"alias": "uk"},
   "uk": {
       "iu": {
-	  "model": "uk_iu.TurkuNLP"
+	  "parse": "uk_iu.TurkuNLP"
       },
       "default": "iu"
   },
   "Chinese": {"alias": "zh"},
   "zh": {
       "ctb7": {
-	  "model": "zh_ctb7.electra-base"
+	  "parse": "zh_ctb7.electra-base"
       },
       "default": "zh"
   }

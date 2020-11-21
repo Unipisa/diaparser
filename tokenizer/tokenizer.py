@@ -4,6 +4,7 @@ import torch
 import json
 import os
 from contextlib import contextmanager
+from diaparser.catalog import available_processors, download_processors
 
 # reference https://github.com/stanfordnlp/stanza/blob/master/stanza/utils/prepare_tokenizer_data.py
 
@@ -18,14 +19,25 @@ class Tokenizer:
 
     def __init__(self, lang, dir=os.path.expanduser('~/.cache/diaparser'), verbose=True):
         dir += '/tokenizer'
-        processors = 'tokenize,mwt'
-        try:
+        # check for custom processors
+        avail_processors = available_processors(lang, dir)
+        avail_preprocessors = avail_processors.keys() & ('tokenize', 'mwt')
+        if avail_preprocessors:
+            processors = {p: avail_processors[p] for p in avail_preprocessors}
+            cached_paths = download_processors(lang, processors, dir)
+            processors = ','.join(avail_preprocessors)
+        else:
+            cached_paths = {}
+            processors='tokenize'
             stanza.download(lang, dir=dir, processors=processors, verbose=verbose)
-        except:
-            processors = 'tokenize'
-            stanza.download(lang, dir=dir, processors=processors, verbose=verbose)
+            try:
+                stanza.download(lang, dir=dir, processors='mwt', verbose=verbose)
+                processors += ',mwt'
+            except:
+                pass
         use_gpu = torch.cuda.is_available()
-        self.pipeline = stanza.Pipeline(lang, dir=dir, processors=processors, verbose=verbose, use_gpu=use_gpu)
+        self.pipeline = stanza.Pipeline(lang, dir=dir, processors=processors, verbose=verbose,
+                                        use_gpu=use_gpu, **cached_paths)
 
     def predict(self, text):
         return self.pipeline(text).sentences

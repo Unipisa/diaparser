@@ -150,8 +150,8 @@ class Parser():
         self.transform.eval()
         if args.prob:
             self.transform.append(Field('probs'))
-        if args.text:
-            self.transform.reader = Tokenizer(args.text, dir=args.cache_dir).reader()
+        if args.lang:
+            self.transform.reader = Tokenizer(args.lang, dir=args.cache_dir).reader()
 
         logger.info("Loading the data")
         dataset = Dataset(self.transform, data)
