@@ -250,6 +250,26 @@ class SubwordField(Field):
             This is used for truncating the subword pieces that exceed the length.
             To save the memory, the final length will be the smaller value
             between the max length of subword pieces in a batch and `fix_len`.
+
+    Examples:
+        >>> from transformers import AutoTokenizer
+        >>> tokenizer = AutoTokenizer.from_pretrained('bert-base-cased')
+        >>> field = SubwordField('bert',
+                                 pad=tokenizer.pad_token,
+                                 unk=tokenizer.unk_token,
+                                 bos=tokenizer.cls_token,
+                                 eos=tokenizer.sep_token,
+                                 fix_len=20,
+                                 tokenize=tokenizer.tokenize)
+        >>> field.vocab = tokenizer.get_vocab()  # no need to re-build the vocab
+        >>> field.transform([['This', 'field', 'performs', 'token-level', 'tokenization']])[0]
+        tensor([[  101,     0,     0],
+                [ 1188,     0,     0],
+                [ 1768,     0,     0],
+                [10383,     0,     0],
+                [22559,   118,  1634],
+                [22559,  2734,     0],
+                [  102,     0,     0]])
     """
 
     def __init__(self, *args, fix_len=0, **kwargs):
@@ -284,7 +304,6 @@ class SubwordField(Field):
             self.fix_len = max(len(token)
                                for seq in sequences
                                for token in seq)
-        # seqs = sequences               # DEBUG
         if self.use_vocab:
             sequences = [[[self.vocab[i] for i in token] for token in seq]
                          for seq in sequences]
@@ -292,7 +311,6 @@ class SubwordField(Field):
             sequences = [[[self.bos_index]] + seq for seq in sequences]
         if self.eos:
             sequences = [seq + [[self.eos_index]] for seq in sequences]
-        # print('SENT-ENCODED:', seqs[0], sequences[0]) # DEBUG
         lens = [min(self.fix_len, max(len(ids) for ids in seq)) for seq in sequences]
         sequences = [pad([torch.tensor(ids[:i]) for ids in seq], self.pad_index, i)
                      for i, seq in zip(lens, sequences)]
@@ -368,26 +386,18 @@ class ChartField(Field):
     Field dealing with constituency trees.
 
     This field receives sequences of binarized trees factorized in pre-order,
-    and returns two tensors representing the bracketing trees and labels on each constituent respectively.
+    and returns charts filled with labels on each constituent.
 
     Examples:
         >>> sequence = [(0, 5, 'S'), (0, 4, 'S|<>'), (0, 1, 'NP'), (1, 4, 'VP'), (1, 2, 'VP|<>'),
                         (2, 4, 'S+VP'), (2, 3, 'VP|<>'), (3, 4, 'NP'), (4, 5, 'S|<>')]
-        >>> spans, labels = field.transform([sequence])[0]  # this example field is built from ptb
-        >>> spans
-        tensor([[False,  True, False, False,  True,  True],
-                [False, False,  True, False,  True, False],
-                [False, False, False,  True,  True, False],
-                [False, False, False, False,  True, False],
-                [False, False, False, False, False,  True],
-                [False, False, False, False, False, False]])
-        >>> labels
-        tensor([[  0,  37,   0,   0, 107,  79],
-                [  0,   0, 120,   0, 112,   0],
-                [  0,   0,   0, 120,  86,   0],
-                [  0,   0,   0,   0,  37,   0],
-                [  0,   0,   0,   0,   0, 107],
-                [  0,   0,   0,   0,   0,   0]])
+        >>> field.transform([sequence])[0]
+        tensor([[ -1,  37,  -1,  -1, 107,  79],
+                [ -1,  -1, 120,  -1, 112,  -1],
+                [ -1,  -1,  -1, 120,  86,  -1],
+                [ -1,  -1,  -1,  -1,  37,  -1],
+                [ -1,  -1,  -1,  -1,  -1, 107],
+                [ -1,  -1,  -1,  -1,  -1,  -1]])
     """
 
     def build(self, dataset, min_freq=1):
@@ -398,20 +408,12 @@ class ChartField(Field):
         self.vocab = Vocab(counter, min_freq, self.specials, self.unk_index)
 
     def transform(self, sequences):
-        sequences = [self.preprocess(seq) for seq in sequences]
-        spans, labels = [], []
-
+        charts = []
         for sequence in sequences:
+            sequence = self.preprocess(sequence)
             seq_len = sequence[0][1] + 1
-            span_chart = torch.full((seq_len, seq_len), self.pad_index, dtype=torch.bool)
-            label_chart = torch.full((seq_len, seq_len), self.pad_index, dtype=torch.long)
+            chart = torch.full((seq_len, seq_len), -1, dtype=torch.long)
             for i, j, label in sequence:
-                span_chart[i, j] = 1
-                label_chart[i, j] = self.vocab[label]
-            spans.append(span_chart)
-            labels.append(label_chart)
-
-        return list(zip(spans, labels))
-
-    def compose(self, sequences):
-        return [pad(i).to(self.device) for i in zip(*sequences)]
+                chart[i, j] = self.vocab[label]
+            charts.append(chart)
+        return charts

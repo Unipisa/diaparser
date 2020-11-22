@@ -22,7 +22,7 @@ def parse(argparser):
 
     torch.set_num_threads(args.threads)
     torch.manual_seed(args.seed)
-    init_device(args.device)
+    init_device(args.device, args.local_rank)
     init_logger(logger, f"{args.path}.{args.mode}.log", verbose=args.verbose)
     logger.info('Configuration:\n' + str(args))
 

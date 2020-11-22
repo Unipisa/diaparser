@@ -1,23 +1,17 @@
 # -*- coding: utf-8 -*-
 
+import torch
 import torch.nn as nn
 from torch.nn.utils.rnn import pad_sequence
 from transformers import AutoModel, AutoConfig
-import torch
-# from torch.cuda import memory_allocated
 
 from .scalar_mix import ScalarMix
 from .dropout import TokenDropout
-
-from ..utils.logging import get_logger
-
-logger = get_logger(__name__)
-
+# from torch.cuda import memory_allocated
 
 class BertEmbedding(nn.Module):
     r"""
     A module that directly utilizes the pretrained models in `transformers`_ to produce BERT representations.
-
     While mainly tailored to provide input preparation and post-processing for the BERT model,
     it is also compatible with other pretrained language models like XLNet, RoBERTa and ELECTRA, etc.
 
@@ -30,10 +24,11 @@ class BertEmbedding(nn.Module):
         n_out (int):
             The requested size of the embeddings.
             If 0, uses the size of the pretrained embedding model.
+        stride (int):
+            A sequence longer than the limited max length will be splitted into several small pieces
+            with a window size of ``stride``. Default: 5.
         pad_index (int):
             The index of the padding token in the BERT vocabulary. Default: 0.
-        max_len (int):
-            Sequences should not exceed the specfied max length, in word pieces. Default: 512.
         dropout (float):
             The dropout ratio of BERT layers. Default: 0.
             This value will be passed into the :class:`ScalarMix` layer.
@@ -45,7 +40,7 @@ class BertEmbedding(nn.Module):
         https://github.com/huggingface/transformers
     """
 
-    def __init__(self, model, n_layers, n_out, pad_index=0, max_len=512,  dropout=0, requires_grad=False,
+    def __init__(self, model, n_layers, n_out, stride=5, pad_index=0, dropout=0, requires_grad=False,
                  mask_token_id=0, token_dropout=0.0, mix_dropout=0.0,
                  use_hidden_states=True, use_attentions=False,
                  attention_head=0, attention_layer=8):
@@ -55,7 +50,6 @@ class BertEmbedding(nn.Module):
             If 0, use all layers.
         :param n_out (int): the requested size of the embeddings.
             If 0, use the size of the pretrained embedding model
-        :param max_len (int): Sequences should not exceed the specfied max length, in word pieces. Default: 512.
         :param requires_grad (bool): whether to fine tune the embeddings.
         :param mask_token_id (int): the value of the [MASK] token to use for dropped tokens.
         :param dropout (float): drop layers with this probability when comuting their
@@ -72,16 +66,18 @@ class BertEmbedding(nn.Module):
         config = AutoConfig.from_pretrained(model, output_hidden_states=True,
                                             output_attentions=use_attentions)
         self.bert = AutoModel.from_pretrained(model, config=config)
-        self.model = model
         self.bert.requires_grad_(requires_grad)
+
+        self.model = model
         self.n_layers = n_layers or self.bert.config.num_hidden_layers
         self.hidden_size = self.bert.config.hidden_size
         self.n_out = n_out or self.hidden_size
+        self.stride = stride
         self.pad_index = self.bert.config.pad_token_id
-        self.max_len = max_len
         self.mix_dropout = mix_dropout
         self.token_dropout = token_dropout
         self.requires_grad = requires_grad
+        self.max_len = self.bert.config.max_position_embeddings
         self.use_hidden_states = use_hidden_states
         self.mask_token_id = mask_token_id
         self.use_attentions = use_attentions
@@ -96,8 +92,7 @@ class BertEmbedding(nn.Module):
     def __repr__(self):
         s = f"{self.model}, n_layers={self.n_layers}, n_out={self.n_out}"
         s += f", pad_index={self.pad_index}"
-        if self.max_len is not None:
-            s += f", max_len={self.max_len}"
+        s += f", max_len={self.max_len}"
         if self.mix_dropout > 0:
             s += f", mix_dropout={self.mix_dropout}"
         if self.use_attentions:
@@ -114,7 +109,6 @@ class BertEmbedding(nn.Module):
         r"""
         Args:
             subwords (~torch.Tensor): ``[batch_size, seq_len, fix_len]``.
-
         Returns:
             ~torch.Tensor:
                 BERT embeddings of shape ``[batch_size, seq_len, n_out]``.
@@ -122,9 +116,6 @@ class BertEmbedding(nn.Module):
         batch_size, seq_len, fix_len = subwords.shape
         if self.token_dropout:
             subwords = self.token_dropout(subwords)
-        if self.max_len and seq_len > self.max_len:
-            raise RuntimeError(f"Token indices sequence length is longer than the specified max length "
-                               f"({seq_len} > {self.max_len})")
 
         mask = subwords.ne(self.pad_index)
         lens = mask.sum((1, 2))
@@ -140,61 +131,21 @@ class BertEmbedding(nn.Module):
         # - hidden_states (optional): [[batch_size, seq_length, hidden_size]] * (1 + layers)
         # - attentions (optional): [[batch_size, num_heads, seq_length, seq_length]] * layers
         # print('<BERT, GPU MiB:', memory_allocated() // (1024*1024)) # DEBUG
-        if subwords.shape[1] > self.bert.config.max_position_embeddings:
-            logger.warn(f"Tokenized sequence is longer than the transformer can handle: "
-                        f"({subwords.shape[1]} > {self.bert.config.max_position_embeddings})")
-            if subwords.shape[1] > 2 * self.bert.config.max_position_embeddings:
-                raise RuntimeError(f"Tokenized sequence is longer than twice the transformer can handle: "
-                                   f"({subwords.shape[1]} > {self.bert.config.max_position_embeddings})")
-            # split into two (FIXME: many):
-            max = self.bert.config.max_position_embeddings
-            subwords_1, subwords_2 = subwords[:,:max], subwords[:,-max:]
-            mask_1, mask_2 = bert_mask.float()[:,:max], bert_mask.float()[:,-max:]  # float for XLNET
-            outputs_1 = self.bert(subwords_1, attention_mask=mask_1)
-            outputs_2 = self.bert(subwords_2, attention_mask=mask_2)
-            full_len = subwords.shape[1]    # counting subwords
-            extra = full_len - max # initial part
-            lhs1, lhs2 = outputs_1[0], outputs_2[0]
-            lhs = torch.cat((lhs1[:,:extra], (lhs1[:,extra:] + lhs2[:,:-extra])/2, lhs2[:,-extra:]), dim=1)
-            po = None           # unused
-            if self.use_hidden_states:
-                hs1, hs2 = outputs_1[2], outputs_2[2]
-                # hs1: [b, max, hid] * (1 + layers)
-                # hs2: [b, max, hid] * (1 + layers)
-                # need to fill hs: [b, full_len, full_len] with hs1, hs2
-                dims = (batch_size, full_len, self.hidden_size)
-                hs = [torch.zeros(dims, device=hs1[0].device) for _ in range(len(hs1))]
-                for i in range(len(hs1)):
-                    hs[i][:,:max] = hs1[i][:]
-                    hs[i][:,extra:] = hs2[i][:]
-                    hs[i][:,extra:max] /= 2
-            else:
-                hs = None
-            if self.use_attentions:
-                ats1, ats2 = outputs_1[3], outputs_2[3]
-                # ats1: [b, h, max, max] * layers
-                # ats2: [b, h, max, max] * layers
-                # need to fill ats: [b, h, full_len, full_len] with ats1, sts2
-                dims = (batch_size, ats1[0].shape[1], full_len, full_len)
-                ats = [torch.zeros(dims, device=ats1[0].device) for _ in range(len(ats1))]
-                for i in range(len(ats1)):
-                    ats[i][:,:,:max,:max] = ats1[i][:,:]
-                    ats[i][:,:,extra:,extra:] = ats2[i][:,:]
-                    ats[i][:,:,extra:max,extra:max] /= 2
-            else:
-                ats = None
-            outputs = (lhs, po, hs, ats)
-        else:
-            outputs = self.bert(subwords, attention_mask=bert_mask.float()) # float for XLNET
+        outputs = self.bert(subwords[:, :self.max_len], attention_mask=bert_mask[:, :self.max_len].float())
         # print('BERT>, GPU MiB:', memory_allocated() // (1024*1024)) # DEBUG
         if self.use_hidden_states:
-            bert = outputs[-2] if self.use_attentions else outputs[-1]
+            bert_idx = -2 if self.use_attentions else -1
+            bert = outputs[bert_idx]
             # [n_layers, batch_size, n_subwords, hidden_size]
             bert = bert[-self.n_layers:]
             # [batch_size, n_subwords, hidden_size]
             bert = self.scalar_mix(bert)
+            for i in range(self.stride, (subwords.shape[1]-self.max_len+self.stride-1)//self.stride*self.stride+1, self.stride):
+                part = self.bert(subwords[:, i:i+self.max_len], attention_mask=bert_mask[:, i:i+self.max_len].float())[bert_idx]
+                bert = torch.cat((bert, self.scalar_mix(part[-self.n_layers:])[:, self.max_len-self.stride:]), 1)
         else:
             bert = outputs[0]
+        
         # [batch_size, n_subwords]
         bert_lens = mask.sum(-1)
         bert_lens = bert_lens.masked_fill_(bert_lens.eq(0), 1)

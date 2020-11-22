@@ -51,6 +51,7 @@ class Parser():
             epochs (int): number of epochs to train: Default: 5000.
             patience (int): early stop after these many epochs. Default: 100.
         """
+
         args = self.args.update(locals())
         init_logger(logger, verbose=args.verbose)
 
@@ -165,7 +166,7 @@ class Parser():
 
         for name, value in preds.items():
             setattr(dataset, name, value)
-        if pred is not None:
+        if pred is not None and is_master():
             logger.info(f"Saving predicted results to {pred}")
             self.transform.save(pred, dataset.sentences)
         logger.info(f"{elapsed}s elapsed, {len(dataset) / elapsed.total_seconds():.2f} Sents/s")
