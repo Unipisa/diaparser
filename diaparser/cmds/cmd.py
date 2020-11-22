@@ -14,6 +14,7 @@ def parse(argparser):
     argparser.add_argument('--seed', '-s', default=1, type=int, help='seed for generating random numbers')
     argparser.add_argument('--threads', '-t', default=16, type=int, help='max num of threads')
     argparser.add_argument('--batch-size', default=5000, type=int, help='batch size')
+    argparser.add_argument("--local_rank", type=int, default=-1, help='node rank for distributed training')
     argparser.add_argument('--quiet', '-q', dest='verbose', action='store_false',
                            help='suppress verbose logs')
     args, unknown = argparser.parse_known_args()
