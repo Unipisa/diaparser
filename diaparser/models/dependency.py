@@ -236,7 +236,7 @@ class BiaffineDependencyModel(nn.Module):
         batch_size, seq_len = whole_words.shape
         # get the mask and lengths of given batch
         mask = whole_words.ne(self.feat_embed.pad_index)
-        lens = mask.sum(dim=1)
+        lens = mask.sum(dim=1).cpu() # BUG fix: https://github.com/pytorch/pytorch/issues/43227
         # feat_embed: [batch_size, seq_len, n_feat_embed]
         # attn: [batch_size, seq_len, seq_len]
         feat_embed, attn = self.feat_embed(feats)
@@ -258,8 +258,6 @@ class BiaffineDependencyModel(nn.Module):
             embed = self.embed_dropout(feat_embed)[0]
 
         if self.lstm:
-            # if not all(lens):              # DEBUG
-            #     print('PAD:', self.feat_embed.pad_index, words[0], feats[0], embed, lens) # DEBUG
             x = pack_padded_sequence(embed, lens, True, False)
             x, _ = self.lstm(x)
             x, _ = pad_packed_sequence(x, True, total_length=seq_len)
