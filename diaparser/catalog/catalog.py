@@ -17,8 +17,6 @@ logger = logging.getLogger('diaparser')
 
 RELEASE = 'v1.0'
 DOWNLOAD_URL = f'https://github.com/Unipisa/diaparser/releases/download/{RELEASE}'
-UPLOAD_URL = f'https://uploads.github.com/repos/Unipisa/diaparser/releases/{RELEASE}/assets'
-UPLOAD_COMMAND = f'curl -X POST -H "Content-Type: application/zip" {UPLOAD_URL}'
 
 DEFAULT_CATALOG_URL = DOWNLOAD_URL
 DEFAULT_CATALOG_VERSION = __models_version__
