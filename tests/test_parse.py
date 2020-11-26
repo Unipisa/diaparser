@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import diaparser
-from diaparser import Parser
+from diaparser.parsers import Parser
 
 model = 'en_ewt-electra-base'
 
@@ -41,6 +41,6 @@ def test_bert():
         At the end of the day, 251.2 million shares were traded.
         The Dow Jones industrials closed at 2569.26.
         The Dow's decline was second in point terms only to the 508-point Black Monday crash that occurred Oct. 19, 1987.
-        ''')
+        '''
     parser = Parser.load(model)
     parser.predict(sentence, lang='en', prob=True)
