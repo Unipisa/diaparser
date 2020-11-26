@@ -1,4 +1,4 @@
-diaparser.models
+Models
 ==================
 
 .. currentmodule:: diaparser.models

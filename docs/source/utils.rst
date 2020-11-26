@@ -1,4 +1,4 @@
-diaparser.utils
+Utils
 ==================
 
 .. currentmodule:: diaparser.utils

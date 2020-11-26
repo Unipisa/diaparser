@@ -1,5 +1,5 @@
-diaparser.modules
-==================
+Modules
+=======
 
 .. currentmodule:: diaparser.modules
 
@@ -7,6 +7,9 @@ Affine
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: Biaffine
+    :members:
+
+.. autoclass:: Triaffine
     :members:
 
 BertEmbedding
