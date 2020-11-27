@@ -2,8 +2,6 @@
 
 import argparse
 
-# import pdb;pdb.set_trace()      # DEBUG
-
 from ..parsers import BiaffineDependencyParser
 from .cmd import parse
 import os

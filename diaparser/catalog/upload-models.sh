@@ -13,7 +13,7 @@ fi
 owner=Unipisa
 repo=diaparser
 token=$1
-tag=${2:-v1.0}
+tag=${2:-v1.1}
 version=1
 
 MODEL_DIR=${3:-../../exp}
