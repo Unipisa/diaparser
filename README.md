@@ -141,7 +141,7 @@ The numbers in bold represent state-of-the-art values.
       <td><code>no_nynorsk.mbert</code></td>
       <td align="center"><b>92.50</b></td>
       <td align="center"><b>90.13</b></td>
-      <td align="right"></td>
+      <td align="right">185</td>
     </tr>
     <tr>
       <td>Romanian</td>
