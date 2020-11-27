@@ -324,7 +324,7 @@ class CoNLL(Transform):
         """
 
         if isinstance(data, str):
-            if not hasattr(self, 'reader'): self.reader = open # back compatibility
+            if not hasattr(self, 'reader'): self.reader = open  # back compatibility
             with self.reader(data) as f:
                 lines = [line.strip() for line in f]
         else:
@@ -687,4 +687,3 @@ class TreeSentence(Sentence):
 
     def __repr__(self):
         return self.values[-2].pformat(1000000)
-

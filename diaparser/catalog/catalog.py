@@ -17,8 +17,6 @@ logger = logging.getLogger('diaparser')
 
 RELEASE = 'v1.0'
 DOWNLOAD_URL = f'https://github.com/Unipisa/diaparser/releases/download/{RELEASE}'
-UPLOAD_URL = f'https://uploads.github.com/repos/Unipisa/diaparser/releases/{RELEASE}/assets'
-UPLOAD_COMMAND = f'curl -X POST -H "Content-Type: application/zip" {UPLOAD_URL}'
 
 DEFAULT_CATALOG_URL = DOWNLOAD_URL
 DEFAULT_CATALOG_VERSION = __models_version__
@@ -27,6 +25,7 @@ DEFAULT_CATALOG_VERSION = __models_version__
 HOME_DIR = str(Path.home())
 CACHE_DIR = os.path.join(HOME_DIR, '.cache/diaparser')
 
+
 def get_md5(path):
     """
     Get the MD5 value of a path.
@@ -34,11 +33,13 @@ def get_md5(path):
     data = open(path, 'rb').read()
     return hashlib.md5(data).hexdigest()
 
+
 def file_exists(path, md5):
     """
     Check if the file at `path` exists and match the provided md5 value.
     """
     return os.path.exists(path) and get_md5(path) == md5
+
 
 def download_file(url, path):
     """
@@ -58,6 +59,7 @@ def download_file(url, path):
                     f.flush()
                     pbar.update(len(chunk))
 
+
 def request_file(url, path, md5=None):
     """
     A complete wrapper over download_file() that also make sure the directory of
@@ -75,6 +77,7 @@ def request_file(url, path, md5=None):
     download_file(url, path)
     assert(not md5 or file_exists(path, md5))
 
+
 def url_ok(url):
     """
     Checks that a given URL is reachable.
@@ -82,6 +85,34 @@ def url_ok(url):
     :rtype: bool
     """
     return requests.head(url).ok
+
+
+def available_models(lang, dir, catalog_url, catalog_version):
+    """Download list of available models for :param lang:."""
+
+    logger.debug('Downloading catalog file...')
+    # make request
+    catalog_path = os.path.join(dir, 'catalog.json')
+    request_file(
+        f'{catalog_url}/catalog-{catalog_version}.json',
+        catalog_path)
+    # unpack results
+    try:
+        catalog = json.load(open(catalog_path))
+    except:
+        raise Exception(
+            'Cannot load model catalog. Please check your network connection, '
+            'or provided resource URL and resource version.'
+        )
+    if lang not in catalog:
+        raise Exception(f'Unsupported language: {lang}.')
+    models = catalog[lang]
+    if 'alias' in models:
+        alias = models['alias']
+        logger.info(f'"{alias}" is an alias for "{lang}"')
+        corpora = models[alias]
+    return models
+
 
 def select(name=None, lang='en', corpus=None, bert=None,
            dir=CACHE_DIR,
@@ -111,43 +142,58 @@ def select(name=None, lang='en', corpus=None, bert=None,
     if url_ok(url):
         return url
 
-    # Download catalog.json to obtain latest packages.
-    logger.debug('Downloading catalog file...')
-    # make request
-    catalog_path = os.path.join(dir, 'catalog.json')
-    request_file(
-        f'{catalog_url}/catalog-{catalog_version}.json',
-        catalog_path)
-    # unpack results
-    try:
-        models = json.load(open(catalog_path))
-    except:
-        raise Exception(
-            f'Cannot load model list. Please check your network connection, '
-            f'or provided resource url and resource version.'
-        )
-    if lang not in models:
-        raise Exception(f'Unsupported language: {lang}.')
-    corpora = models[lang]
-    if 'alias' in corpora:
-        alias = corpora['alias']
-        logger.info(f'"{alias}" is an alias for "{lang}"')
-        corpora = models[alias]
-    if corpus in corpora:
-        model = corpora[corpus].get('model', None)
-        if model:
-            return  f'{catalog_url}/model'
-    if 'default' in corpora:
-        logger.info(f'Using {corpora["default"]} as corpus for {lang}')
-        corpus = lang["default"]
-        model = corpora[corpus].get('model', None)
-        if model:
-            return  f'{catalog_url}/model'
+    models = available_models(lang, dir, catalog_url, catalog_version)
+    
+    if corpus not in models:
+        logger.info(f'Using {models["default"]} as corpus for {lang}')
+        corpus = models.get("default", None)
+    model = models[corpus].get('parse', None) if corpus in models else None
+    if model:
+        return f'{catalog_url}/{model}'
     return None
+
+
+def available_processors(lang='en', corpus=None,
+                         dir=CACHE_DIR,
+                         verbose=None,
+                         catalog_url=DEFAULT_CATALOG_URL,
+                         catalog_version=DEFAULT_CATALOG_VERSION,
+                         **kwargs):
+    """
+    Determines which processors (parse, tokenize, mwt) are available.
+    If just `lang` is specifiled, it selects the default corpus for the languagae.
+    If `lang` and `corpus` are specified, it returns the model for the given language/corpus pair.
+    Args:
+        lang (str): the language of the model.
+        corpus (str): the corpus for the chosen language.
+    Returns:
+        dict of {'tokenize': tok_url, 'mwt': mwt_url} from where to download the preprocessors models.
+    """
+    models = available_models(lang, dir, catalog_url, catalog_version)
+    if corpus not in models:
+        logger.info(f'Using {models["default"]} as corpus for {lang}')
+        corpus = models.get('default', None)
+    return models.get(corpus, {})
+
+
+def download_processors(lang, processors, dir,
+                        download_url=DOWNLOAD_URL):
+    paths = {}
+    for proc,model in processors.items():
+        try:
+            path = os.path.join(dir, lang, proc, f'{model}.pt')
+            request_file(f'{download_url}/{model}.pt', path)
+            paths[proc + '_model_path'] = path
+        except KeyError as e:
+                raise Exception(
+                    f'Cannot find the following processor and model name combination: '
+                    f'{proc}, {model}. Please check if you have provided the correct model name.'
+                ) from e
+    return paths
 
 
 def upload(path, owner='Unipisa', repo='diaparser', version='v1.0', token=''):
     name = os.path.basename(path)
-    GH_ASSET=f"https://uploads.github.com/repos/{owner}/{repo}/releases/{version}/assets?name={name}"
+    GH_ASSET = f"https://uploads.github.com/repos/{owner}/{repo}/releases/{version}/assets?name={name}"
     curl = f'curl --data-binary @"{path}" -H "Authorization: token {token}" -H "Content-Type: application/zip" {GH_ASSET}'
     subprocess.run(curl.split())

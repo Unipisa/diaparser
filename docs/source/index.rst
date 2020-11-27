@@ -5,17 +5,17 @@
 
 parser
 =================================
-The :mod:`diaparser` package provides a state-of-the-art dependency parser based on the Biaffine Parser architecture.
+The :mod:`diaparser` package provides a state-of-the-art dependency parser based on the Biaffine Parser architecture and exploiting attentions from transformes..
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents
 
    self
-   diaparser.parsers <parsers>
-   diaparser.models <models>
-   diaparser.modules <modules>
-   diaparser.utils <utils>
+   parsers
+   models
+   modules
+   utils
    tokenizer.tokenizer <tokenizer>
 
 Indices and tables

@@ -2,13 +2,13 @@
 
 import torch
 import torch.nn as nn
-from ..modules import MLP, BertEmbedding, Biaffine, BiLSTM, CharLSTM
+from ..modules import MLP, BertEmbedding, Biaffine, LSTM, CharLSTM
 from ..modules.dropout import IndependentDropout, SharedDropout
 from ..utils.config import Config
 from ..utils.alg import eisner, mst
 from ..utils.transform import CoNLL
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
-from typing import Dict, Optional, Tuple, Any, List
+from typing import Tuple
 
 
 class BiaffineDependencyModel(nn.Module):
@@ -147,9 +147,10 @@ class BiaffineDependencyModel(nn.Module):
                                             use_hidden_states=args.use_hidden_states,
                                             use_attentions=args.use_attentions,
                                             attention_layer=args.attention_layer)
-            #args.n_mlp_arc = self.feat_embed.bert.config.max_position_embeddings
-            args.n_feat_embed = self.feat_embed.n_out # taken from the model
-            args.n_bert_layers = self.feat_embed.n_layers # taken from the model
+            # Setting this requires rebuilding models:
+            # args.n_mlp_arc = self.feat_embed.bert.config.max_position_embeddings
+            args.n_feat_embed = self.feat_embed.n_out  # taken from the model
+            args.n_bert_layers = self.feat_embed.n_layers  # taken from the model
         elif args.feat == 'tag':
             self.feat_embed = nn.Embedding(num_embeddings=args.n_feats,
                                            embedding_dim=args.n_feat_embed)
@@ -159,10 +160,11 @@ class BiaffineDependencyModel(nn.Module):
 
         if args.n_lstm_layers:
             # the lstm layer
-            self.lstm = BiLSTM(input_size=args.n_word_embed+args.n_feat_embed,
-                               hidden_size=args.n_lstm_hidden,
-                               num_layers=args.n_lstm_layers,
-                               dropout=args.lstm_dropout)
+            self.lstm = LSTM(input_size=args.n_word_embed+args.n_feat_embed,
+                             hidden_size=args.n_lstm_hidden,
+                             num_layers=args.n_lstm_layers,
+                             bidirectional=True,
+                             dropout=args.lstm_dropout)
             self.lstm_dropout = SharedDropout(p=args.lstm_dropout)
             mlp_input_size = args.n_lstm_hidden*2
         else:
@@ -198,7 +200,6 @@ class BiaffineDependencyModel(nn.Module):
 
         self.criterion = nn.CrossEntropyLoss()
 
-
     def extra_repr(self):
         total_params = sum(p.numel() for p in self.parameters())
         trainable_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
@@ -206,13 +207,11 @@ class BiaffineDependencyModel(nn.Module):
             f"Trainable parameters: {trainable_params}\n" \
             f"Features: {self.args.n_feats}"
 
-
     def load_pretrained(self, embed=None):
         if embed is not None:
             self.pretrained = nn.Embedding.from_pretrained(embed)
             nn.init.zeros_(self.word_embed.weight)
         return self
-
 
     def forward(self, words: torch.Tensor,
                 feats: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
@@ -233,11 +232,11 @@ class BiaffineDependencyModel(nn.Module):
         """
 
         # words, feats are the first two items in the batch from DataLoader.__iter__()
-        whole_words = feats[:,:,0] # drop subpiece dimension
+        whole_words = feats[:, :, 0]  # drop subpiece dimension
         batch_size, seq_len = whole_words.shape
         # get the mask and lengths of given batch
         mask = whole_words.ne(self.feat_embed.pad_index)
-        lens = mask.sum(dim=1)
+        lens = mask.sum(dim=1).cpu() # BUG fix: https://github.com/pytorch/pytorch/issues/43227
         # feat_embed: [batch_size, seq_len, n_feat_embed]
         # attn: [batch_size, seq_len, seq_len]
         feat_embed, attn = self.feat_embed(feats)
@@ -259,8 +258,6 @@ class BiaffineDependencyModel(nn.Module):
             embed = self.embed_dropout(feat_embed)[0]
 
         if self.lstm:
-            # if not all(lens):              # DEBUG
-            #     print('PAD:', self.feat_embed.pad_index, words[0], feats[0], embed, lens) # DEBUG
             x = pack_padded_sequence(embed, lens, True, False)
             x, _ = self.lstm(x)
             x, _ = pad_packed_sequence(x, True, total_length=seq_len)
@@ -291,7 +288,7 @@ class BiaffineDependencyModel(nn.Module):
 
     def loss(self, s_arc: torch.Tensor, s_rel: torch.Tensor,
              arcs: torch.Tensor, rels: torch.Tensor,
-             mask: torch.Tensor, partial: bool=False) -> torch.Tensor:
+             mask: torch.Tensor, partial: bool = False) -> torch.Tensor:
         r"""
         Computes the arc and tag loss for a sequence given gold heads and tags.
 
@@ -327,7 +324,7 @@ class BiaffineDependencyModel(nn.Module):
 
     def decode(self, s_arc: torch.Tensor, s_rel: torch.Tensor,
                mask: torch.Tensor,
-               tree: bool=False, proj: bool=False) -> Tuple[torch.Tensor, torch.Tensor]:
+               tree: bool = False, proj: bool = False) -> Tuple[torch.Tensor, torch.Tensor]:
         r"""
         Args:
             s_arc (~torch.Tensor): ``[batch_size, seq_len, seq_len]``.
@@ -338,8 +335,6 @@ class BiaffineDependencyModel(nn.Module):
                 The mask for covering the unpadded tokens.
             tree (bool):
                 If ``True``, ensures to output well-formed trees. Default: ``False``.
-            mbr (bool):
-                If ``True``, performs MBR decoding. Default: ``True``.
             proj (bool):
                 If ``True``, ensures to output projective trees. Default: ``False``.
 
@@ -366,4 +361,3 @@ class BiaffineDependencyModel(nn.Module):
         rel_preds = rel_preds.gather(-1, arc_preds.unsqueeze(-1)).squeeze(-1)
 
         return arc_preds, rel_preds
-

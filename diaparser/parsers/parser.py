@@ -3,7 +3,6 @@
 import os
 from datetime import datetime, timedelta
 
-import parser
 import torch
 import torch.distributed as dist
 from .. import parsers
@@ -52,6 +51,7 @@ class Parser():
             epochs (int): number of epochs to train: Default: 5000.
             patience (int): early stop after these many epochs. Default: 100.
         """
+
         args = self.args.update(locals())
         init_logger(logger, verbose=args.verbose)
 
@@ -64,19 +64,19 @@ class Parser():
         train = Dataset(self.transform, args.train, **args)
         train.build(args.batch_size, args.buckets, True, dist.is_initialized())
         logger.info(f"{'train:':6} {len(train):5} sentences, "
-              f"{len(train.loader):3} batches, "
-              f"{len(train.buckets)} buckets")
+                    f"{len(train.loader):3} batches, "
+                    f"{len(train.buckets)} buckets")
         dev = Dataset(self.transform, args.dev)
         dev.build(args.batch_size, args.buckets)
         logger.info(f"{'dev:':6} {len(dev):5} sentences, "
-              f"{len(dev.loader):3} batches, "
-              f"{len(train.buckets)} buckets")
+                    f"{len(dev.loader):3} batches, "
+                    f"{len(train.buckets)} buckets")
         if args.test:
             test = Dataset(self.transform, args.test)
             test.build(args.batch_size, args.buckets)
             logger.info(f"{'test:':6} {len(test):5} sentences, "
-                  f"{len(test.loader):3} batches, "
-                  f"{len(train.buckets)} buckets")
+                        f"{len(test.loader):3} batches, "
+                        f"{len(train.buckets)} buckets")
         else:
             test = None
 
@@ -151,7 +151,8 @@ class Parser():
         self.transform.eval()
         if args.prob:
             self.transform.append(Field('probs'))
-        if args.text:
+        if hasattr(args, 'text') and args.text \
+           or hasattr(args, 'lang') and args.lang: # PATCH: back compatibility
             self.transform.reader = Tokenizer(args.text, dir=args.cache_dir).reader()
 
         logger.info("Loading the data")
@@ -166,7 +167,7 @@ class Parser():
 
         for name, value in preds.items():
             setattr(dataset, name, value)
-        if pred is not None:
+        if pred is not None and is_master():
             logger.info(f"Saving predicted results to {pred}")
             self.transform.save(pred, dataset.sentences)
         logger.info(f"{elapsed}s elapsed, {len(dataset) / elapsed.total_seconds():.2f} Sents/s")
@@ -241,7 +242,7 @@ class Parser():
         state_dict = {k: v.cpu() for k, v in model.state_dict().items()}
         pretrained = state_dict.pop('pretrained.weight', None)
         if args.feat == 'bert':
-            tokenize = self.transform.FORM[1].tokenize # save it
+            tokenize = self.transform.FORM[1].tokenize  # save it
             self.transform.FORM[1].tokenize = None
         state = {'name': type(self).__name__,
                  'args': args,
@@ -250,4 +251,4 @@ class Parser():
                  'transform': self.transform}
         torch.save(state, path)
         if args.feat == 'bert':
-            self.transform.FORM[1].tokenize = tokenize # restore
+            self.transform.FORM[1].tokenize = tokenize  # restore

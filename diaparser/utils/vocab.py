@@ -69,10 +69,10 @@ class Vocab(object):
 
 
 class FieldVocab(dict):
-   """Surrogate for missing vocab in certain Transformers tokenizers."""
-   def __init__(self, unk_token_id, items):
-       super(FieldVocab, self).__init__(items)
-       self.unk_token_id = unk_token_id
+    """Surrogate for missing vocab in certain Transformers tokenizers."""
+    def __init__(self, unk_token_id, items):
+        super(FieldVocab, self).__init__(items)
+        self.unk_token_id = unk_token_id
 
-   def __getitem__(self, tok):
-       return super(FieldVocab, self).get(tok, self.unk_token_id)
+    def __getitem__(self, tok):
+        return super(FieldVocab, self).get(tok, self.unk_token_id)

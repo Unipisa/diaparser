@@ -39,7 +39,7 @@ def progress_bar(iterator,
                 ncols=ncols,
                 bar_format=bar_format,
                 ascii=True,
-                disable=True, #(not is_master()), FIXME: with or not verbose
+                disable=True,  # (not (logger.level == logging.INFO and is_master())), FIXME: with or not verbose
                 leave=leave)
 
 

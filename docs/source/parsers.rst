@@ -1,4 +1,4 @@
-diaparser.parsers
+Parsers
 ==================
 
 .. currentmodule:: diaparser.parsers

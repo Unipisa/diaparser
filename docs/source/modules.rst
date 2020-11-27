@@ -1,5 +1,5 @@
-diaparser.modules
-==================
+Modules
+=======
 
 .. currentmodule:: diaparser.modules
 
@@ -9,16 +9,22 @@ Affine
 .. autoclass:: Biaffine
     :members:
 
+.. autoclass:: Triaffine
+    :members:
+
 BertEmbedding
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: BertEmbedding
     :members:
 
-BiLSTM
+.. autoclass:: ScalarMix
+    :members:
+
+LSTM
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. autoclass:: BiLSTM
+.. autoclass:: LSTM
     :members:
 
 CharLSTM
@@ -36,15 +42,12 @@ Dropout
 .. autoclass:: SharedDropout
     :members:
 
+.. autoclass:: TokenDropout
+    :members:
+
 MLP
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: MLP
-    :members:
-
-ScalarMix
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. autoclass:: ScalarMix
     :members:
 

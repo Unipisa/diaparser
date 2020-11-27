@@ -6,9 +6,23 @@ from torch.nn.utils.rnn import pack_padded_sequence
 
 
 class CharLSTM(nn.Module):
+    r"""
+    CharLSTM aims to generate character-level embeddings for tokens.
+    It summerizes the information of characters in each token to an embedding using a LSTM layer.
+
+    Args:
+        n_char (int):
+            The number of characters.
+        n_embed (int):
+            The size of each embedding vector as input to LSTM.
+        n_out (int):
+            The size of each output vector.
+        pad_index (int):
+            The index of the padding token in the vocabulary. Default: 0.
+    """
 
     def __init__(self, n_chars, n_word_embed, n_out, pad_index=0):
-        super(CharLSTM, self).__init__()
+        super().__init__()
 
         self.n_chars = n_chars
         self.n_word_embed = n_word_embed
@@ -25,15 +39,19 @@ class CharLSTM(nn.Module):
                             bidirectional=True)
 
     def __repr__(self):
-        s = self.__class__.__name__ + '('
-        s += f"{self.n_chars}, {self.n_word_embed}, "
-        s += f"n_out={self.n_out}, "
-        s += f"pad_index={self.pad_index}"
-        s += ')'
-
-        return s
+        return f"{self.__class__.__name__}({self.n_chars}, {self.n_embed}, n_out={self.n_out}, pad_index={self.pad_index})"
 
     def forward(self, x):
+        r"""
+        Args:
+            x (~torch.Tensor): ``[batch_size, seq_len, fix_len]``.
+                Characters of all tokens.
+                Each token holds no more than `fix_len` characters, and the excess is cut off directly.
+        Returns:
+            ~torch.Tensor:
+                The embeddings of shape ``[batch_size, seq_len, n_out]`` derived from the characters.
+        """
+
         # [batch_size, seq_len, fix_len]
         mask = x.ne(self.pad_index)
         # [batch_size, seq_len]

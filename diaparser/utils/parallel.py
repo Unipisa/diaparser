@@ -32,4 +32,4 @@ def init_device(device, backend='nccl', host=None, port=None):
 
 
 def is_master():
-    return not dist.is_initialized() or dist.get_rank() == 0
+    return not dist.is_available() or not dist.is_initialized() or dist.get_rank() == 0

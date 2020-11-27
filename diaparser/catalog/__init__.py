@@ -1,3 +1,3 @@
-from .catalog import select
+from .catalog import select, available_processors, download_processors
 
-__all__ = ['select']
+__all__ = ['select', 'available_processors', 'download_processors']

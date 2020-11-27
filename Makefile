@@ -18,6 +18,7 @@ GPU = 0
 CORPUS_DIR = ../train-dev
 CORPUS_TRAIN = $(CORPUS_DIR)/UD_$(RES2)/$(CORPUS)-ud-train.conllu
 CORPUS_DEV = $(CORPUS_DIR)/UD_$(RES2)/$(CORPUS)-ud-dev.conllu
+CORPUS_TEST = $(CORPUS_DIR)/UD_$(RES2)/$(CORPUS)-ud-test.conllu
 
 #BLIND_TEST=$(CORPUS_DIR)/../test-udpipe/$(LANG).conllu
 #BLIND_TEST=$(CORPUS_DIR)/../test-stanza-sent/$(LANG).conllu
@@ -26,7 +27,9 @@ BLIND_TEST=$(CORPUS_DIR)/../iwpt2020stdata/sysoutputs/turkunlp/primary/$(LANG).c
 
 GOLD_TEST= $(CORPUS_DIR)/../iwpt2020stdata/$(UD_TOOLS)/../test-gold/$(LANG).conllu
 
-UD_TOOLS = $(CORPUS_DIR)/../iwpt2020stdata/tools
+UD_TOOLS = ../iwpt2020stdata/tools
+EVALB = python ../eval.py
+EVAL07 = perl ../eval07.pl
 
 ifeq ($(LANG), ar)
   CORPUS=ar_padt
@@ -42,6 +45,14 @@ else ifeq ($(LANG), bg)
   RES2=Bulgarian-BTB
   MODEL = --bert=DeepPavlov/bert-base-bg-cs-pl-ru-cased #TurkuNLP/wikibert-base-bg-cased #iarfmoose/roberta-base-bulgarian
   BERT = DeepPavlov
+else ifeq ($(LANG), ca)
+  CORPUS_DIR=../ud-treebanks-v2.6
+  BLIND_TEST= $(CORPUS_TEST)
+  GOLD_TEST= $(CORPUS_TEST)
+  CORPUS=ca_ancora
+  RES2=Catalan-AnCora
+  #MODEL= --bert=TurkuNLP/wikibert-base-ca-cased
+  bert = mbert
 else ifeq ($(LANG), cs) #dev PDT
   CORPUS=cs_pdt
   RES2=Czech-PDT
@@ -49,15 +60,19 @@ else ifeq ($(LANG), cs) #dev PDT
   BERT = DeepPavlov
 else ifeq ($(LANG), de)
   CORPUS_DIR=../ud-treebanks-v2.6
+  BLIND_TEST= $(CORPUS_TEST)
+  GOLD_TEST= $(CORPUS_TEST)
   CORPUS=de_hdt
   RES2=German-HDT
-  bert = dbmdz/bert-base-german-uncased
+  MODEL = --bert=dbmdz/bert-base-german-uncased
+  BERT = dbmdz-bert-base
 else ifeq ($(LANG), en)
   CORPUS=en_ewt
   RES2=English-EWT
   MODEL = --bert=google/electra-base-discriminator
   BERT = electra-base
 else ifeq ($(LANG), ptb)
+ CORPUS_DIR=..
   CORPUS=en_ptb
   CORPUS_TRAIN = $(CORPUS_DIR)/SD_English_PTB/$(CORPUS)-sd-train.conllu
   CORPUS_DEV = $(CORPUS_DIR)/SD_English_PTB/$(CORPUS)-sd-dev.conllu
@@ -67,12 +82,15 @@ else ifeq ($(LANG), ptb)
   BERT = electra-base
 else ifeq ($(LANG), es)
   CORPUS_DIR=../ud-treebanks-v2.6
+  BLIND_TEST= $(CORPUS_TEST)
+  GOLD_TEST= $(CORPUS_TEST)
   CORPUS=es_ancora
   RES2=Spanish-AnCora
+  #MODEL = --bert=skimai/electra-small-spanish # TurkuNLP/wikibert-base-es-cased
   bert = mbert
 else ifeq ($(LANG), et) #dev EDT
-  CORPUS=et_edt
-  RES2=Estonian
+  CORPUS=et_edt_ewt
+  RES2=Estonian-EDT-EWT
   #MODEL = --bert=TurkuNLP/wikibert-base-et-cased
   bert = mbert
 else ifeq ($(LANG), fi)
@@ -92,6 +110,22 @@ else ifeq ($(LANG), it)
   RES2=Italian-ISDT
   MODEL = --bert=dbmdz/bert-base-italian-xxl-cased
   BERT = dbmdz-xxl
+else ifeq ($(LANG), ja)
+  CORPUS_DIR=../ud-treebanks-v2.6
+  BLIND_TEST= $(CORPUS_TEST)
+  GOLD_TEST= $(CORPUS_TEST)
+  CORPUS=ja_gsd
+  RES2=Japanese-GSD
+  MODEL = --bert=cl-tohoku/bert-base-japanese
+  bert = cl-tohoku-bert
+else ifeq ($(LANG), la)
+  CORPUS_DIR=../ud-treebanks-v2.6
+  BLIND_TEST= $(CORPUS_TEST)
+  GOLD_TEST= $(CORPUS_TEST)
+  CORPUS=la_ittb_llct
+  RES2=Latin-ITTB-LLCT
+  #MODEL = --bert=ponteineptique/latin-classical-small
+  BERT = mbert
 else ifeq ($(LANG), lt)
   CORPUS=lt_alksnis
   RES2=Lithuanian-ALKSNIS
@@ -107,11 +141,26 @@ else ifeq ($(LANG), nl) #dev Alpino
   #MODEL = --bert=TurkuNLP/wikibert-base-nl-cased
   MODEL = --bert=wietsedv/bert-base-dutch-cased
   BERT = wietsedv
+else ifeq ($(LANG), no)
+  CORPUS_DIR=../ud-treebanks-v2.6
+  BLIND_TEST= $(CORPUS_TEST)
+  GOLD_TEST= $(CORPUS_TEST)
+  CORPUS=no_nynorsk
+  RES2=Norwegian-Nynorsk
+  MODEL = --bert=TurkuNLP/wikibert-base-no-cased
+  bert = mbert
 else ifeq ($(LANG), pl) #dev LFG
-  CORPUS=pl_pdt
-  RES2=Polish
+  CORPUS=pl_pdb_lfg
+  RES2=Polish-PDB-LFG
   MODEL = --bert=dkleczek/bert-base-polish-cased-v1 #DeepPavlov/bert-base-bg-cs-pl-ru-cased
   BERT = dkleczek
+else ifeq ($(LANG), ro)
+  CORPUS_DIR=../ud-treebanks-v2.6
+  BLIND_TEST= $(CORPUS_TEST)
+  GOLD_TEST= $(CORPUS_TEST)
+  CORPUS=ro_rrt
+  RES2=Romanian-RRT
+  bert = mbert
 else ifeq ($(LANG), ru)
   CORPUS=ru_syntagrus
   RES2=Russian-SynTagRus
@@ -129,7 +178,7 @@ else ifeq ($(LANG), sv)
 else ifeq ($(LANG), ta)
   CORPUS=ta_ttb
   RES2=Tamil-TTB
-  BLIND_TEST = $(CORPUS_DIR)/test-udpipe/$(LANG).conllu
+  BLIND_TEST = $(CORPUS_DIR)/../test-udpipe/$(LANG).conllu
   #MODEL = --bert=monsoon-nlp/tamillion
 else ifeq ($(LANG), uk)
   CORPUS=uk_iu
@@ -172,16 +221,23 @@ exp/$(CORPUS).$(BERT)$(VER).test.conllu: exp/$(CORPUS).$(BERT)$(VER)/model
 	python -m diaparser.cmds.biaffine_dependency predict -d=$(GPU) -p=$< --tree \
 	   --data=$(BLIND_TEST) \
 	   --pred=$@
-	python $(CORPUS_DIR)/fix-root.py $@
+	python $(CORPUS_DIR)/../fix-root.py $@
 
 LANGS=ar bg cs en et fi fr it lt lv nl pl ru sk sv ta uk 
 LANGS1=ar bg en et fi sk
 LANGS2=fr it ru ta uk sv
 LANGS3=lv lt nl pl cs
 
+UD_LANGS=ca de es ja no ro
+
 all:
 	for l in $(LANGS); do \
 	    $(MAKE) -s GPU=$(GPU) LANG=$$l FEAT=$(FEAT) VER=$(VER) exp/$${l}$(VER).test.eval &>> exp/$${l}$(VER).test.make; \
+	done
+
+all-ud:
+	for l in $(UD_LANGS); do \
+	    $(MAKE) -s GPU=$(GPU) LANG=$$l FEAT=$(FEAT) VER=$(VER) exp/$${l}$(VER).test.eval07 &>> exp/$${l}$(VER).test.make; \
 	done
 
 train:
@@ -199,10 +255,10 @@ $(TARGET).test.eval: $(TARGET).test.nen.conllu
 	python $(UD_TOOLS)/iwpt20_xud_eval.py -v $(UD_TOOLS)/../test-gold/$(LANG).nen.conllu $< > $@
 
 $(TARGET).test.evalb: $(TARGET).test.eval
-	python $(CORPUS_DIR)/eval.py -g $(GOLD_TEST) -s $@ --evalb
+	$(EVALB) -g $(GOLD_TEST) -s $@ --evalb
 
 $(TARGET).test.eval07: $(TARGET).test.conllu
-	perl $(CORPUS_DIR)/eval07.pl -p -q -g $(GOLD_TEST) -s $< > $@
+	$(EVAL07) -p -q -g $(GOLD_TEST) -s $< > $@
 
 evaluate:
 	for l in $(LANGS); do \
@@ -222,6 +278,9 @@ baltic:
 
 # ----------------------------------------------------------------------
 # Run tests
+
+lint:
+	flake8 diaparser --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
 test:
 	pytest -s tests
