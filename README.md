@@ -349,7 +349,14 @@ To parse plain text just requires specifying the language code:
 >>> dataset = parser.predict('She enjoys playing tennis.', text='en')
 ```
 
-You may also provide the input in a file in CoNLL-U format.
+An SVG picture illusrating the parse tree can be produced with:
+```py
+>>> sent = dataset.sentences[0]
+>>> displacy.render(sent.to_json(), style='dep', manual=True, options={'compact': True, 'distance': 120})
+```
+![parse tree](./docs/source/tree.svg)
+
+The input can be provided in a file in CoNLL-U format.
 
 Further examples of how to use the parser and experiment with it can be found in this [notebook](demo/DiaParser.ipynb).
 

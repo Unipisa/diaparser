@@ -66,7 +66,7 @@ class Transform():
             f.write('\n'.join([str(i) for i in sentences]) + '\n')
 
 
-class Sentence(object):
+class Sentence():
     r"""
     A Sentence object holds a sentence with regard to specific data format.
     """
@@ -415,6 +415,18 @@ class CoNLLSentence(Sentence):
                   **{i: '\t'.join(map(str, line))
                      for i, line in enumerate(zip(*self.values))}}
         return '\n'.join(merged.values()) + '\n'
+
+    def to_json(self):
+        r"""
+        Convert to JSON format, compatible with [displacy](https://github.com/explosion/spaCy/tree/master/spacy/displacy).
+        """
+        def arc(s, e, l): return {"start": s+1, "end": e, "dir": "left", "label": l} if s < e else {"start": e, "end": s+1, "dir": "right", "label": l}
+
+        words = [{"text": form, "tag": ""} for form in self.values[1]]
+        words.insert(0, {"text": "ROOT", "tag": ""})
+        arcs = [arc(start, end, l)
+                for start,(end,l) in enumerate(zip(self.values[6], self.values[7])) ]
+        return {'words': words, 'arcs': arcs}
 
 
 class Tree(Transform):
