@@ -151,8 +151,8 @@ class Parser():
         self.transform.eval()
         if args.prob:
             self.transform.append(Field('probs'))
-        if hasattr(args, 'text') and args.text \
-           or hasattr(args, 'lang') and args.lang: # PATCH: back compatibility
+        print(args.text, args.lang)        # DEBUG
+        if hasattr(args, 'text') and args.text:
             self.transform.reader = Tokenizer(args.text, dir=args.cache_dir, verbose=args.verbose).reader()
 
         logger.info("Loading the data")

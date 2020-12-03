@@ -108,8 +108,8 @@ else ifeq ($(LANG), fr)
 else ifeq ($(LANG), it)
   CORPUS=it_isdt
   RES2=Italian-ISDT
-  MODEL = --bert=dbmdz/bert-base-italian-xxl-cased
-  BERT = dbmdz-xxl
+  MODEL = --bert=dbmdz/electra-base-italian-xxl-cased-discriminator #dbmdz/bert-base-italian-xxl-cased
+  BERT = dbmdz-electra-xxl#dbmdz-xxl
 else ifeq ($(LANG), ja)
   CORPUS_DIR=../ud-treebanks-v2.6
   BLIND_TEST= $(CORPUS_TEST)
@@ -205,19 +205,21 @@ endif
 
 .PRECIOUS: exp/$(CORPUS).$(BERT)$(VER)/model
 
-# relate LANG to CORPUS
-exp/$(LANG)%: exp/$(CORPUS).$(BERT)$(VER)%
-	@:
+#BERT =dbmdz-electra-xxl
 
 TARGET=exp/$(CORPUS).$(BERT)$(VER)
 
-exp/$(CORPUS).$(BERT)$(VER)/model:
+# relate LANG to CORPUS
+exp/$(LANG)$(VER)%: $(TARGET)%
+	@:
+
+$(TARGET)/model:
 	python -u -m diaparser.cmds.biaffine_dependency train -d=$(GPU) -p=$@ \
 	   -c=$(CONFIG) $(MODEL) $(ATTN) \
 	   --train=$(CORPUS_TRAIN) $(MAX_SENT_LENGTH) $(BATCH_SIZE) $(BUCKETS) \
 	   --dev=$(CORPUS_DEV) --feat=$(FEAT)
 
-exp/$(CORPUS).$(BERT)$(VER).test.conllu: exp/$(CORPUS).$(BERT)$(VER)/model
+$(TARGET).test.conllu: $(TARGET)/model
 	python -m diaparser.cmds.biaffine_dependency predict -d=$(GPU) -p=$< --tree \
 	   --data=$(BLIND_TEST) \
 	   --pred=$@
@@ -248,11 +250,9 @@ train:
 # ----------------------------------------------------------------------
 # Evaluation
 
-$(TARGET).test.nen.conllu: $(TARGET).test.conllu
-	   perl $(UD_TOOLS)/enhanced_collapse_empty_nodes.pl $< > $@
-
-$(TARGET).test.eval: $(TARGET).test.nen.conllu
-	python $(UD_TOOLS)/iwpt20_xud_eval.py -v $(UD_TOOLS)/../test-gold/$(LANG).nen.conllu $< > $@
+$(TARGET).test.eval: $(TARGET).test.conllu
+	perl $(UD_TOOLS)/enhanced_collapse_empty_nodes.pl $< > $(TARGET).test.nen.conllu
+	python $(UD_TOOLS)/iwpt20_xud_eval.py -v $(UD_TOOLS)/../test-gold/$(LANG).nen.conllu $(TARGET).test.nen.conllu > $@
 
 $(TARGET).test.evalb: $(TARGET).test.eval
 	$(EVALB) -g $(GOLD_TEST) -s $@ --evalb
