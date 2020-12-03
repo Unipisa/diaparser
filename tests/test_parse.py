@@ -5,8 +5,10 @@ from diaparser.parsers import Parser
 
 model = 'en_ewt-electra-base'
 
+
 def test_parse():
     sentence = ['The', 'dog', 'chases', 'the', 'cat', '.']
+    #sentence = ['Il', 'cane', 'si', 'morde', 'la', 'coda', '.']
     parser = Parser.load(model)
     parser.predict([sentence], prob=True)
 
@@ -44,3 +46,7 @@ def test_bert():
         '''
     parser = Parser.load(model)
     parser.predict(sentence, lang='en', prob=True)
+
+if __name__ == '__main__':
+    import pdb; pdb.set_trace()
+    test_parse()
