@@ -242,9 +242,9 @@ Below are the results on the dataset of the [IWPT 2020 Shared Task on Enhanced D
     <tr>
       <td>Italian</td>
       <td>ISDT</td>
-      <td><code>it_isdt.dbmdz</code></td>
-      <td align="center"><b>95.40</b></td>
-      <td align="center"><b>93.78</b></td>
+      <td><code>it_isdt.dbmdz-electra-xxl</code></td>
+      <td align="center"><b>95.48</b></td>
+      <td align="center"><b>94.16</b></td>
       <td align="right">379</td>
     </tr>
     <tr>

@@ -13,7 +13,7 @@ fi
 owner=Unipisa
 repo=diaparser
 token=$1
-tag=${2:-v1.1}
+tag=${2:-v1.0}
 version=1
 
 MODEL_DIR=${3:-../../exp}
@@ -63,7 +63,7 @@ MODELS=(
     et_edt_ewt.mbert
     fi_tdt.TurkuNLP
     fr_sequoia.camembert-large
-    it_isdt.dbmdz-xxl
+    it_isdt.dbmdz-electra-xxl
     ja_gsd.mbert
     la_ittb_llct.mbert
     lt_alksnis.mbert

@@ -86,7 +86,7 @@
   },
   "it": {
       "isdt": {
-	  "parse": "it_isdt.dbmdz-xxl",
+	  "parse": "it_isdt.dbmdz-electra-xxl",
 	  "tokenize": "it_isdt-tokenizer",
 	  "mwt": "it_isdt-mwt"
       },

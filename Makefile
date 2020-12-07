@@ -108,8 +108,8 @@ else ifeq ($(LANG), fr)
 else ifeq ($(LANG), it)
   CORPUS=it_isdt
   RES2=Italian-ISDT
-  MODEL = --bert=dbmdz/electra-base-italian-xxl-cased-discriminator #dbmdz/bert-base-italian-xxl-cased
-  BERT = dbmdz-electra-xxl#dbmdz-xxl
+  MODEL = --bert=dbmdz/electra-base-italian-xxl-cased-discriminator
+  BERT = dbmdz-electra-xxl
 else ifeq ($(LANG), ja)
   CORPUS_DIR=../ud-treebanks-v2.6
   BLIND_TEST= $(CORPUS_TEST)
