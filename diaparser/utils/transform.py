@@ -431,6 +431,8 @@ class CoNLLSentence(Sentence):
         12      .       _       _       _       _       3       punct   _       _
     """
 
+    fields = ['id', 'form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps', 'misc']
+
     def __init__(self, transform, lines):
         super().__init__(transform)
 
@@ -454,7 +456,22 @@ class CoNLLSentence(Sentence):
                      for i, line in enumerate(zip(*self.values))}}
         return '\n'.join(merged.values()) + '\n'
 
-    def to_json(self):
+    def to_tokens(self):
+        r"""
+        Convert to a list of token dict.
+        [ {
+           'id': 1,
+           'form': 'The',
+           'lemma': 'the',
+           ...
+          },
+          ...
+        ]
+        """
+        return [dict(zip(self.fields, token))
+                for token in zip(*self.values)]
+
+    def to_displacy(self):
         r"""
         Convert to JSON format, compatible with [displacy](https://github.com/explosion/spaCy/tree/master/spacy/displacy).
         """

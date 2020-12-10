@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ms:MetadataRecord xmlns:ms="http://w3id.org/meta-share/meta-share/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://w3id.org/meta-share/meta-share/ ../../Schema/ELG-SHARE.xsd">
+	<ms:MetadataRecordIdentifier ms:MetadataRecordIdentifierScheme="http://w3id.org/meta-share/meta-share/elg">value automatically assigned - leave as is</ms:MetadataRecordIdentifier>
+	<ms:metadataCreationDate>2020-12-10</ms:metadataCreationDate>
+	<ms:metadataLastDateUpdated>2020-12-10</ms:metadataLastDateUpdated>
+	<ms:metadataCurator>
+		<ms:actorType>Person</ms:actorType>
+		<ms:surname xml:lang="en">Giuseppe</ms:surname>
+		<ms:givenName xml:lang="en">Attardi</ms:givenName>
+		<ms:PersonalIdentifier ms:PersonalIdentifierScheme="http://w3id.org/meta-share/meta-share/elg">ELG-ENT-PER-050320-00000786</ms:PersonalIdentifier>
+		<ms:email>attardi@di.unipi.it</ms:email>
+	</ms:metadataCurator>
+	<ms:compliesWith>http://w3id.org/meta-share/meta-share/ELG-SHARE</ms:compliesWith>
+	<ms:metadataCreator>
+		<ms:actorType>Person</ms:actorType>
+		<ms:surname xml:lang="en">Giuseppe</ms:surname>
+		<ms:givenName xml:lang="en">Attardi</ms:givenName>
+		<ms:PersonalIdentifier ms:PersonalIdentifierScheme="http://w3id.org/meta-share/meta-share/elg">ELG-ENT-PER-050320-00000786</ms:PersonalIdentifier>
+		<ms:email>attardi@di.unipi.it</ms:email>
+	</ms:metadataCreator>
+	<ms:DescribedEntity>
+		<ms:LanguageResource>
+			<ms:entityType>LanguageResource</ms:entityType>
+			<ms:resourceName xml:lang="en">DiaParser English</ms:resourceName>
+			<ms:resourceShortName xml:lang="en">DiaParser-en</ms:resourceShortName>
+			<ms:description xml:lang="en">DiaParser performs dependency parsing from plain text, producing output in CoNLL-U format. DiaParser currently supports 20 languages: for details see: http://github.com/Unipisa/diaparser. </ms:description>
+			<ms:LRIdentifier ms:LRIdentifierScheme="http://w3id.org/meta-share/meta-share/elg">value automatically assigned</ms:LRIdentifier>
+			<ms:version>v1.1</ms:version>
+			<ms:additionalInfo>
+				<ms:email>attardi@di.unipi.it</ms:email>
+			</ms:additionalInfo>
+			<ms:keyword xml:lang="en">Dependency Parsing</ms:keyword>
+			<ms:resourceProvider>
+				<ms:Organization>
+					<ms:actorType>Organization</ms:actorType>
+					<ms:organizationName xml:lang="it">Universit;&agrave; di Pisa</ms:organizationName>
+					<ms:organizationName xml:lang="en">University of Pisa</ms:organizationName>
+					<ms:OrganizationIdentifier ms:OrganizationIdentifierScheme="http://w3id.org/meta-share/meta-share/elg">ELG-ENT-ORG-280220-00000390</ms:OrganizationIdentifier>
+					<ms:website>http://www.di.unipi.it</ms:website>
+				</ms:Organization>
+			</ms:resourceProvider>
+			<ms:publicationDate>2020-12-10</ms:publicationDate>
+			<ms:resourceCreator>
+				<ms:Organization>
+					<ms:actorType>Organization</ms:actorType>
+					<ms:organizationName xml:lang="en">Universit;&agrave; di Pis</ms:organizationName>
+					<ms:organizationName xml:lang="de">University of Pisa</ms:organizationName>
+					<ms:OrganizationIdentifier ms:OrganizationIdentifierScheme="http://w3id.org/meta-share/meta-share/elg">ELG-ENT-ORG-280220-00000390</ms:OrganizationIdentifier>
+					<ms:website>http://www.di.unipi.it</ms:website>
+				</ms:Organization>
+			</ms:resourceCreator>
+			<ms:intendedApplication>
+				<ms:LTClassRecommended>http://w3id.org/meta-share/omtd-share/Parsing</ms:LTClassRecommended>
+			</ms:intendedApplication>
+			<ms:LRSubclass>
+				<ms:ToolService>
+					<ms:lrType>ToolService</ms:lrType>
+					<ms:function>
+						<ms:LTClassRecommended>http://w3id.org/meta-share/omtd-share/Parsing</ms:LTClassRecommended>
+					</ms:function>
+					<ms:SoftwareDistribution>
+						<ms:SoftwareDistributionForm>http://w3id.org/meta-share/meta-share/dockerImage</ms:SoftwareDistributionForm>
+						<ms:executionLocation>http://localhost:8080/en</ms:executionLocation>
+						<ms:dockerDownloadLocation>registry.github.com/diaparser/-jtok:1.1</ms:dockerDownloadLocation>
+						<ms:licenceTerms>
+							<ms:licenceTermsName xml:lang="en">MIT License</ms:licenceTermsName>
+							<ms:licenceTermsURL>https://opensource.org/licenses/MIT</ms:licenceTermsURL>
+
+						</ms:licenceTerms>
+					</ms:SoftwareDistribution>
+					<ms:languageDependent>true</ms:languageDependent>
+					<ms:inputContentResource>
+						<ms:processingResourceType>http://w3id.org/meta-share/meta-share/file1</ms:processingResourceType>
+						<ms:language>
+							<ms:languageTag>en</ms:languageTag>
+							<ms:languageId>en</ms:languageId>
+						</ms:language>
+						<ms:mediaType>http://w3id.org/meta-share/meta-share/text</ms:mediaType>
+						<ms:dataFormat>http://w3id.org/meta-share/omtd-share/Json</ms:dataFormat>
+						<ms:characterEncoding>http://w3id.org/meta-share/meta-share/UTF-8</ms:characterEncoding>
+					</ms:inputContentResource>
+					<ms:outputResource>
+						<ms:processingResourceType>http://w3id.org/meta-share/meta-share/file1</ms:processingResourceType>
+						<ms:language>
+							<ms:languageTag>en</ms:languageTag>
+							<ms:languageId>en</ms:languageId>
+						</ms:language>
+						<ms:mediaType>http://w3id.org/meta-share/meta-share/text</ms:mediaType>
+						<ms:dataFormat>http://w3id.org/meta-share/omtd-share/Json</ms:dataFormat>
+						<ms:characterEncoding>http://w3id.org/meta-share/meta-share/UTF-8</ms:characterEncoding>
+						<ms:annotationType>http://w3id.org/meta-share/omtd-share/StructuralAnnotationType</ms:annotationType>
+					</ms:outputResource>
+					<ms:trl>http://w3id.org/meta-share/meta-share/trl3</ms:trl>
+					<ms:evaluated>false</ms:evaluated>
+				</ms:ToolService>
+			</ms:LRSubclass>
+		</ms:LanguageResource>
+	</ms:DescribedEntity>
+</ms:MetadataRecord>
