@@ -10,6 +10,13 @@
 		<ms:PersonalIdentifier ms:PersonalIdentifierScheme="http://w3id.org/meta-share/meta-share/elg">ELG-ENT-PER-050320-00000786</ms:PersonalIdentifier>
 		<ms:email>attardi@di.unipi.it</ms:email>
 	</ms:metadataCurator>
+	<ms:metadataCurator>
+		<ms:actorType>Person</ms:actorType>
+		<ms:surname xml:lang="en">Daniele</ms:surname>
+		<ms:givenName xml:lang="en">Sartiano</ms:givenName>
+		<ms:email>sartiano@di.unipi.it</ms:email>
+	</ms:metadataCurator>
+
 	<ms:compliesWith>http://w3id.org/meta-share/meta-share/ELG-SHARE</ms:compliesWith>
 	<ms:metadataCreator>
 		<ms:actorType>Person</ms:actorType>
@@ -18,6 +25,13 @@
 		<ms:PersonalIdentifier ms:PersonalIdentifierScheme="http://w3id.org/meta-share/meta-share/elg">ELG-ENT-PER-050320-00000786</ms:PersonalIdentifier>
 		<ms:email>attardi@di.unipi.it</ms:email>
 	</ms:metadataCreator>
+	<ms:metadataCreator>
+		<ms:actorType>Person</ms:actorType>
+		<ms:surname xml:lang="en">Daniele</ms:surname>
+		<ms:givenName xml:lang="en">Sartiano</ms:givenName>
+		<ms:email>sartiano@di.unipi.it</ms:email>
+	</ms:metadataCreator>
+
 	<ms:DescribedEntity>
 		<ms:LanguageResource>
 			<ms:entityType>LanguageResource</ms:entityType>
@@ -50,7 +64,7 @@
 				</ms:Organization>
 			</ms:resourceCreator>
 			<ms:intendedApplication>
-				<ms:LTClassRecommended>http://w3id.org/meta-share/omtd-share/Parsing</ms:LTClassRecommended>
+			  <ms:LTClassRecommended>http://w3id.org/meta-share/omtd-share/DependencyParsing</ms:LTClassRecommended>
 			</ms:intendedApplication>
 			<ms:LRSubclass>
 				<ms:ToolService>
@@ -60,8 +74,8 @@
 					</ms:function>
 					<ms:SoftwareDistribution>
 						<ms:SoftwareDistributionForm>http://w3id.org/meta-share/meta-share/dockerImage</ms:SoftwareDistributionForm>
-						<ms:executionLocation>http://localhost:8080/en</ms:executionLocation>
-						<ms:dockerDownloadLocation>registry.github.com/diaparser/-jtok:1.1</ms:dockerDownloadLocation>
+						<ms:executionLocation>http://localhost:8080/elg</ms:executionLocation>
+						<ms:dockerDownloadLocation>registry.github.com/diaparser/TODO</ms:dockerDownloadLocation>
 						<ms:licenceTerms>
 							<ms:licenceTermsName xml:lang="en">MIT License</ms:licenceTermsName>
 							<ms:licenceTermsURL>https://opensource.org/licenses/MIT</ms:licenceTermsURL>
@@ -72,8 +86,8 @@
 					<ms:inputContentResource>
 						<ms:processingResourceType>http://w3id.org/meta-share/meta-share/file1</ms:processingResourceType>
 						<ms:language>
-							<ms:languageTag>en</ms:languageTag>
-							<ms:languageId>en</ms:languageId>
+							<ms:languageTag>$lang</ms:languageTag>
+							<ms:languageId>$lang</ms:languageId>
 						</ms:language>
 						<ms:mediaType>http://w3id.org/meta-share/meta-share/text</ms:mediaType>
 						<ms:dataFormat>http://w3id.org/meta-share/omtd-share/Json</ms:dataFormat>
@@ -82,8 +96,8 @@
 					<ms:outputResource>
 						<ms:processingResourceType>http://w3id.org/meta-share/meta-share/file1</ms:processingResourceType>
 						<ms:language>
-							<ms:languageTag>en</ms:languageTag>
-							<ms:languageId>en</ms:languageId>
+							<ms:languageTag>$lang</ms:languageTag>
+							<ms:languageId>$lang</ms:languageId>
 						</ms:language>
 						<ms:mediaType>http://w3id.org/meta-share/meta-share/text</ms:mediaType>
 						<ms:dataFormat>http://w3id.org/meta-share/omtd-share/Json</ms:dataFormat>
