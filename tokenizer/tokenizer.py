@@ -20,7 +20,7 @@ class Tokenizer:
     def __init__(self, lang, dir=os.path.expanduser('~/.cache/diaparser'), verbose=True):
         dir += '/tokenizer'
         # check for custom processors
-        avail_processors = available_processors(lang, dir)
+        avail_processors = available_processors(lang, dir=dir)
         avail_preprocessors = avail_processors.keys() & ('tokenize', 'mwt')
         if avail_preprocessors:
             processors = {p: avail_processors[p] for p in avail_preprocessors}
