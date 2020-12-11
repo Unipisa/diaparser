@@ -10,7 +10,8 @@ import sys
 import math
 from ..utils.logging import logger
 
-if 'dedfaults' in namedtuple.__code__.co_varnames[:namedtuple.__code__.co_argcount]:
+if 'defaults' in namedtuple.__code__.co_varnames[:namedtuple.__code__.co_argcount]:
+    # Compatibility with Python 3.6
     CoNLL = namedtuple(typename='CoNLL',
                        field_names=['ID', 'FORM', 'LEMMA', 'CPOS', 'POS',
                                     'FEATS', 'HEAD', 'DEPREL', 'PHEAD', 'PDEPREL'],

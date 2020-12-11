@@ -25,6 +25,16 @@ class Transform():
     def __init__(self):
         self.training = True
 
+    def __repr__(self):
+        s = '\n'
+        for i, field in enumerate(self):
+            if not isinstance(field, Iterable):
+                field = [field]
+            for f in field:
+                if f is not None:
+                    s += f"  {f}\n"
+        return f"{self.__class__.__name__}({s})"
+
     def __call__(self, sentences):
         pairs = dict()
         for field in self:
@@ -66,7 +76,7 @@ class Transform():
             f.write('\n'.join([str(i) for i in sentences]) + '\n')
 
 
-class Sentence(object):
+class Sentence():
     r"""
     A Sentence object holds a sentence with regard to specific data format.
     """
@@ -177,11 +187,11 @@ class CoNLL(Transform):
 
     @property
     def src(self):
-        return self.FORM, self.CPOS
+        return self.FORM, self.LEMMA, self.CPOS, self.POS, self.FEATS
 
     @property
     def tgt(self):
-        return self.HEAD, self.DEPREL
+        return self.HEAD, self.DEPREL, self.PHEAD, self.PDEPREL
 
     @classmethod
     def get_arcs(cls, sequence):
@@ -204,6 +214,34 @@ class CoNLL(Transform):
                         sibs[j] = i
                     break
         return sibs[1:]
+
+    @classmethod
+    def get_edges(cls, sequence):
+        edges = [[0]*(len(sequence)+1) for _ in range(len(sequence)+1)]
+        for i, s in enumerate(sequence, 1):
+            if s != '_':
+                for pair in s.split('|'):
+                    edges[i][int(pair.split(':')[0])] = 1
+        return edges
+
+    @classmethod
+    def get_labels(cls, sequence):
+        labels = [[None]*(len(sequence)+1) for _ in range(len(sequence)+1)]
+        for i, s in enumerate(sequence, 1):
+            if s != '_':
+                for pair in s.split('|'):
+                    edge, label = pair.split(':')
+                    labels[i][int(edge)] = label
+        return labels
+
+    @classmethod
+    def build_relations(cls, chart):
+        sequence = ['_'] * len(chart)
+        for i, row in enumerate(chart):
+            pairs = [(j, label) for j, label in enumerate(row) if label is not None]
+            if len(pairs) > 0:
+                sequence[i] = '|'.join(f"{head}:{label}" for head, label in pairs)
+        return sequence
 
     @classmethod
     def toconll(cls, tokens):
@@ -393,6 +431,8 @@ class CoNLLSentence(Sentence):
         12      .       _       _       _       _       3       punct   _       _
     """
 
+    fields = ['id', 'form', 'lemma', 'upos', 'xpos', 'feats', 'head', 'deprel', 'deps', 'misc']
+
     def __init__(self, transform, lines):
         super().__init__(transform)
 
@@ -415,6 +455,33 @@ class CoNLLSentence(Sentence):
                   **{i: '\t'.join(map(str, line))
                      for i, line in enumerate(zip(*self.values))}}
         return '\n'.join(merged.values()) + '\n'
+
+    def to_tokens(self):
+        r"""
+        Convert to a list of token dict.
+        [ {
+           'id': 1,
+           'form': 'The',
+           'lemma': 'the',
+           ...
+          },
+          ...
+        ]
+        """
+        return [dict(zip(self.fields, token))
+                for token in zip(*self.values)]
+
+    def to_displacy(self):
+        r"""
+        Convert to JSON format, compatible with [displacy](https://github.com/explosion/spaCy/tree/master/spacy/displacy).
+        """
+        def arc(s, e, l): return {"start": s+1, "end": e, "dir": "left", "label": l} if s < e else {"start": e, "end": s+1, "dir": "right", "label": l}
+
+        words = [{"text": form, "tag": ""} for form in self.values[1]]
+        words.insert(0, {"text": "ROOT", "tag": ""})
+        arcs = [arc(start, end, l)
+                for start,(end,l) in enumerate(zip(self.values[6], self.values[7])) ]
+        return {'words': words, 'arcs': arcs}
 
 
 class Tree(Transform):
@@ -678,12 +745,11 @@ class TreeSentence(Sentence):
     def __init__(self, transform, tree):
         super().__init__(transform)
 
-        # the values contain words, pos tags, raw trees, and spans
-        # the tree is first left-binarized before factorized
-        # spans are the factorization of tree traversed in pre-order
-        self.values = [*zip(*tree.pos()),
-                       tree,
-                       Tree.factorize(Tree.binarize(tree)[0])]
+        words, tags = zip(*tree.pos())
+        chart = [[None]*(len(words)+1) for _ in range(len(words)+1)]
+        for i, j, label in Tree.factorize(Tree.binarize(tree)[0]):
+            chart[i][j] = label
+        self.values = [words, tags, tree, chart]
 
     def __repr__(self):
         return self.values[-2].pformat(1000000)

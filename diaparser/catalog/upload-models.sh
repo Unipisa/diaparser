@@ -63,7 +63,7 @@ MODELS=(
     et_edt_ewt.mbert
     fi_tdt.TurkuNLP
     fr_sequoia.camembert-large
-    it_isdt.dbmdz-xxl
+    it_isdt.dbmdz-electra-xxl
     ja_gsd.mbert
     la_ittb_llct.mbert
     lt_alksnis.mbert

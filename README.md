@@ -242,9 +242,9 @@ Below are the results on the dataset of the [IWPT 2020 Shared Task on Enhanced D
     <tr>
       <td>Italian</td>
       <td>ISDT</td>
-      <td><code>it_isdt.dbmdz</code></td>
-      <td align="center"><b>95.40</b></td>
-      <td align="center"><b>93.78</b></td>
+      <td><code>it_isdt.dbmdz-electra-xxl</code></td>
+      <td align="center"><b>95.48</b></td>
+      <td align="center"><b>94.16</b></td>
       <td align="right">379</td>
     </tr>
     <tr>
@@ -349,7 +349,14 @@ To parse plain text just requires specifying the language code:
 >>> dataset = parser.predict('She enjoys playing tennis.', text='en')
 ```
 
-You may also provide the input in a file in CoNLL-U format.
+An SVG picture illusrating the parse tree can be produced with:
+```py
+>>> sent = dataset.sentences[0]
+>>> displacy.render(sent.to_json(), style='dep', manual=True, options={'compact': True, 'distance': 120})
+```
+![parse tree](./docs/source/tree.svg)
+
+The input can be provided in a file in CoNLL-U format.
 
 Further examples of how to use the parser and experiment with it can be found in this [notebook](demo/DiaParser.ipynb).
 

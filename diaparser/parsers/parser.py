@@ -151,9 +151,9 @@ class Parser():
         self.transform.eval()
         if args.prob:
             self.transform.append(Field('probs'))
-        if hasattr(args, 'text') and args.text \
-           or hasattr(args, 'lang') and args.lang: # PATCH: back compatibility
-            self.transform.reader = Tokenizer(args.text, dir=args.cache_dir).reader()
+        print(args.text, args.lang)        # DEBUG
+        if hasattr(args, 'text') and args.text:
+            self.transform.reader = Tokenizer(args.text, dir=args.cache_dir, verbose=args.verbose).reader()
 
         logger.info("Loading the data")
         dataset = Dataset(self.transform, data)
@@ -190,7 +190,7 @@ class Parser():
         raise NotImplementedError
 
     @classmethod
-    def load(cls, name_or_path, cache_dir=os.path.expanduser('~/.cache/diaparser'), **kwargs):
+    def load(cls, name_or_path='', lang='en', cache_dir=os.path.expanduser('~/.cache/diaparser'), **kwargs):
         r"""
         Loads a parser from a pretrained model.
 
@@ -199,6 +199,9 @@ class Parser():
                 - a string with the shortcut name of a pretrained parser listed in ``resource.json``
                   to load from cache or download, e.g., ``'en_ptb.electra-base'``.
                 - a path to a directory containing a pre-trained parser, e.g., `./<path>/model`.
+            lang (str):
+                A language code, used in alternative to ``name_or_path`` to load the default model
+                for the given language.
             cache_dir (str):
                 Directory where to cache models. The default value is `~/.cache/diaparser`.
             kwargs (dict):
@@ -206,6 +209,7 @@ class Parser():
 
         Examples:
             >>> parser = Parser.load('en_ewt.electra-base')
+            >>> parser = Parser.load(lang='en')
             >>> parser = Parser.load('./ptb.biaffine.dependency.char')
         """
 
@@ -215,7 +219,7 @@ class Parser():
         if os.path.exists(name_or_path):
             state = torch.load(name_or_path)
         else:
-            url = select(name=name_or_path, **kwargs)
+            url = select(name=name_or_path, lang=lang, **kwargs)
             if url is None:
                 raise Exception(f'Could not find a model matching name {name_or_path}')
             verbose = kwargs.get('verbose', True)
