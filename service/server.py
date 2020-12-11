@@ -4,7 +4,7 @@ from diaparser.parsers import Parser
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing_extensions import Literal
-from typing import Callable
+from typing import Callable, Any, Optional
 
 APP_NAME = 'DiaParser Server'
 APP_VERSION = '0.1'
@@ -26,10 +26,32 @@ app = get_app()
 
 LANGUAGES = ('en', )
 
+
+class InternalLTServiceRequest(BaseModel):
+    type: str
+    params: Optional[Any] = None
+    content: str
+    mimeType: str
+    features: Optional[Any] = None
+    annotations: Optional[Any] = None
+
+class InternalLTServiceResponse(BaseModel):
+    type: str
+    warnings: Optional[Any] = None
+    features: Optional[Any] = None
+    annotations: Any
+
+
 class InputText(BaseModel):
     text: str
     language: Literal[LANGUAGES]
 
+
+@app.post("/")
+async def elg_parse(input: InternalLTServiceRequest):
+    print(input)
+    return input
+    
 @app.post("/parse")
 async def predict(input_text: InputText):
     resp = {'parsed': [], 'text': input_text.text}
