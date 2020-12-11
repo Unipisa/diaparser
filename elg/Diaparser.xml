@@ -35,8 +35,8 @@
 	<ms:DescribedEntity>
 		<ms:LanguageResource>
 			<ms:entityType>LanguageResource</ms:entityType>
-			<ms:resourceName xml:lang="en">DiaParser English</ms:resourceName>
-			<ms:resourceShortName xml:lang="en">DiaParser-en</ms:resourceShortName>
+			<ms:resourceName xml:lang="en">DiaParser</ms:resourceName>
+			<ms:resourceShortName xml:lang="en">DiaParser</ms:resourceShortName>
 			<ms:description xml:lang="en">DiaParser performs dependency parsing from plain text, producing output in CoNLL-U format. DiaParser currently supports 20 languages: for details see: http://github.com/Unipisa/diaparser. </ms:description>
 			<ms:LRIdentifier ms:LRIdentifierScheme="http://w3id.org/meta-share/meta-share/elg">value automatically assigned</ms:LRIdentifier>
 			<ms:version>v1.1</ms:version>
