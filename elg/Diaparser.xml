@@ -10,12 +10,6 @@
 		<ms:PersonalIdentifier ms:PersonalIdentifierScheme="http://w3id.org/meta-share/meta-share/elg">ELG-ENT-PER-050320-00000786</ms:PersonalIdentifier>
 		<ms:email>attardi@di.unipi.it</ms:email>
 	</ms:metadataCurator>
-	<ms:metadataCurator>
-		<ms:actorType>Person</ms:actorType>
-		<ms:surname xml:lang="en">Daniele</ms:surname>
-		<ms:givenName xml:lang="en">Sartiano</ms:givenName>
-		<ms:email>sartiano@di.unipi.it</ms:email>
-	</ms:metadataCurator>
 
 	<ms:compliesWith>http://w3id.org/meta-share/meta-share/ELG-SHARE</ms:compliesWith>
 	<ms:metadataCreator>
@@ -24,12 +18,6 @@
 		<ms:givenName xml:lang="en">Attardi</ms:givenName>
 		<ms:PersonalIdentifier ms:PersonalIdentifierScheme="http://w3id.org/meta-share/meta-share/elg">ELG-ENT-PER-050320-00000786</ms:PersonalIdentifier>
 		<ms:email>attardi@di.unipi.it</ms:email>
-	</ms:metadataCreator>
-	<ms:metadataCreator>
-		<ms:actorType>Person</ms:actorType>
-		<ms:surname xml:lang="en">Daniele</ms:surname>
-		<ms:givenName xml:lang="en">Sartiano</ms:givenName>
-		<ms:email>sartiano@di.unipi.it</ms:email>
 	</ms:metadataCreator>
 
 	<ms:DescribedEntity>
