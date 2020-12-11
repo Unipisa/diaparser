@@ -1,4 +1,0 @@
-fastapi
-starlette
-uvicorn
-diaparser
