@@ -8,24 +8,20 @@ from tokenizer.tokenizer import Tokenizer
 
 class TestTokenizer(unittest.TestCase):
 
-    MODEL_DIR = '/tmp/stanza_models'
+    MODEL_DIR = '~/.cache/diaparser'
     
     def setUp(self):
         self.args = {
             'lang': 'it',
-            'dir': self.MODEL_DIR,
             'verbose': True
         }
-
-    def tearDown(self):
-        shutil.rmtree(self.MODEL_DIR)
         
     def test_download_resources(self):
-        self.assertTrue(not os.path.exists(self.MODEL_DIR))
         tokenizer = Tokenizer(**self.args)
-        self.assertTrue(os.path.exists(self.args['dir']) and not os.path.isfile(self.args['dir']))
-        self.assertTrue(os.path.exists(os.path.join(self.args['dir'], 'tokenizer', self.args['lang'])))
-        self.assertTrue(os.path.exists(os.path.join(self.args['dir'], 'tokenizer', self.args['lang'], 'tokenize')))
+        
+        self.assertTrue(os.path.exists(self.MODEL_DIR) and not os.path.isfile(self.MODEL_DIR))
+        self.assertTrue(os.path.exists(os.path.join(self.MODEL_DIR, 'tokenizer', self.args['lang'])))
+        self.assertTrue(os.path.exists(os.path.join(self.MODEL_DIR, 'tokenizer', self.args['lang'], 'tokenize')))
     
     def test_tokenize(self):
         tokenizer = Tokenizer(**self.args)
