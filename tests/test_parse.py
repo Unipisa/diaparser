@@ -45,7 +45,7 @@ def test_bert():
         The Dow's decline was second in point terms only to the 508-point Black Monday crash that occurred Oct. 19, 1987.
         '''
     parser = Parser.load(model)
-    parser.predict(sentence, lang='en', prob=True)
+    parser.predict([sentence], lang='en', prob=True)
 
 if __name__ == '__main__':
     import pdb; pdb.set_trace()
