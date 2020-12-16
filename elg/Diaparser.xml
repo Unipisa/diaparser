@@ -3,6 +3,7 @@
 	<ms:MetadataRecordIdentifier ms:MetadataRecordIdentifierScheme="http://w3id.org/meta-share/meta-share/elg">value automatically assigned - leave as is</ms:MetadataRecordIdentifier>
 	<ms:metadataCreationDate>2020-12-10</ms:metadataCreationDate>
 	<ms:metadataLastDateUpdated>2020-12-10</ms:metadataLastDateUpdated>
+	<ms:compliesWith>http://w3id.org/meta-share/meta-share/ELG-SHARE</ms:compliesWith>
 	<ms:metadataCurator>
 		<ms:actorType>Person</ms:actorType>
 		<ms:surname xml:lang="en">Giuseppe</ms:surname>
@@ -10,8 +11,6 @@
 		<ms:PersonalIdentifier ms:PersonalIdentifierScheme="http://w3id.org/meta-share/meta-share/elg">ELG-ENT-PER-050320-00000786</ms:PersonalIdentifier>
 		<ms:email>attardi@di.unipi.it</ms:email>
 	</ms:metadataCurator>
-
-	<ms:compliesWith>http://w3id.org/meta-share/meta-share/ELG-SHARE</ms:compliesWith>
 	<ms:metadataCreator>
 		<ms:actorType>Person</ms:actorType>
 		<ms:surname xml:lang="en">Giuseppe</ms:surname>
@@ -19,7 +18,6 @@
 		<ms:PersonalIdentifier ms:PersonalIdentifierScheme="http://w3id.org/meta-share/meta-share/elg">ELG-ENT-PER-050320-00000786</ms:PersonalIdentifier>
 		<ms:email>attardi@di.unipi.it</ms:email>
 	</ms:metadataCreator>
-
 	<ms:DescribedEntity>
 		<ms:LanguageResource>
 			<ms:entityType>LanguageResource</ms:entityType>
@@ -52,7 +50,7 @@
 				</ms:Organization>
 			</ms:resourceCreator>
 			<ms:intendedApplication>
-			  <ms:LTClassRecommended>http://w3id.org/meta-share/omtd-share/DependencyParsing</ms:LTClassRecommended>
+			        <ms:LTClassRecommended>http://w3id.org/meta-share/omtd-share/DependencyParsing</ms:LTClassRecommended>
 			</ms:intendedApplication>
 			<ms:LRSubclass>
 				<ms:ToolService>
@@ -63,7 +61,7 @@
 					<ms:SoftwareDistribution>
 						<ms:SoftwareDistributionForm>http://w3id.org/meta-share/meta-share/dockerImage</ms:SoftwareDistributionForm>
 						<ms:executionLocation>http://localhost:8080/elg</ms:executionLocation>
-						<ms:dockerDownloadLocation>registry.github.com/diaparser/TODO</ms:dockerDownloadLocation>
+						<ms:dockerDownloadLocation>registry.github.com/diaparser/Unipisa/diaparser:v1.1</ms:dockerDownloadLocation>
 						<ms:licenceTerms>
 							<ms:licenceTermsName xml:lang="en">MIT License</ms:licenceTermsName>
 							<ms:licenceTermsURL>https://opensource.org/licenses/MIT</ms:licenceTermsURL>

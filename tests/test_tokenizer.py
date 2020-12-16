@@ -8,7 +8,7 @@ from tokenizer.tokenizer import Tokenizer
 
 class TestTokenizer(unittest.TestCase):
 
-    MODEL_DIR = '~/.cache/diaparser'
+    MODEL_DIR = os.path.expanduser('~/.cache/diaparser')
     
     def setUp(self):
         self.args = {
@@ -19,7 +19,7 @@ class TestTokenizer(unittest.TestCase):
     def test_download_resources(self):
         tokenizer = Tokenizer(**self.args)
         
-        self.assertTrue(os.path.exists(self.MODEL_DIR) and not os.path.isfile(self.MODEL_DIR))
+        self.assertTrue(os.path.isdir(self.MODEL_DIR))
         self.assertTrue(os.path.exists(os.path.join(self.MODEL_DIR, 'tokenizer', self.args['lang'])))
         self.assertTrue(os.path.exists(os.path.join(self.MODEL_DIR, 'tokenizer', self.args['lang'], 'tokenize')))
     

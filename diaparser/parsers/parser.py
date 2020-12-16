@@ -145,6 +145,19 @@ class Parser():
         return loss, metric
 
     def predict(self, data, pred=None, buckets=8, batch_size=5000, prob=False, **kwargs):
+        r"""
+        Parses the data and produces a parse tree for each sentence.
+        Args:
+            data (str): input to be parsed: either
+                  - a str, taht will be tokenized first with the tokenizer for the parser language
+                  - a path to a file in CoNLL-U format to be read.
+            pred (str): a path to a file where to write the parsed input in CoNLL-=U fprmat.
+            bucket (int): the number of buckets used to group sentences to parallelize matrix computations.
+            batch_size (int): group sentences in batches.
+            prob (bool): whther to return also probabilities for each arc.
+        Return:
+            a Dataset containing the parsed sentence trees.
+        """
         args = self.args.update(locals())
         init_logger(logger, verbose=args.verbose)
 
@@ -152,8 +165,8 @@ class Parser():
         if args.prob:
             self.transform.append(Field('probs'))
         
-        if hasattr(args, 'text') and args.text:
-            self.transform.reader = Tokenizer(args.text, dir=args.cache_dir, verbose=args.verbose).reader()
+        if isinstance(data, str) and not os.path.exists(data):
+            self.transform.reader = Tokenizer(args.lang, dir=args.cache_dir, verbose=args.verbose).reader()
 
         logger.info("Loading the data")
         dataset = Dataset(self.transform, data)

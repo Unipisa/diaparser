@@ -48,5 +48,4 @@ def test_bert():
     parser.predict([sentence], lang='en', prob=True)
 
 if __name__ == '__main__':
-    import pdb; pdb.set_trace()
     test_parse()
