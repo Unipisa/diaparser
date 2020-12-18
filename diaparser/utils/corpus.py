@@ -4,7 +4,7 @@ from collections import namedtuple
 from collections.abc import Iterable
 from .field import Field
 
-from tokenizer.tokenizer import Tokenizer
+from ..tokenizer.tokenizer import Tokenizer
 
 import sys
 import math
