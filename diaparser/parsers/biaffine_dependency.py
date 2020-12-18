@@ -13,7 +13,7 @@ from ..utils.fn import ispunct
 from ..utils.logging import get_logger, progress_bar
 from ..utils.metric import AttachmentMetric
 from ..utils.transform import CoNLL
-from tokenizer.tokenizer import Tokenizer
+from ..tokenizer.tokenizer import Tokenizer
 
 logger = get_logger(__name__)
 

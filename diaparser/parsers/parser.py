@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 import torch
 import torch.distributed as dist
 from .. import parsers
-from tokenizer.tokenizer import Tokenizer
+from ..tokenizer.tokenizer import Tokenizer
 from ..catalog import select
 from ..utils import Config, Dataset
 from ..utils.field import Field, BertField
