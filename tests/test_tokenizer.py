@@ -4,7 +4,7 @@ import argparse
 import unittest
 import io
 
-from tokenizer.tokenizer import Tokenizer
+from diaparser.tokenizer.tokenizer import Tokenizer
 
 class TestTokenizer(unittest.TestCase):
 
