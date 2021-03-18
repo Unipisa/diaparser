@@ -352,7 +352,7 @@ To parse plain text just requires specifying the language code:
 An SVG picture illusrating the parse tree can be produced with:
 ```py
 >>> sent = dataset.sentences[0]
->>> displacy.render(sent.to_json(), style='dep', manual=True, options={'compact': True, 'distance': 120})
+>>> displacy.render(sent.to_displacy(), style='dep', manual=True, options={'compact': True, 'distance': 120})
 ```
 ![parse tree](./docs/source/tree.svg)
 
