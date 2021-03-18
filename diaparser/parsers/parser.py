@@ -149,9 +149,10 @@ class Parser():
         Parses the data and produces a parse tree for each sentence.
         Args:
             data (str): input to be parsed: either
-                  - a str, taht will be tokenized first with the tokenizer for the parser language
-                  - a path to a file in CoNLL-U format to be read.
-            pred (str): a path to a file where to write the parsed input in CoNLL-=U fprmat.
+                  - a str, that will be tokenized first with the tokenizer for the parser language
+                  - a path to a file to be read, either in CoNLL-U format or in plain text if :param text: is supplied.
+            text (str): optional, specifies that the input file is in plain text in the specified llanguage code.
+            pred (str): a path to a file where to write the parsed input in CoNLL-U fprmat.
             bucket (int): the number of buckets used to group sentences to parallelize matrix computations.
             batch_size (int): group sentences in batches.
             prob (bool): whther to return also probabilities for each arc.
@@ -165,8 +166,8 @@ class Parser():
         if args.prob:
             self.transform.append(Field('probs'))
         
-        if isinstance(data, str) and not os.path.exists(data):
-            self.transform.reader = Tokenizer(args.lang, dir=args.cache_dir, verbose=args.verbose).reader()
+        if isinstance(data, str) and args.text:
+            self.transform.reader = Tokenizer(args.text, dir=args.cache_dir, verbose=args.verbose).reader()
 
         logger.info("Loading the data")
         dataset = Dataset(self.transform, data)

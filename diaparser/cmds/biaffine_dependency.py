@@ -41,10 +41,10 @@ def main():
     subparser = subparsers.add_parser('predict', help='Use a trained parser to make predictions.')
     subparser.add_argument('--prob', action='store_true', help='whether to output probs')
     subparser.add_argument('--buckets', default=8, type=int, help='max num of buckets to use')
-    subparser.add_argument('--data', default='data/ptb/test.conllx', help='path to dataset')
-    subparser.add_argument('--pred', default='pred.conllx', help='path to predicted result')
+    subparser.add_argument('--data', default='data/ptb/test.conllu', help='path to dataset')
+    subparser.add_argument('--pred', default='pred.conllu', help='path to predicted result')
     subparser.add_argument('--text', metavar='LANGUAGE', default=None,
-                           help='parse plain text in the given language.')
+                           help='parse plain text in the given language code.')
     subparser.add_argument('--cache-dir', default=os.path.expanduser('~/.cache/diaparser'),
                            help='path to saved parser/tokenizer models')
     parse(parser)

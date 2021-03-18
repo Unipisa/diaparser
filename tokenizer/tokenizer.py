@@ -28,7 +28,7 @@ class Tokenizer:
             processors = ','.join(avail_preprocessors)
             try:
                 # get Stanza resource.json which is needed by stanza.Pipeline().
-                stanza.download(lang='', dir=dir)
+                stanza.download(lang='', model_dir=dir)
             except:
                 pass # discard exception for unknown lang=''
         else:
