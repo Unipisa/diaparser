@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import diaparser
 from diaparser.parsers import Parser
 
 model = 'en_ewt-electra-base'
