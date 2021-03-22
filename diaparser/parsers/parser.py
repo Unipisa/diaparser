@@ -18,6 +18,22 @@ from torch.optim import Adam
 from torch.optim.lr_scheduler import ExponentialLR
 
 
+def conll_format(path):
+    """
+    Check whether a file contains data in CoNLL-U format.
+    """
+    try:
+        with open(path) as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#'):
+                    # CoNLL-U format has 10 tsv:
+                    return len(line.split('\t')) == 10
+        return False
+    except:
+        return False
+
+
 class Parser():
 
     MODEL = None
@@ -148,11 +164,12 @@ class Parser():
         r"""
         Parses the data and produces a parse tree for each sentence.
         Args:
-            data (str): input to be parsed: either
+            data (str or list[list[str]]): input to be parsed: either
                   - a str, that will be tokenized first with the tokenizer for the parser language
                   - a path to a file to be read, either in CoNLL-U format or in plain text if :param text: is supplied.
-            text (str): optional, specifies that the input file is in plain text in the specified llanguage code.
-            pred (str): a path to a file where to write the parsed input in CoNLL-U fprmat.
+                  - a list of lists of tokens
+            text (str): optional, specifies that the input data is in plain text in the specified language code.
+            pred (str or file): a path to a file where to write the parsed input in CoNLL-U fprmat.
             bucket (int): the number of buckets used to group sentences to parallelize matrix computations.
             batch_size (int): group sentences in batches.
             prob (bool): whther to return also probabilities for each arc.
@@ -166,7 +183,7 @@ class Parser():
         if args.prob:
             self.transform.append(Field('probs'))
         
-        if isinstance(data, str) and args.text:
+        if isinstance(data, str) and (not conll_format(data) or args.text):
             self.transform.reader = Tokenizer(args.text, dir=args.cache_dir, verbose=args.verbose).reader()
 
         logger.info("Loading the data")

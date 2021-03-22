@@ -72,9 +72,15 @@ class Transform():
         raise AttributeError
 
     def save(self, path, sentences):
-        with open(path, 'w') as f:
-            f.write('\n'.join([str(i) for i in sentences]) + '\n')
-
+        """
+        path (str of file): file where to write sentences or None to use stdout.
+        """
+        lines = '\n'.join([str(i) for i in sentences]) + '\n'
+        if isinstance(path, str):
+            with open(path, 'w') as f:
+                f.write(lines)
+        else:
+            path.write(lines)
 
 class Sentence():
     r"""

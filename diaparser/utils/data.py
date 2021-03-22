@@ -19,7 +19,7 @@ class Dataset(torch.utils.data.Dataset):
             An instance of :class:`Transform` and its derivations.
             The instance holds a series of loading and processing behaviours with regard to the specfic data format.
         data (list[list] or str):
-            A list of instances or a filename.
+            A list of list of strings or a filename.
             This will be passed into :meth:`transform.load`.
         kwargs (dict):
             Keyword arguments that will be passed into :meth:`transform.load` together with `data`

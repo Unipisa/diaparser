@@ -5,6 +5,7 @@ import argparse
 from ..parsers import BiaffineDependencyParser
 from .cmd import parse
 import os
+import sys
 
 
 def main():
@@ -27,7 +28,7 @@ def main():
     subparser.add_argument('--unk', default='unk', help='unk token in pretrained embeddings')
     # SUPPRESS or else it cannot be set through config.ini
     subparser.add_argument('--n-word-embed', default=argparse.SUPPRESS, type=int, help='dimension of embeddings')
-    subparser.add_argument('--bert', default=argparse.SUPPRESS, help='which bert model to use')
+    subparser.add_argument('--bert', default=argparse.SUPPRESS, help='which transformer model to use')
     subparser.add_argument('--attention-head', default=argparse.SUPPRESS, type=int,
                            help='attention head')
     subparser.add_argument('--attention-layer', default=argparse.SUPPRESS, type=int,
@@ -36,13 +37,13 @@ def main():
     subparser = subparsers.add_parser('evaluate', help='Evaluate the specified parser and dataset.')
     subparser.add_argument('--punct', action='store_true', help='whether to include punctuation')
     subparser.add_argument('--buckets', default=8, type=int, help='max num of buckets to use')
-    subparser.add_argument('--data', default='data/ptb/test.conllx', help='path to dataset')
+    subparser.add_argument('--data', default='test.conllx', help='path to test data')
     # predict
     subparser = subparsers.add_parser('predict', help='Use a trained parser to make predictions.')
     subparser.add_argument('--prob', action='store_true', help='whether to output probs')
     subparser.add_argument('--buckets', default=8, type=int, help='max num of buckets to use')
-    subparser.add_argument('--data', default='data/ptb/test.conllu', help='path to dataset')
-    subparser.add_argument('--pred', default='pred.conllu', help='path to predicted result')
+    subparser.add_argument('--data', default='test.conllu', help='path to input data')
+    subparser.add_argument('--pred', default=sys.stdout, help='path where to write predicted results')
     subparser.add_argument('--text', metavar='LANGUAGE', default=None,
                            help='parse plain text in the given language code.')
     subparser.add_argument('--cache-dir', default=os.path.expanduser('~/.cache/diaparser'),

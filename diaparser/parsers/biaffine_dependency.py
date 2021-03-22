@@ -43,8 +43,6 @@ class BiaffineDependencyParser(Parser):
         self.puncts = torch.tensor([i
                                     for s, i in self.WORD.vocab.stoi.items()
                                     if ispunct(s)]).to(self.args.device)
-        if getattr(self.args, 'text', None):
-            self.transform.reader = Tokenizer(self.args.text, self.args.cache_dir).reader()
 
     def train(self, train, dev, test, buckets=32, batch_size=5000,
               punct=False, tree=False, proj=False, verbose=True, **kwargs):

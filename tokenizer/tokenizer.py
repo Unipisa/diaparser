@@ -28,15 +28,15 @@ class Tokenizer:
             processors = ','.join(avail_preprocessors)
             try:
                 # get Stanza resource.json which is needed by stanza.Pipeline().
-                stanza.download(lang='', model_dir=dir)
+                stanza.download(lang='', model_dir=dir, verbose=verbose)
             except:
                 pass # discard exception for unknown lang=''
         else:
             cached_paths = {}
             processors='tokenize'
-            stanza.download(lang, dir=dir, processors=processors, verbose=verbose)
+            stanza.download(lang, model_dir=dir, processors=processors, verbose=verbose)
             try:
-                stanza.download(lang, dir=dir, processors='mwt', verbose=verbose)
+                stanza.download(lang, model_dir=dir, processors='mwt', verbose=verbose)
                 processors += ',mwt'
             except:
                 pass
