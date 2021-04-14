@@ -159,6 +159,15 @@ The numbers in bold represent state-of-the-art values.
       <td align="center"><b>94.37</b></td>
       <td align="right">352</td>
     </tr>
+    <tr>
+      <td>Turkish</td>
+      <td>Boun</td>
+      <td><code>tr_boun.electra-base</code></td>
+      <td align="center"><b></b></td>
+      <td align="center"><b></b></td>
+      <td align="right"></td>
+    </tr>
+
   </tbody>
 </table>
 
