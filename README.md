@@ -163,9 +163,9 @@ The numbers in bold represent state-of-the-art values.
       <td>Turkish</td>
       <td>Boun</td>
       <td><code>tr_boun.electra-base</code></td>
-      <td align="center"><b></b></td>
-      <td align="center"><b></b></td>
-      <td align="right"></td>
+      <td align="center"><b>83.53</b></td>
+      <td align="center"><b>75.87</b></td>
+      <td align="right">1198</td>
     </tr>
 
   </tbody>
