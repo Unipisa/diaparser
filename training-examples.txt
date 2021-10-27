@@ -1,0 +1,17 @@
+Train using bert-base-cased:
+
+python3 -m diaparser.cmds.biaffine_dependency train -b -d 0  \
+    -p exp/en_ptb.bert-base/model  \
+    -f bert  \
+    --bert bert-base-cased \
+    --train ~/Downloads/Universal\ Dependencies\ 2.8.1/ud-treebanks-v2.8/UD_Romanian-RRT/ro_rrt-ud-test.conllu \
+    --dev ~/Downloads/Universal\ Dependencies\ 2.8.1/ud-treebanks-v2.8/UD_Romanian-RRT/ro_rrt-ud-dev.conllu
+
+Train using xlm-roberta-abase:
+
+python3 -m diaparser.cmds.biaffine_dependency train -b -d 0  \
+    -p exp/en_ptb.bert-base/model  \
+    -f bert  \
+    --bert xlm-roberta-base \
+    --train ~/Downloads/Universal\ Dependencies\ 2.8.1/ud-treebanks-v2.8/UD_Romanian-RRT/ro_rrt-ud-test.conllu \
+    --dev ~/Downloads/Universal\ Dependencies\ 2.8.1/ud-treebanks-v2.8/UD_Romanian-RRT/ro_rrt-ud-dev.conllu

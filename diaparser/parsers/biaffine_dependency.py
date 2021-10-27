@@ -140,7 +140,8 @@ class BiaffineDependencyParser(Parser):
             # ignore the first token of each sentence
             mask[:, 0] = 0
             s_arc, s_rel = self.model(words, feats)
-            loss = self.model.loss(s_arc, s_rel, arcs, rels, mask, self.args.partial)
+            loss = self.model.loss(
+                s_arc, s_rel, arcs, rels, mask, self.args.partial)
             loss.backward()
             nn.utils.clip_grad_norm_(self.model.parameters(), self.args.clip)
             self.optimizer.step()
@@ -153,7 +154,8 @@ class BiaffineDependencyParser(Parser):
             if not self.args.punct:
                 mask &= words.unsqueeze(-1).ne(self.puncts).all(-1)
             metric(arc_preds, rel_preds, arcs, rels, mask)
-            bar.set_postfix_str(f"lr: {self.scheduler.get_last_lr()[0]:.4e} - loss: {loss:.4f} - {metric}")
+            bar.set_postfix_str(
+                f"lr: {self.scheduler.get_last_lr()[0]:.4e} - loss: {loss:.4f} - {metric}")
 
     @torch.no_grad()
     def _evaluate(self, loader):
@@ -166,7 +168,8 @@ class BiaffineDependencyParser(Parser):
             # ignore the first token of each sentence
             mask[:, 0] = 0
             s_arc, s_rel = self.model(words, feats)
-            loss = self.model.loss(s_arc, s_rel, arcs, rels, mask, self.args.partial)
+            loss = self.model.loss(
+                s_arc, s_rel, arcs, rels, mask, self.args.partial)
             arc_preds, rel_preds = self.model.decode(s_arc, s_rel, mask,
                                                      self.args.tree,
                                                      self.args.proj)
@@ -200,7 +203,8 @@ class BiaffineDependencyParser(Parser):
             rels.extend(rel_preds[mask].split(lens))
             if self.args.prob:
                 arc_probs = s_arc.softmax(-1)
-                probs.extend([prob[1:i+1, :i+1].cpu() for i, prob in zip(lens, arc_probs.unbind())])
+                probs.extend([prob[1:i+1, :i+1].cpu()
+                             for i, prob in zip(lens, arc_probs.unbind())])
         arcs = [seq.tolist() for seq in arcs]
         rels = [self.REL.vocab[seq.tolist()] for seq in rels]
         preds = {'arcs': arcs, 'rels': rels}
@@ -239,11 +243,13 @@ class BiaffineDependencyParser(Parser):
         logger.info("Building the fields")
         WORD = Field('words', pad=pad, unk=unk, bos=bos, lower=True)
         if args.feat == 'char':
-            FEAT = SubwordField('chars', pad=pad, unk=unk, bos=bos, fix_len=args.fix_len)
+            FEAT = SubwordField('chars', pad=pad, unk=unk,
+                                bos=bos, fix_len=args.fix_len)
         elif args.feat == 'bert':
             tokenizer = BertField.tokenizer(args.bert)
 
-            args.max_len = min(args.max_len or tokenizer.max_len, tokenizer.max_len)
+            args.max_len = min(
+                args.max_len or tokenizer.model_max_length, tokenizer.model_max_length)
             FEAT = BertField('bert', tokenizer, fix_len=args.fix_len)
             WORD.bos = FEAT.bos  # ensure representations have the same length
         else:
@@ -256,7 +262,8 @@ class BiaffineDependencyParser(Parser):
             transform = CoNLL(FORM=WORD, CPOS=FEAT, HEAD=ARC, DEPREL=REL)
 
         train = Dataset(transform, args.train)
-        WORD.build(train, args.min_freq, (Embedding.load(args.embed, args.unk) if args.embed else None))
+        WORD.build(train, args.min_freq, (Embedding.load(
+            args.embed, args.unk) if args.embed else None))
         FEAT.build(train)
         REL.build(train)
         # set parameters from data:
