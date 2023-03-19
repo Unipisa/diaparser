@@ -22,7 +22,7 @@ setup(
     setup_requires=[
         'setuptools>=18.0',
     ],
-    install_requires=['torch>=1.6', 'transformers', 'nltk', 'stanza', 'numpy==1.19.4'],
+    install_requires=['torch>=1.6', 'transformers', 'nltk', 'stanza', 'numpy'],
     entry_points={
         'console_scripts': [
             'diaparser=diaparser.cmds.biaffine_dependency:main',
