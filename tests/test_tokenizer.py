@@ -25,7 +25,7 @@ class TestTokenizer(unittest.TestCase):
     
     def test_tokenize(self):
         tokenizer = Tokenizer(self.args['lang'])
-        sentences = tokenizer.predict('Ha chiamato il dr. Rossi.Vuole salutarti.')
+        sentences = tokenizer.predict("L'iphone del dr. Rossi è bello. Ma è troppo costoso.")
         self.assertEqual(len(sentences), 2)
 
     def test_corpus_load(self):
