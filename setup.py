@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='diaparser',
-    version='1.1.2',
+    version='1.1.3',
     author='Yu Zhang, Giuseppe Attardi',
     author_email='yzhang.cs@outlook.com, attardi@di.unipi.it',
     description='Direct Attentive Dependency Parser',
