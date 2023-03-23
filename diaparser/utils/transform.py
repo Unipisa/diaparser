@@ -113,8 +113,10 @@ class Sentence():
     def __getattr__(self, name):
         if name in self.__dict__:
             return self.__dict__[name]
-        else:
+        elif name in self.maps:
             return self.values[self.maps[name]]
+        else:
+            raise AttributeError(name)
 
     def __setattr__(self, name, value):
         if 'keys' in self.__dict__ and name in self:

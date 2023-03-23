@@ -87,3 +87,8 @@ class Tokenizer:
                     yield self.format(self.predict(f.read()))
         return generator
 
+if __name__ == '__main__':
+    import sys
+    tokenizer = Tokenizer(sys.argv[1]) # language code, e.g. 'it'
+    sentences = tokenizer.predict(sys.argv[2]) # text to tokenize.
+    print('\n'.join(tokenizer.format(sentences)))
