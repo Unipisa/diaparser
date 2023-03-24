@@ -23,7 +23,7 @@ setup(
         'setuptools>=18.0',
     ],
     # stanza 1.3 has incompatible changes (attribute feat_dropout instead of dropout)
-    install_requires=['torch>=1.6', 'transformers', 'nltk', 'stanza==1.2.3', 'numpy'],
+    install_requires=['torch>=2.0', 'transformers', 'nltk', 'stanza', 'numpy'],
     entry_points={
         'console_scripts': [
             'diaparser=diaparser.cmds.biaffine_dependency:main',
