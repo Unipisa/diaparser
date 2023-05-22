@@ -13,7 +13,7 @@ class CharLSTM(nn.Module):
     Args:
         n_char (int):
             The number of characters.
-        n_embed (int):
+        n_word_embed (int):
             The size of each embedding vector as input to LSTM.
         n_out (int):
             The size of each output vector.
@@ -39,7 +39,7 @@ class CharLSTM(nn.Module):
                             bidirectional=True)
 
     def __repr__(self):
-        return f"{self.__class__.__name__}({self.n_chars}, {self.n_embed}, n_out={self.n_out}, pad_index={self.pad_index})"
+        return f"{self.__class__.__name__}({self.n_chars}, {self.n_word_embed}, n_out={self.n_out}, pad_index={self.pad_index})"
 
     def forward(self, x):
         r"""

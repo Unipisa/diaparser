@@ -20,7 +20,7 @@ def main():
     subparser.add_argument('--build', '-b', action='store_true', help='whether to build the model first')
     subparser.add_argument('--punct', action='store_true', help='whether to include punctuation')
     subparser.add_argument('--max-len', type=int, help='max length of the sentences')
-    subparser.add_argument('--buckets', default=32, type=int, help='max num of buckets to use')
+    # subparser.add_argument('--buckets', default=32, type=int, help='max num of buckets to use')
     subparser.add_argument('--train', required=True, help='path to train file')
     subparser.add_argument('--dev', required=True, help='path to dev file')
     subparser.add_argument('--test', help='path to test file')

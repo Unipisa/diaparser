@@ -7,8 +7,11 @@ from ..utils.parallel import is_master
 from tqdm import tqdm
 
 
-def get_logger(name):
-    return logging.getLogger(name)
+def get_logger(name=None):
+    if name is not None:
+        return logging.getLogger(name)
+    else:
+        return logging.getLogger()
 
 
 def init_logger(logger,
@@ -39,8 +42,8 @@ def progress_bar(iterator,
                 ncols=ncols,
                 bar_format=bar_format,
                 ascii=True,
-                disable=True,  # (not (logger.level == logging.INFO and is_master())), FIXME: with or not verbose
+                disable=False,  # (not (logger.level == logging.INFO and is_master())), FIXME: with or not verbose
                 leave=leave)
 
 
-logger = get_logger('supar')
+logger = get_logger()

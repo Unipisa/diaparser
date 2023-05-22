@@ -239,7 +239,14 @@ class BiaffineDependencyModel(nn.Module):
         lens = mask.sum(dim=1).cpu() # BUG fix: https://github.com/pytorch/pytorch/issues/43227
         # feat_embed: [batch_size, seq_len, n_feat_embed]
         # attn: [batch_size, seq_len, seq_len]
-        feat_embed, attn = self.feat_embed(feats)
+
+        # feat_embed, attn = self.feat_embed(feats)
+        if self.args.feat != 'bert':
+            feat_embed = self.feat_embed(feats)
+            attn = None
+        else:
+            feat_embed, attn = self.feat_embed(feats)
+            
         if self.word_embed:
             ext_words = words
             # set the indices larger than num_embeddings to unk_index

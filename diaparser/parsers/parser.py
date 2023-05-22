@@ -127,11 +127,13 @@ class Parser():
                 best_e, best_metric = epoch, dev_metric
                 if is_master():
                     self.save(args.path)
-                logger.info(f"{t}s elapsed (saved)\n")
+                logger.info(f"{t}s elapsed (saved)")
             else:
-                logger.info(f"{t}s elapsed\n")
+                logger.info(f"{t}s elapsed")
             elapsed += t
-            if epoch - best_e >= args.patience:
+            patience = epoch - best_e
+            logger.info("Patience: {}/{}\n".format(patience, args.patience))
+            if patience >= args.patience:
                 break
 
         logger.info(f"Epoch {best_e} saved")
