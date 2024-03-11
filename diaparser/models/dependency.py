@@ -5,6 +5,8 @@ import torch.nn as nn
 from ..modules import MLP, BertEmbedding, Biaffine, LSTM, CharLSTM
 from ..modules.dropout import IndependentDropout, SharedDropout
 from ..utils.config import Config
+from ..utils.field import BertField
+from sentence_transformers import SentenceTransformer
 from ..utils.alg import eisner, mst
 from ..utils.transform import CoNLL
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
@@ -99,6 +101,8 @@ class BiaffineDependencyModel(nn.Module):
                  n_feat_embed=100,
                  n_char_embed=50,
                  bert=None,
+                 sbert=False,
+                 sbertpath='',
                  n_bert_layers=4,
                  bert_fine_tune=False,
                  mix_dropout=.0,
@@ -151,12 +155,20 @@ class BiaffineDependencyModel(nn.Module):
             # args.n_mlp_arc = self.feat_embed.bert.config.max_position_embeddings
             args.n_feat_embed = self.feat_embed.n_out  # taken from the model
             args.n_bert_layers = self.feat_embed.n_layers  # taken from the model
+            
         elif args.feat == 'tag':
             self.feat_embed = nn.Embedding(num_embeddings=args.n_feats,
                                            embedding_dim=args.n_feat_embed)
         else:
             raise RuntimeError("The feat type should be in ['char', 'bert', 'tag'].")
         self.embed_dropout = IndependentDropout(p=args.embed_dropout)
+        if hasattr(args, 'sbert') and args.sbert:
+            # TODO should just use the tokenizer declared elsewhere
+            self.tokenizer = BertField.tokenizer(args.bert) # so we can decode later
+            self.sbert = SentenceTransformer(args.sbertpath)
+            sbert_out = self.sbert.get_sentence_embedding_dimension()
+            # similarly TODO when cleaning up, reference the device from elsewhere
+            self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
         if args.n_lstm_layers:
             # the lstm layer
@@ -170,7 +182,10 @@ class BiaffineDependencyModel(nn.Module):
         else:
             self.lstm = None
             mlp_input_size = args.n_word_embed + args.n_feat_embed
-
+        print("mlp_size - no sbert",mlp_input_size)
+        if hasattr(args, 'sbert') and hasattr(self, 'sbert') and self.sbert:
+            print("with sbert",mlp_input_size+sbert_out)
+            mlp_input_size = mlp_input_size+sbert_out
         # the MLP layers
         self.mlp_arc_d = MLP(n_in=mlp_input_size,
                              n_out=args.n_mlp_arc,
@@ -233,6 +248,12 @@ class BiaffineDependencyModel(nn.Module):
 
         # words, feats are the first two items in the batch from DataLoader.__iter__()
         whole_words = feats[:, :, 0]  # drop subpiece dimension
+        if hasattr(self, 'sbert') and self.sbert:
+            whole_sents = self.tokenizer.batch_decode(whole_words)
+            encoded_sents = torch.tensor(self.sbert.encode(whole_sents)).to(self.device)
+            shape_values = encoded_sents.shape
+            encoded_sents = encoded_sents.reshape(shape=(shape_values[0],1,shape_values[1]))
+
         batch_size, seq_len = whole_words.shape
         # get the mask and lengths of given batch
         mask = whole_words.ne(self.feat_embed.pad_index)
@@ -264,7 +285,12 @@ class BiaffineDependencyModel(nn.Module):
             x = self.lstm_dropout(x)
         else:
             x = embed
-
+        
+        if hasattr(self, 'sbert') and self.sbert:
+            x_shape_values = x.shape
+            encoded_sents = encoded_sents.repeat(1,x_shape_values[1],1)
+            x = torch.cat((x, encoded_sents), dim=2)
+            
         # apply MLPs to the BiLSTM output states
         arc_d = self.mlp_arc_d(x)
         arc_h = self.mlp_arc_h(x)
