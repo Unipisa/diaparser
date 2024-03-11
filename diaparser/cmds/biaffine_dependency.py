@@ -26,9 +26,11 @@ def main():
     subparser.add_argument('--test', help='path to test file')
     subparser.add_argument('--embed', help='path to pretrained embeddings')
     subparser.add_argument('--unk', default='unk', help='unk token in pretrained embeddings')
+    subparser.add_argument('--sbert', action='store_true', help='use the sentence embeddings')
     # SUPPRESS or else it cannot be set through config.ini
     subparser.add_argument('--n-word-embed', default=argparse.SUPPRESS, type=int, help='dimension of embeddings')
     subparser.add_argument('--bert', default=argparse.SUPPRESS, help='which transformer model to use')
+    subparser.add_argument('--sbertpath', default=argparse.SUPPRESS, help='path to the sentence embeddings')
     subparser.add_argument('--attention-head', default=argparse.SUPPRESS, type=int,
                            help='attention head')
     subparser.add_argument('--attention-layer', default=argparse.SUPPRESS, type=int,
